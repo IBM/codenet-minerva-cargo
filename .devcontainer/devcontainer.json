@@ -1,0 +1,28 @@
+// cSpell:disable
+{
+	"name": "Python Neo4j",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/app",
+	"remoteUser": "vscode",
+	"settings": {},
+	"extensions": [
+		"VisualStudioExptTeam.vscodeintellicode",
+		"ms-python.python",
+		"ms-python.pylint",
+		"ms-python.vscode-pylance",
+		"ms-azuretools.vscode-docker",
+		"njpwerner.autodocstring",
+		"yzhang.markdown-all-in-one",
+		"bierner.github-markdown-preview",
+		"hnw.vscode-auto-open-markdown-preview",
+        "davidanson.vscode-markdownlint",
+		"donjayamanne.githistory",
+		"GitHub.vscode-pull-request-github",
+		"redhat.vscode-yaml",
+		"inercia.vscode-k3d",
+		"streetsidesoftware.code-spell-checker",
+    	"wholroyd.jinja"
+	],
+    "postCreateCommand": "if test -f 'requirements.txt'; then sudo pip install -r requirements.txt; fi"
+}
