@@ -5,4 +5,4 @@
 
 Cargo is part of the Minerva project working on refactoring monoliths to microservices. It leverages [Data Gravity Insights](https://github.com/konveyor/tackle-data-gravity-insights) from the Konveyor.io project and provides recommendations for partitioning code taking into account code relationships, data relationships, and database transaction scope.
 
-## COMING SOON...
+
