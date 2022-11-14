@@ -1,0 +1,224 @@
+{
+    "Root": [
+        "checkin",
+        "book_outbound_flight",
+        "logout_1",
+        "cancel_bookings",
+        "find_flights",
+        "click_config_env",
+        "update_account_profile",
+        "send_support_message",
+        "cancel_bookings_1",
+        "click_account",
+        "find_one_way_flight",
+        "click_support",
+        "login",
+        "load_database",
+        "cancel_bookings_2",
+        "login_1",
+        "runtime_info",
+        "book_selected_flight",
+        "send_support_message_1",
+        "logout"
+    ],
+    "RESTCookieSessionFilter": [
+        "click_account",
+        "login_1",
+        "find_one_way_flight",
+        "checkin",
+        "book_outbound_flight",
+        "logout_1",
+        "cancel_bookings",
+        "login",
+        "update_account_profile",
+        "book_selected_flight",
+        "find_flights",
+        "cancel_bookings_1",
+        "cancel_bookings_2",
+        "logout"
+    ],
+    "ServiceLocator": [
+        "click_account",
+        "cancel_bookings_1",
+        "checkin",
+        "login_1",
+        "find_one_way_flight",
+        "book_outbound_flight",
+        "click_config_env",
+        "runtime_info",
+        "logout_1",
+        "cancel_bookings",
+        "login",
+        "update_account_profile",
+        "book_selected_flight",
+        "find_flights",
+        "load_database",
+        "cancel_bookings_2",
+        "logout"
+    ],
+    "AuthServiceImpl": [
+        "click_account",
+        "load_database",
+        "login_1",
+        "checkin",
+        "find_one_way_flight",
+        "book_outbound_flight",
+        "click_config_env",
+        "runtime_info",
+        "logout_1",
+        "cancel_bookings",
+        "login",
+        "update_account_profile",
+        "book_selected_flight",
+        "find_flights",
+        "cancel_bookings_1",
+        "cancel_bookings_2",
+        "logout"
+    ],
+    "ConnectionManager": [
+        "click_account",
+        "cancel_bookings_1",
+        "checkin",
+        "login_1",
+        "find_one_way_flight",
+        "book_outbound_flight",
+        "click_config_env",
+        "runtime_info",
+        "logout_1",
+        "cancel_bookings",
+        "login",
+        "update_account_profile",
+        "book_selected_flight",
+        "find_flights",
+        "load_database",
+        "cancel_bookings_2",
+        "logout"
+    ],
+    "CustomerServiceImpl": [
+        "click_account",
+        "load_database",
+        "login_1",
+        "runtime_info",
+        "logout_1",
+        "login",
+        "update_account_profile",
+        "click_config_env",
+        "logout"
+    ],
+    "LoginREST": [
+        "logout_1",
+        "login",
+        "login_1",
+        "logout"
+    ],
+    "AuthService": [
+        "click_account",
+        "login_1",
+        "find_one_way_flight",
+        "checkin",
+        "book_outbound_flight",
+        "cancel_bookings",
+        "login",
+        "update_account_profile",
+        "book_selected_flight",
+        "find_flights",
+        "cancel_bookings_1",
+        "cancel_bookings_2"
+    ],
+    "CustomerInfo": [
+        "update_account_profile"
+    ],
+    "AddressInfo": [
+        "update_account_profile"
+    ],
+    "CustomerREST": [
+        "click_account",
+        "update_account_profile"
+    ],
+    "CustomerService": [
+        "login",
+        "update_account_profile",
+        "login_1"
+    ],
+    "SupportWebSocket": [
+        "click_support",
+        "send_support_message",
+        "send_support_message_1"
+    ],
+    "BookingServiceImpl": [
+        "load_database",
+        "checkin",
+        "book_outbound_flight",
+        "click_config_env",
+        "runtime_info",
+        "cancel_bookings",
+        "book_selected_flight",
+        "cancel_bookings_1",
+        "cancel_bookings_2"
+    ],
+    "FlightService": [
+        "find_one_way_flight",
+        "click_config_env",
+        "runtime_info",
+        "find_flights",
+        "load_database"
+    ],
+    "FlightServiceImpl": [
+        "find_one_way_flight",
+        "click_config_env",
+        "runtime_info",
+        "find_flights",
+        "load_database"
+    ],
+    "AcmeAirConfiguration": [
+        "load_database",
+        "click_config_env",
+        "runtime_info"
+    ],
+    "BookingsREST": [
+        "checkin",
+        "book_outbound_flight",
+        "cancel_bookings",
+        "book_selected_flight",
+        "cancel_bookings_1",
+        "cancel_bookings_2"
+    ],
+    "LoaderREST": [
+        "load_database"
+    ],
+    "Loader": [
+        "load_database"
+    ],
+    "CustomerLoader": [
+        "load_database"
+    ],
+    "FlightLoader": [
+        "load_database"
+    ],
+    "SessionLoader": [
+        "load_database"
+    ],
+    "BookingLoader": [
+        "load_database"
+    ],
+    "AirportCodeMapping": [
+        "load_database"
+    ],
+    "KeyGenerator": [
+        "login_1",
+        "book_outbound_flight",
+        "login",
+        "book_selected_flight",
+        "load_database"
+    ],
+    "AcmeAirApp": [
+        "logout"
+    ],
+    "FlightsREST": [
+        "find_flights",
+        "find_one_way_flight"
+    ],
+    "AppConfig": [
+        "click_config_env"
+    ]
+}
