@@ -16,7 +16,6 @@ from py2neo import Graph
 from ipdb import set_trace
 
 import pandas as pd
-from tabulate import tabulate
 from .utils import Log
 
 from collections import namedtuple
