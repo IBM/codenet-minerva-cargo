@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='minerva-cargo',
-    version='v1-beta',
+    name='cargo',
+    version='0.1.0',
     url="https://github.com/ibm/codenet-minerva-cargo",
     author="Rahul Krishna",
     description="A data-centric transformation of monoliths into microservices",
@@ -14,7 +14,6 @@ setup(
     packages=find_packages(exclude=["tests"]),
     include_package_data=True,
     install_requires=[
-        'Click',
         'scipy',
         'numpy',
         'pandas',
@@ -22,7 +21,6 @@ setup(
         'tqdm',
         'scikit-learn',
         'tackle-dgi',
-        'typer',
         'rich'
     ],
     classifiers=[
@@ -43,10 +41,5 @@ setup(
             "pylint==2.13",
             "ipdb"
         ],
-    },
-    entry_points={
-        'console_scripts': [
-            'findutils = cargo.cli:cli'
-        ],
-    },
+    }
 )
