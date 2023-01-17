@@ -11,6 +11,10 @@ class Log(object):
     log = logging.getLogger("rich")
 
     @staticmethod
+    def warn(msg: str):
+        Log.log.warn(msg, extra={"markup": True})
+
+    @staticmethod
     def info(msg: str):
         Log.log.info(msg, extra={"markup": True})
 

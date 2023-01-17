@@ -1,56 +1,32 @@
+from pathlib import Path
+from typing import Optional, Union
 import networkx as nx
 
-import glob
-import argparse
-import os
 import random
 import json
-import re
-import ast
 
 import numpy as np
 
-from pathlib import Path
 from copy import deepcopy
 from py2neo import Graph
 from ipdb import set_trace
 
-import pandas as pd
-from .utils import Log
+from cargo.utils import Log
+from cargo.utils import ProgressBarFactory
 
 from collections import namedtuple
-from urllib.parse import urljoin, urlencode, urlparse, urlunparse
-from .helper import *
-from .metrics import Metrics
-
-from rich.progress import (
-    Progress,
-    BarColumn,
-    TextColumn,
-    SpinnerColumn,
-    TimeElapsedColumn,
-    MofNCompleteColumn,
-    TimeRemainingColumn
-)
-
-# Define custom progress bar
-progress_bar = Progress(
-    SpinnerColumn(),
-    TextColumn("•"),
-    TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-    BarColumn(),
-    TextColumn("• Completed/Total:"),
-    MofNCompleteColumn(),
-    TextColumn("• Elapsed:"),
-    TimeElapsedColumn(),
-    TextColumn("• Remaining:"),
-    TimeRemainingColumn())
+from urllib.parse import urlunparse
+from cargo.helper import *
+from cargo.metrics import Metrics
 
 
-class Cargo(object):
+class Cargo:
+    """Context Sensitive Label Propagation for partitioning a monolith application into microservices.
+    """
     verbose: bool = False
 
     def __init__(self, use_dgi: bool, dgi_neo4j_hostname: str, dgi_neo4j_hostport: int, dgi_neo4j_auth: str, verbose: bool):
+
         # namedtuple to match the internal signature of urlunparse
         Components = namedtuple(typename='Components', field_names=[
                                 'scheme', 'netloc', 'url', 'path', 'query', 'fragment'])
@@ -69,12 +45,28 @@ class Cargo(object):
         Cargo.verbose = verbose
 
     def dgi2networkx(self, neo4j_url: str, dgi_neo4j_auth: str) -> nx.MultiDiGraph:
+        """Convert the graph in DGI's neo4j to a local networkx instance.
 
-        Log.info("Loading graphs from Neo4j.")
+        Args:
+            neo4j_url (str): URL of the neo4j database
+            dgi_neo4j_auth (str): Authentication to access the neo4j graph
+
+        Returns:
+            nx.MultiDiGraph: A networkx graph
+        """
+        Log.warn(
+            "Loading graphs from Neo4j database. This could take a few minutes to complete.")
         graph = Graph(neo4j_url, auth=tuple(dgi_neo4j_auth.split(":")))
+        # For now, we'll ignore transactional call trace
+        # TODO: Add context sensitivity to transactional call trace and then use that to partition.
+        cursor = graph.run(
+            'Match (n:MethodNode)-'
+            '[r:CALL_RETURN_DEPENDENCY|HEAP_DEPENDENCY|DATA_DEPENDENCY|TRANSACTION_READ|TRANSACTION_WRITE]-'
+            '(m) Return n,r,m;')
+
+        graph_data = cursor.data()
         Log.info("DGI graph loaded from Neo4j.")
-        cursor = graph.run('Match (n)-[r]->(m) Return n,r,m;')
-        num_records = len(cursor.data())
+        num_records = len(graph_data)
         Log.info("Found %d records." % num_records)
 
         all_contexts = []
@@ -82,22 +74,22 @@ class Cargo(object):
         self.full_G = nx.MultiDiGraph()
         self.transaction_graph = nx.MultiDiGraph()
 
-        with progress_bar as p:
-            for record in p.track(cursor, total=num_records):
+        with ProgressBarFactory.get_progress_bar(debug=True) as p:
+            for record in p.track(graph_data, total=num_records):
                 if 'SQLTable' in record['n'].labels:
                     node1 = 'DATABASE_' + record['n']['name']
-                    node2 = record['m']['node_class']
+                    node2 = record['m']['node_method']
                     self.transaction_graph.add_edge(node2, node1)
                     continue
 
                 if 'SQLTable' in record['m'].labels:
-                    node1 = record['n']['node_class']
+                    node1 = record['n']['node_method']
                     node2 = 'DATABASE_' + record['m']['name']
                     self.transaction_graph.add_edge(node1, node2)
                     continue
 
-                node1 = record['n']['node_class']
-                node2 = record['m']['node_class']
+                node1 = record['n']['node_method']
+                node2 = record['m']['node_method']
 
                 if is_java_method(node1) or is_java_method(node2):
                     continue
@@ -142,7 +134,7 @@ class Cargo(object):
                 if node not in context_G:
                     context_G.add_node(node)
 
-    def assign_init_labels(self, G, init_labels, max_part, labels_file=None):
+    def assign_init_labels(self, G, init_labels, max_part, labels_file):
 
         partitions = nx.get_node_attributes(G, 'partition')
 
@@ -152,9 +144,7 @@ class Cargo(object):
             num_partitions = 0
 
         if init_labels == 'auto':
-
             running_count = 0
-
             if max_part is None:
                 for node in G.nodes:
                     if node not in partitions:
@@ -171,7 +161,7 @@ class Cargo(object):
 
         elif init_labels == 'file':
 
-            if labels_file == None:
+            if labels_file is None:
                 raise Exception(
                     "File name must be provided if init_labels='file'")
 
@@ -192,7 +182,7 @@ class Cargo(object):
 
             for node in G.nodes:
                 class_name = node.split(':')[0].strip(' <>').split('.')[-1]
-
+                set_trace()
                 if class_name in file_assignments:
 
                     matched[class_name] = True
@@ -215,7 +205,7 @@ class Cargo(object):
             else:
                 num_part = 1
 
-            if max_part != -1:
+            if max_part is not None:
                 assert num_part <= max_part
 
             # If too few of the nodes are labelled, random init the rest
@@ -301,7 +291,6 @@ class Cargo(object):
         copy_partitions(expanded_G, G)
 
     def do_cargo(self, init_labels='auto', max_part=None, labels_file=None):
-
         clear_partitions(self.full_G)
 
         for ctx_graph in self.all_context_graphs:
@@ -313,9 +302,12 @@ class Cargo(object):
         fill_minus_one(prev_graph)
 
         if self.transaction_graph.number_of_edges() > 0:
+            Log.info(
+                "Found database transaction edges. Performing first round of label propogation.")
             self.prop_db(prev_graph)
 
         num_ctx = len(self.all_context_graphs)
+        Log.info(f"Found {num_ctx} contexts.")
         ctx_order = np.random.permutation(num_ctx)
 
         for ctx_num in ctx_order:
@@ -333,7 +325,7 @@ class Cargo(object):
         fill_minus_one(labelprop_G)
         copy_partitions(curr_graph, labelprop_G)
 
-        partition_freqs = np.array(np.auto(list(nx.get_node_attributes(
+        partition_freqs = np.array(np.unique(list(nx.get_node_attributes(
             labelprop_G, 'partition').values()), return_counts=True))
         partition_freqs = np.array(partition_freqs).T
         partition_freqs = {partition: freq for partition,
@@ -358,13 +350,12 @@ class Cargo(object):
 
         new_G = deepcopy(G)
 
-        metrics: Metrics = Metrics(new_G, self.dataset, self.transaction_graph)
-        dataflow_metrics = metrics.compute_dataflow_metrics()
+        metrics: Metrics = Metrics(new_G, self.transaction_graph)
         static_metrics = metrics.compute_static_metrics()
-        all_metrics = {**dataflow_metrics, **static_metrics}
+        all_metrics = {**static_metrics}
 
         if self.transaction_graph.number_of_edges() > 0:
-            all_metrics['DB'] = metrics._transaction_entropy()
+            all_metrics['DB'] = metrics.transaction_entropy()
         else:
             all_metrics['DB'] = 0.0
 
@@ -410,7 +401,7 @@ class Cargo(object):
         Log.info(
             "Copied {} classes directly from the initial file".format(copy_count))
 
-    def run(self, init_labels, max_part=None, labels_file=None):
+    def run(self, init_labels, max_part: Optional[int] = None, labels_file: Union[str, Path, None] = None):
 
         if init_labels == 'file':
             Log.info("Cargo with {} initial labels".format(labels_file))
@@ -421,9 +412,11 @@ class Cargo(object):
         assignments = nx.get_node_attributes(labelprop_G, 'partition')
 
         if init_labels == 'file':
+            if isinstance(labels_file, str):
+                labels_file = Path(labels_file)
             self.copy_new_classes_from_file(labelprop_G, labels_file)
 
-            with open(labels_file, 'r') as f:
+            with open(labels_file, 'r') as f:  # type: ignore
                 init_partitions = json.load(f)
 
             num_init_partitions = max(init_partitions.values()) + 1
@@ -432,20 +425,17 @@ class Cargo(object):
             Log.info("Max partitions : {}, File partitions : {}, Gen partitions : {}".format(
                 max_part, num_init_partitions, num_gen_partitions))
             Log.info("Init partition sizes : {}".format(
-                np.auto(list(init_partitions.values()), return_counts=True)[1]))
+                np.unique(list(init_partitions.values()), return_counts=True)[1]))
         else:
             num_gen_partitions = max(assignments.values()) + 1
             Log.info("Max partitions : {}, Gen partitions : {}".format(
                 max_part, num_gen_partitions))
 
-        partition_sizes = np.auto(
+        partition_sizes = np.unique(
             list(assignments.values()), return_counts=True)[1]
         Log.info("Final partition sizes : {}".format(partition_sizes))
 
         metrics = self.compute_metrics(labelprop_G)
-
-        Log.info("Metrics : ")
-        Log.info(metrics)
 
         clear_partitions(labelprop_G)
 
