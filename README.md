@@ -32,30 +32,10 @@ We will use [Data Gravity Insights](https://github.com/konveyor/tackle-data-grav
 
 #### 1.1 Install DGI
 
-Clone this repository and install `dgi` using pip.
-```
-git clone https://github.com/vikramnitin9/tackle-data-gravity-insights/
-```
-
-Note: Henceforth, unless specified otherwise, all commands are to be executed from within this folder (we'll refer to it as `$REPO_ROOT`. 
-
-We'll save this repository location for future reference.
+DGI is available as PyPi package, you can also install `dgi` using
 
 ```
-cd tackle-data-gravity-insights
-export REPO_ROOT=$(pwd)
-```
-Before proceeding, you may need to install `geos` with `sudo apt install libgeos-dev` or `brew install geos`.
-
-To install `dgi` globally:
-```
-sudo pip install --editable .
-```
-
-You can also install `dgi` locally, for that you can drop `sudo`
-
-```
-pip install --editable .
+pip install tackle-dgi
 ```
 
 This will install the dgi command locally under your home folder in a hidden folder called: ~/.local/bin. If you choose this approach, you must add this folder to your PATH with:
@@ -184,120 +164,6 @@ Graph build complete
 Once we have created the Neo4j graphs by following the above steps, we can run CARGO as follows:
 
 ```
-minerva-cargo --app-name=daytrader --neo4j-url=bolt://neo4j:minerva@localhost:7687 --mode=standalone
-
-[12:52:07] INFO     Running CARGO in standalone mode.                                                                                                                                                                                              logger.py:12
-           INFO     Loading graphs from Neo4j. This could take a couple of minutes                                                                                                                                                                 logger.py:12
-100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • 0:00:00 • 0:00:00
-Running with seed 42
-[12:52:34] INFO     Number of partitions = 7                                                                                                                                                                                                       logger.py:12
-           INFO     Cargo with unique initial labels                                                                                                                                                                                               logger.py:12
-           INFO     Doing LPA on graph with database edges temporarily added                                                                                                                                                                       logger.py:12
-           INFO     Final partition sizes : [ 5  8  6 55  2]                                                                                                                                                                                       logger.py:12
-
-
-
-╔════════════════════════════════════════════════════════════════════════════════════════════════╗
-║                                            daytrader                                           ║
-╚════════════════════════════════════════════════════════════════════════════════════════════════╝
-
-
-                                                 Partitions
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┓
-┃ Package                                            ┃ Class Name                              ┃ Partition ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━┩
-│ com.ibm.websphere.samples.daytrader.web.websocket  │ JsonDecoder                             │         0 │
-│ com.ibm.websphere.samples.daytrader.web.websocket  │ JsonMessage                             │         0 │
-│ com.ibm.websphere.samples.daytrader.web.websocket  │ JsonEncoder                             │         0 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet31AsyncRead                  │         0 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet31AsyncRead$ReadListenerImpl │         0 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingManagedThread                       │         1 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingManagedThread$1                     │         1 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingCDIBean                             │         1 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServletCDI                          │         1 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServletCDIBeanManagerViaCDICurrent  │         1 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServletCDIBeanManagerViaJNDI        │         1 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingManagedExecutor                     │         1 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingManagedExecutor$1                   │         1 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet2Servlet                     │         2 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingBean                                │         2 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet2Jsp                         │         2 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingSession3                            │         2 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingSession3Object                      │         2 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet2PDF                         │         2 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2TwoPhase                    │         3 │
-│ com.ibm.websphere.samples.daytrader.util           │ TradeConfig                             │         3 │
-│ com.ibm.websphere.samples.daytrader.ejb3           │ TradeSLSBBean                           │         3 │
-│ com.ibm.websphere.samples.daytrader.util           │ FinancialUtils                          │         3 │
-│ com.ibm.websphere.samples.daytrader.entities       │ HoldingDataBean                         │         3 │
-│ com.ibm.websphere.samples.daytrader.entities       │ OrderDataBean                           │         3 │
-│ com.ibm.websphere.samples.daytrader                │ TradeAction                             │         3 │
-│ com.ibm.websphere.samples.daytrader.util           │ CompleteOrderThread                     │         3 │
-│ com.ibm.websphere.samples.daytrader.entities       │ AccountDataBean                         │         3 │
-│ com.ibm.websphere.samples.daytrader.entities       │ AccountProfileDataBean                  │         3 │
-│ com.ibm.websphere.samples.daytrader.entities       │ QuoteDataBean                           │         3 │
-│ com.ibm.websphere.samples.daytrader.direct         │ TradeDirect                             │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2SessionLocal                │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingJDBCRead                            │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingJDBCWrite                           │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2MDBTopic                    │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2Session2CMROne2Many         │         3 │
-│ com.ibm.websphere.samples.daytrader.direct         │ KeySequenceDirect                       │         3 │
-│ com.ibm.websphere.samples.daytrader.util           │ MDBStats                                │         3 │
-│ com.ibm.websphere.samples.daytrader.web            │ TradeConfigServlet                      │         3 │
-│ com.ibm.websphere.samples.daytrader.web            │ TradeServletAction                      │         3 │
-│ com.ibm.websphere.samples.daytrader.web            │ TradeBuildDB                            │         3 │
-│ com.ibm.websphere.samples.daytrader.beans          │ MarketSummaryDataBean                   │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2Entity                      │         3 │
-│ com.ibm.websphere.samples.daytrader.web            │ TradeScenarioServlet                    │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2SessionRemote               │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2Session2Entity              │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2Session2Entity2JSP          │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet2Include                     │         3 │
-│ com.ibm.websphere.samples.daytrader.ejb3           │ MarketSummarySingleton                  │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingJDBCRead2JSP                        │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2Session2CMROne2One          │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2Session2EntityCollection    │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims.ejb3 │ PingServlet2MDBQueue                    │         3 │
-│ com.ibm.websphere.samples.daytrader.web.jsf        │ AccountDataJSF                          │         3 │
-│ com.ibm.websphere.samples.daytrader.web            │ OrdersAlertFilter                       │         3 │
-│ com.ibm.websphere.samples.daytrader.beans          │ RunStatsDataBean                        │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet2DB                          │         3 │
-│ com.ibm.websphere.samples.daytrader.util           │ KeyBlock                                │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingJSONP                               │         3 │
-│ com.ibm.websphere.samples.daytrader.web.websocket  │ ActionDecoder                           │         3 │
-│ com.ibm.websphere.samples.daytrader.web.websocket  │ ActionMessage                           │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingUpgradeServlet$Handler              │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingUpgradeServlet$Listener             │         3 │
-│ com.ibm.websphere.samples.daytrader.web            │ TradeWebContextListener                 │         3 │
-│ com.ibm.websphere.samples.daytrader.web            │ TestServlet                             │         3 │
-│ com.ibm.websphere.samples.daytrader.web.jsf        │ PortfolioJSF                            │         3 │
-│ com.ibm.websphere.samples.daytrader.web.jsf        │ HoldingData                             │         3 │
-│ com.ibm.websphere.samples.daytrader.web.jsf        │ QuoteData                               │         3 │
-│ com.ibm.websphere.samples.daytrader.web.jsf        │ JSFLoginFilter                          │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingCDIJSFBean                          │         3 │
-│ com.ibm.websphere.samples.daytrader.web.jsf        │ OrderData                               │         3 │
-│ com.ibm.websphere.samples.daytrader.web.jsf        │ QuoteJSF                                │         3 │
-│ com.ibm.websphere.samples.daytrader.web            │ TradeAppServlet                         │         3 │
-│ com.ibm.websphere.samples.daytrader.web.jsf        │ MarketSummaryJSF                        │         3 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet31Async                      │         4 │
-│ com.ibm.websphere.samples.daytrader.web.prims      │ PingServlet31Async$ReadListenerImpl     │         4 │
-└────────────────────────────────────────────────────┴─────────────────────────────────────────┴───────────┘
-       Database Transactional Purity
-┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃            ┃ Txn Purity (higher=better) ┃
-┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ Original   │                         -- │
-│ With CARGO │                        1.0 │
-└────────────┴────────────────────────────┘
-      Architectural Metrics
-┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
-┃ Metric   ┃              CARGO ┃
-┡━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
-│ Coupling │                0.0 │
-│ Cohesion │ 0.9860000014305115 │
-│ ICP      │                0.0 │
-│ BCP      │              1.621 │
-└──────────┴────────────────────┘
+dgi partition --partitions=5
 ```
 
