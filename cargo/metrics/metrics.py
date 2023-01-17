@@ -38,7 +38,7 @@ MultiDiGraph = NewType("MultiDiGraph", nx.classes.multidigraph.MultiDiGraph)
 
 class Metrics:
 
-    def __init__(self, ddg: MultiDiGraph, dataset: str, transaction_graph: MultiDiGraph = None):
+    def __init__(self, ddg: MultiDiGraph, transaction_graph: MultiDiGraph = None):
         self.ddg = deepcopy(ddg)
         self.transaction_graph = deepcopy(transaction_graph).to_undirected()
 
@@ -51,15 +51,6 @@ class Metrics:
         self.transaction_graph = nx.relabel_nodes(self.transaction_graph, remapping)
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
-
-        with open(Path(dir_path).parent.joinpath("resources/{}/bcs_per_class.json".format(dataset)), 'r') as f:
-            self.bcs_per_class = json.load(f)
-
-        with open(Path(dir_path).parent.joinpath("resources/{}/runtime_call_volume.json".format(dataset)), 'r') as f:
-            self.runtime_call_volume = json.load(f)
-
-        self.bcs_per_class          = {key.replace("::", "$") : value for key, value in self.bcs_per_class.items()}
-        self.runtime_call_volume    = {key.replace("::", "$") : value for key, value in self.runtime_call_volume.items()}
 
         self.partitions = nx.get_node_attributes(self.ddg, 'partition')
 
@@ -124,8 +115,14 @@ class Metrics:
 
         return sipv
 
-    def _business_context_purity(self, partition_class_bcs_assignment, result=None):
+    def _business_context_purity(self, partition_class_bcs_assignment, dataset, result=None):
         #lower is better
+
+        with open(Path(dir_path).parent.joinpath("resources/{}/bcs_per_class.json".format(dataset)), 'r') as f:
+            self.bcs_per_class = json.load(f)
+
+        self.bcs_per_class          = {key.replace("::", "$") : value for key, value in self.bcs_per_class.items()}
+
         """ The entropy of business context. """
         if result == None:
             result = partition_class_bcs_assignment
@@ -144,9 +141,13 @@ class Metrics:
         return round(np.mean(e), 3)
 
 
-    def _inter_call_percentage(self, ROOT, class_bcs_partition_assignment, runtime_call_volume, result=None):
+    def _inter_call_percentage(self, ROOT, class_bcs_partition_assignment, runtime_call_volume, dataset, result=None):
         """ The percentage of runtime call between two clusters. """
         #lower is better
+        with open(Path(dir_path).parent.joinpath("resources/{}/runtime_call_volume.json".format(dataset)), 'r') as f:
+            self.runtime_call_volume = json.load(f)
+        self.runtime_call_volume    = {key.replace("::", "$") : value for key, value in self.runtime_call_volume.items()}
+
         if result == None:
             result = class_bcs_partition_assignment
 
@@ -177,7 +178,7 @@ class Metrics:
         return round(r, 3)
 
 
-    def _transaction_entropy(self):
+    def transaction_entropy(self):
 
         partition_lists = []
         _entropy = []
@@ -201,16 +202,15 @@ class Metrics:
         return np.round(np.mean(_entropy), 3)
 
 
-    def compute_dataflow_metrics(self) -> dict:
+    def compute_dataflow_metrics(self, dataset) -> dict:
 
         class_bcs_partition_assignment, partition_class_bcs_assignment = gen_class_assignment(self.partitions,self.bcs_per_class)
 
-        bcp = self._business_context_purity(partition_class_bcs_assignment)
-        icp = self._inter_call_percentage('Root', class_bcs_partition_assignment, self.runtime_call_volume)
+        bcp = self._business_context_purity(partition_class_bcs_assignment, dataset)
+        icp = self._inter_call_percentage('Root', class_bcs_partition_assignment, self.runtime_call_volume, dataset)
 
         dataflow_metrics    = {'BCP'    : bcp,
-                               'ICP'    : icp,
-                              }
+                               'ICP'    : icp}
 
         return dataflow_metrics
 
@@ -222,7 +222,6 @@ class Metrics:
         """
 
         static_metrics = {'Cohesion'    : self._static_cohesion(),
-                          'Coupling'    : self._static_coupling(),
-                         }
+                          'Coupling'    : self._static_coupling()}
 
         return static_metrics
