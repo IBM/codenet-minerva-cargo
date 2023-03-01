@@ -34,11 +34,19 @@ We will use [Data Gravity Insights](https://github.com/konveyor/tackle-data-grav
 
 DGI is available as PyPi package, you can also install `dgi` using
 
+1. Clone the DGI repository
 ```
-pip install tackle-dgi
+git clone https://github.com/rahlk/tackle-data-gravity-insights 
 ```
 
-This will install the dgi command locally under your home folder in a hidden folder called: ~/.local/bin. If you choose this approach, you must add this folder to your PATH with:
+
+2. Navigate into the repository and install the dgi 
+```
+
+cd tackle-data-gravity-insights && pip install --editable -U .
+```
+
+This will install the dgi command locally under your home folder in a hidden folder called: ~/.local/bin. If not already, you must add this folder to your PATH with:
 
 ```
 export PATH=$HOME/.local/bin:$PATH
