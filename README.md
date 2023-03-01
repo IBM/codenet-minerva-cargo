@@ -36,7 +36,7 @@ DGI is available as PyPi package, you can also install `dgi` using
 
 1. Clone the DGI repository
 ```
-git clone https://github.com/rahlk/tackle-data-gravity-insights 
+git clone -b changes-from-konveyor-meetup https://github.com/rahlk/tackle-data-gravity-insights 
 ```
 
 
