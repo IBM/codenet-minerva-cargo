@@ -10,21 +10,31 @@ Cargo is part of the Minerva project working on refactoring monoliths to microse
 #### Paper: [ArXiV Preprint](https://arxiv.org/pdf/2207.11784.pdf)
 
 #### Abstract
+
 CARGO (short for Context-sensitive lAbel pRopaGatiOn) is a novel un-/semi-supervised partition refinement technique that uses a comprehensive system dependence graph built using context and flow-sensitive static analysis of a monolithic application to refine and thereby enrich the partitioning quality of the current state-of-the-art algorithms.
 
 ##### Figure 1. Overview of CARGO
 
-<img width="1792" alt="image" src="https://user-images.githubusercontent.com/1433964/182765160-867803a6-05f7-4a26-a52e-424911535106.png">
+<img width="1792" alt="image" src="https://user-images.githubusercontent.com/1433964/222553554-ce1f7629-bf22-4432-89b7-cc78d8168119.png">
 
 ## Kick-the-tires Instructions (~15 minutes)
 
 The instructions will reproduce the key results in Figure 6 (RQ1), Figure 7 (RQ2), and Table 1 (RQ3).
 
-
 ### Pre-requisites
 
 * A Linux/Mac system with [Docker](http://docker.io).
 * [Python](https://www.python.org/downloads/) >= 3.8, and Pip. Tested with Python 3.9.
+
+### Step 0: Clone this repository
+
+1. We'll clone this repository and save it's location for the next steps
+
+```bash 
+git clone https://github.com/IBM/codenet-minerva-cargo && cd codenet-minerva-cargo
+
+export REPO_ROOT=$PWD
+``` 
 
 ### Step 1: Set up Data Gravity Insights CLI
 
@@ -35,23 +45,23 @@ We will use [Data Gravity Insights](https://github.com/konveyor/tackle-data-grav
 DGI is available as PyPi package, you can also install `dgi` using
 
 1. Clone the DGI repository
-```
+
+```sh
 git clone -b changes-from-konveyor-meetup https://github.com/rahlk/tackle-data-gravity-insights 
 ```
 
+2. Navigate into the repository and install the dgi
 
-2. Navigate into the repository and install the dgi 
-```
-
-cd tackle-data-gravity-insights && pip install --editable -U .
+```sh
+cd tackle-data-gravity-insights
+pip install --upgrade --editable .
 ```
 
 This will install the dgi command locally under your home folder in a hidden folder called: ~/.local/bin. If not already, you must add this folder to your PATH with:
 
-```
+```sh
 export PATH=$HOME/.local/bin:$PATH
 ```
-
 
 #### 1.2 Creating a Neo4j Docker container
 
@@ -78,93 +88,119 @@ export NEO4J_BOLT_URL="bolt://neo4j:tackle@localhost:7687"
 We can now use the `dgi` command to load information about an application into a graph database. We start with `dgi --help`. This should produce:
 
 ```man
-Usage: dgi [OPTIONS] COMMAND [ARGS]...
-  Tackle Data Gravity Insights
-Options:
-  -n, --neo4j-bolt TEXT  Neo4j Bolt URL
-  -q, --quiet            Be more quiet
-  -v, --validate         Validate but don't populate graph
-  -c, --clear            Clear graph before loading
-  --help                 Show this message and exit.
-Commands:
-  c2g    This command loads Code dependencies into the graph
-  cargo  This command runs the CARGO algorithm to partition a monolith
-  s2g    This command parses SQL schema DDL into a graph
-  tx2g   This command loads DiVA database transactions into a graph
+$ dgi --help
+
+ Usage: dgi [OPTIONS] COMMAND [ARGS]...
+
+ Tackle Data Gravity Insights
+
+╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --neo4j-bolt  -n  TEXT  Neo4j Bolt URL                                                                          │
+│ --quiet       -q        Be more quiet                                                                           │
+│ --validate    -v        Validate but don't populate graph                                                       │
+│ --clear       -c        Clear graph before loading                                                              │
+│ --help                  Show this message and exit.                                                             │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ──────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ c2g            Code2Graph add various program dependencies (i.e., call return, heap, and data) into the graph   │
+│ partition      Partition is a command runs the CARGO algorithm to (re-)partition a monolith into microservices  │
+│ s2g            Schema2Graph parses SQL schema (*.DDL file) into the graph                                       │
+│ tx2g           Transaction2Graph add edges denoting CRUD operations to the graph.                               │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ### Step 2: Setting up a sample application
 
-Get the source for [Daytrader 7](https://github.com/WASdev/sample.daytrader7) :
+For rest of this walkthrough, we'll work with [DayTrader8](https://github.com/OpenLiberty/sample.daytrader8).
+
+### Step 3: Build a Program Dependency Graph with DOOP
+
+#### 3.1 Prepare the application
+
+Obtain the sample application WAR file. We'll save this in `extras/demo/doop-in`:
+
+```bash
+wget https://github.com/OpenLiberty/sample.daytrader8/releases/download/v1.2/io.openliberty.sample.daytrader8.war --directory-prefix=$REPO_ROOT/extras/demo/doop-in
 ```
-wget -c https://github.com/WASdev/sample.daytrader7/archive/refs/tags/v1.4.tar.gz -O - | tar -xvz -C .
-```
-_Note - you may need to `brew install wget` or `apt install wget` before running this._
 
-If you would like to build and deploy the application yourself, please consult the instructions in the Daytrader Github repo (https://github.com/WasDev/sample.daytrader7). For convenience, we have provided the `.jar` files in `$REPO_ROOT/jars/daytrader`.
-
-### Step 3: Build a Program Dependency Graph
-
-#### 3.1 Getting facts with DOOP
+#### 3.2 Getting facts with DOOP
 
 We first need to run [DOOP](https://bitbucket.org/yanniss/doop/src/master/). For ease of use, DOOP has been pre-compiled and hosted as a docker image at [quay.io/rkrsn/doop-main](https://quay.io/rkrsn/doop-main). We'll use that for this demo.
 
-From the root folder of the project, run the following commands :
+```bash
+docker run -it --rm \
+  -v $REPO_ROOT/extras/demo/doop-in:/root/doop-data/input \
+  -v $REPO_ROOT/extras/demo/doop-out:/root/doop-data/output/ \
+  quay.io/rkrsn/doop-main:latest rundoop
 ```
-mkdir -p doop-data/daytrader
-docker run -it --rm -v $REPO_ROOT/jars/daytrader:/root/doop-data/input -v $REPO_ROOT/doop-data/daytrader:/root/doop-data/output/ quay.io/rkrsn/doop-main:latest rundoop
-```
-_Notes:_ 
+
+_Notes:_
 
 _1. If you encounter any error above, please rerun the `docker run ...` command_
 
-_2. Running DOOP for the first time may take up to 15 minutes_
+_2. Running DOOP for the first time may take up to 15 minutes._
 
-#### 3.2 Run DGI code2graph
+
+#### 3.3 Run DGI code2graph
 
 In this step, we'll run DGI code2graph to populate a Neo4j graph database with various static code interaction features pertaining to object/dataflow dependencies.
+
 ```
-dgi -c c2g -i $REPO_ROOT/doop-data/daytrader
+dgi -c c2g -a class -i $REPO_ROOT/extras/demo/doop-out
 ```
+
 This will take 4-5 minutes. After successful completion, we should see something like this :
-```
-$ dgi -c c2g -i doop-data/daytrader
-    code2graph generator started...
-    Verbose mode: ON
-    Building Graph...
-    [INFO] Populating heap carried dependencies edges
-    100%|█████████████████████| 7138/7138 [01:37<00:00, 72.92it/s]
-    [INFO] Populating dataflow edges
-    100%|█████████████████████| 5022/5022 [01:31<00:00, 54.99it/s]
-    [INFO] Populating call-return dependencies edges
-    100%|█████████████████████| 7052/7052 [02:26<00:00, 48.30it/s]
-    [INFO] Populating entrypoints
-    code2graph build complete
+
+```bash
+❯ dgi -c c2g -a class -i $REPO_ROOT/extras/demo/doop-out
+[15:57:56] INFO     code2graph generator started.
+           INFO     Verbose mode: ON
+           INFO     Building Graph.
+           INFO     Class level abstraction.
+           WARNING  The option clear is turned ON. Deleting pre-existing nodes.
+           INFO     Populating heap carried dependencies edges
+  • 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • Completed/Total: 1192/1192 • Elapsed: 0:00:02 • Remaining: 0:00:00
+[15:57:58] INFO     Populating dataflow edges
+  • 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • Completed/Total: 991/991 • Elapsed: 0:00:01 • Remaining: 0:00:00
+[15:58:00] INFO     Populating call-return dependencies edges
+  • 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • Completed/Total: 2404/2404 • Elapsed: 0:00:04 • Remaining: 0:00:00
+[15:58:04] INFO     Populating entrypoints
+           INFO     code2graph build complete
 ```
 
-#### Extracting Database Transactions with Tackle-DiVA
+#### 3.4 Extracting Database Transactions with Tackle-DiVA
 
-Note that this step is only for applications with database transactions, like Daytrader. In particular, if you are running these steps for `plants`, `jpetstore` or `acmeair` sample applications as part of the "full" evaluation, **skip this step**.
+Note that this step is only for applications with database transactions. We will run [Tackle-DiVA](https://github.com/konveyor/tackle-diva) to extract transactions from our application. DiVA is available as a docker image, so we just need to run DiVA by pointing to the *source code directory* of the application and the desired output directory.
 
-Now we will run [Tackle-DiVA](https://github.com/konveyor/tackle-diva) to extract transactions from Daytrader. DiVA is available as a docker image, so we just need to run DiVA by pointing to the source code directory and the desired output directory.
+1. Let's first get the source code for DayTrader8:
+
+```bash 
+wget -c https://github.com/OpenLiberty/sample.daytrader8/archive/refs/tags/v1.2.tar.gz  -O - | tar -xvz -C $REPO_ROOT/extras/demo
 ```
+
+```bash
 docker run --rm \
-  -v $REPO_ROOT/sample.daytrader7-1.4:/app \
-  -v $REPO_ROOT:/diva-distribution/output \
+  -v $REPO_ROOT/extras/demo/sample.daytrader8-1.2:/app \
+  -v $REPO_ROOT/extras/demo/txns:/diva-distribution/output \
   quay.io/konveyor/tackle-diva
 ```
+
 This should generate a file `transaction.json` containing all discovered transactions. Finally, we run DGI to load these transaction edges into the program dependency graph.
+
+```bash
+dgi -c tx2g -a class -i $REPO_ROOT/extras/demo/txns/transaction.json
 ```
-dgi -c tx2g -i $REPO_ROOT/transaction.json
-```
+
 After successful completion, we should see something like this :
-```
-Verbose mode: ON
-[INFO] Clear flag detected... Deleting pre-existing SQLTable nodes.
-Building Graph...
-[INFO] Populating transactions
-100%|████████████████████| 158/158 [00:01<00:00, 125.73it/s]
-Graph build complete
+
+```bash
+❯ dgi -c tx2g -a class -i $REPO_ROOT/extras/demo/txns/transaction.json
+
+[16:05:36] INFO     Verbose mode: ON
+           WARNING  The CLI argument clear is turned ON. Deleting pre-existing nodes.
+           INFO     ClassTransactionLoader: Populating transactions
+  • 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • Completed/Total: 175/175 • Elapsed: 0:00:01 • Remaining: 0:00:00
+[16:05:38] INFO     Transactions populated
 ```
 
 ### Step 4: Running CARGO
@@ -174,4 +210,3 @@ Once we have created the Neo4j graphs by following the above steps, we can run C
 ```
 dgi partition --partitions=5
 ```
-
