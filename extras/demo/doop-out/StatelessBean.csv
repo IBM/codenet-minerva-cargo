@@ -1,0 +1,2 @@
+com.ibm.websphere.samples.daytrader.impl.ejb3.TradeSLSBBean
+com.ibm.websphere.samples.daytrader.impl.session2direct.DirectSLSBBean

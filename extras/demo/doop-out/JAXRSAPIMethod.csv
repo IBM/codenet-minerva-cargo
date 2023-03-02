@@ -1,0 +1,6 @@
+<com.ibm.websphere.samples.daytrader.jaxrs.BroadcastResource: void register(javax.ws.rs.sse.SseEventSink)>
+<com.ibm.websphere.samples.daytrader.web.prims.jaxrs.JAXRSSyncService: java.lang.String echoString(java.lang.String)>
+<com.ibm.websphere.samples.daytrader.web.prims.jaxrs.JAXRSSyncService: com.ibm.websphere.samples.daytrader.web.prims.jaxrs.TestJSONObject echoObject(com.ibm.websphere.samples.daytrader.web.prims.jaxrs.TestJSONObject)>
+<com.ibm.websphere.samples.daytrader.web.prims.jaxrs.JAXRSSyncService: com.ibm.websphere.samples.daytrader.web.prims.jaxrs.XMLObject echoObject(com.ibm.websphere.samples.daytrader.web.prims.jaxrs.XMLObject)>
+<com.ibm.websphere.samples.daytrader.jaxrs.QuoteResource: java.util.List quotesGet(java.lang.String)>
+<com.ibm.websphere.samples.daytrader.jaxrs.QuoteResource: java.util.List quotesPost(java.lang.String)>
