@@ -64,14 +64,14 @@ We will need an instance of Neo4j to store the graphs that `dgi` creates. We wil
 docker run -d --name neo4j \
     -p 7474:7474 \
     -p 7687:7687 \
-    -e NEO4J_AUTH="neo4j/tackle" \
+    -e NEO4J_AUTH="neo4j/konveyor" \
     -e NEO4J_apoc_export_file_enabled=true \
     -e NEO4J_apoc_import_file_enabled=true \
     -e NEO4J_apoc_import_file_use__neo4j__config=true \
     -e NEO4JLABS_PLUGINS=\["apoc"\] \
     neo4j:4.4.17
 
-export NEO4J_BOLT_URL="bolt://neo4j:tackle@localhost:7687"
+export NEO4J_BOLT_URL="neo4j://neo4j:konveyor@localhost:7687"
 ```
 
 #### Installation complete
