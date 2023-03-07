@@ -56,11 +56,13 @@ class Cargo:
                 fragment='')
         )
         if use_dgi:
+            set_trace()
+            neo4j_uname, neo4j_passw = dgi_neo4j_auth.split(":")
             self.graph: nx.MultiDiGraph = self.dgi2networkx(
-                url, dgi_neo4j_auth)
+                url, neo4j_uname, neo4j_passw)
         Cargo.verbose = verbose
 
-    def dgi2networkx(self, neo4j_url: str, dgi_neo4j_auth: str) -> nx.MultiDiGraph:
+    def dgi2networkx(self, neo4j_url: str, dgi_neo4j_uname: str, dgi_neo4j_passw: str) -> nx.MultiDiGraph:
         """Convert the graph in DGI's neo4j to a local networkx instance.
 
         Args:
@@ -72,7 +74,7 @@ class Cargo:
         """
         Log.warn(
             "Loading graphs from Neo4j database. This could take a few minutes to complete.")
-        graph = Graph(neo4j_url, auth=tuple(dgi_neo4j_auth.split(":")))
+        graph = Graph(neo4j_url, auth=(dgi_neo4j_uname, dgi_neo4j_passw))
         # For now, we'll ignore transactional call trace
         # TODO: Add context sensitivity to transactional call trace and then use that to partition.
         cursor = graph.run(

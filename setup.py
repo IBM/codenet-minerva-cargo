@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='cargo',
-    version='0.1.0',
+    version='0.1.1',
     url="https://github.com/ibm/codenet-minerva-cargo",
     author="Rahul Krishna",
     description="A data-centric transformation of monoliths into microservices",
