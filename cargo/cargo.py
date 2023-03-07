@@ -56,7 +56,6 @@ class Cargo:
                 fragment='')
         )
         if use_dgi:
-            set_trace()
             neo4j_uname, neo4j_passw = dgi_neo4j_auth.split(":")
             self.graph: nx.MultiDiGraph = self.dgi2networkx(
                 url, neo4j_uname, neo4j_passw)

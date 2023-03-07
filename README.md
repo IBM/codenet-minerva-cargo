@@ -30,11 +30,11 @@ The instructions will reproduce the key results in Figure 6 (RQ1), Figure 7 (RQ2
 
 1. We'll clone this repository and save it's location for the next steps
 
-```bash 
+```bash
 git clone https://github.com/IBM/codenet-minerva-cargo && cd codenet-minerva-cargo
 
 export REPO_ROOT=$PWD
-``` 
+```
 
 ### Step 1: Set up Data Gravity Insights CLI
 
@@ -78,7 +78,7 @@ export NEO4J_BOLT_URL="neo4j://neo4j:konveyor@localhost:7687"
 
 We can now use the `dgi` command to load information about an application into a graph database. We start with `dgi --help`. This should produce:
 
-```man
+```bash
 $ dgi --help
 
  Usage: dgi [OPTIONS] COMMAND [ARGS]...
@@ -136,14 +136,14 @@ _2. Running DOOP for the first time may take up to 15 minutes._
 
 In this step, we'll run DGI code2graph to populate a Neo4j graph database with various static code interaction features pertaining to object/dataflow dependencies.
 
-```
-dgi -c c2g -a class -i $REPO_ROOT/extras/demo/doop-out
+```bash
+dgi -c c2g --input=$REPO_ROOT/extras/demo/doop-out
 ```
 
 This will take 4-5 minutes. After successful completion, we should see something like this :
 
 ```bash
-❯ dgi -c c2g -a class -i $REPO_ROOT/extras/demo/doop-out
+❯ dgi -c c2g --input=$REPO_ROOT/extras/demo/doop-out
 [15:57:56] INFO     code2graph generator started.
            INFO     Verbose mode: ON
            INFO     Building Graph.
@@ -165,7 +165,7 @@ Note that this step is only for applications with database transactions. We will
 
 1. Let's first get the source code for DayTrader8:
 
-```bash 
+```bash
 wget -c https://github.com/OpenLiberty/sample.daytrader8/archive/refs/tags/v1.2.tar.gz  -O - | tar -xvz -C $REPO_ROOT/extras/demo
 ```
 
@@ -179,13 +179,13 @@ docker run --rm \
 This should generate a file `transaction.json` containing all discovered transactions. Finally, we run DGI to load these transaction edges into the program dependency graph.
 
 ```bash
-dgi -c tx2g -a class -i $REPO_ROOT/extras/demo/txns/transaction.json
+dgi -c tx2g --input=$REPO_ROOT/extras/demo/txns/transaction.json
 ```
 
 After successful completion, we should see something like this :
 
 ```bash
-❯ dgi -c tx2g -a class -i $REPO_ROOT/extras/demo/txns/transaction.json
+❯ dgi -c tx2g --input=$REPO_ROOT/extras/demo/txns/transaction.json
 
 [16:05:36] INFO     Verbose mode: ON
            WARNING  The CLI argument clear is turned ON. Deleting pre-existing nodes.
@@ -198,6 +198,22 @@ After successful completion, we should see something like this :
 
 Once we have created the Neo4j graphs by following the above steps, we can run CARGO as follows:
 
+```bash
+dgi partition --partitions=<int> --parititions-output=<dir/to/save/partitions.json>
 ```
-dgi partition --partitions=5
+
+After running this, you'll see:
+
+```bash
+❯ dgi partition -k 5 --partitions-output=$PWD                                                              
+[00:00:04] INFO     Partitioning the monolith with CARGO
+           WARNING  Loading graphs from Neo4j database. This could take a few minutes to complete.
+[00:00:09] INFO     DGI graph loaded from Neo4j.
+           INFO     Found 5619 records.
+[00:00:10] INFO     Cargo with auto initial labels
+           INFO     Found database transaction edges. Performing first round of label propogation.
+           INFO     Doing LPA on graph with database edges temporarily added
+           INFO     Found 137 contexts.
+[00:00:11] INFO     Max partitions : 5, Gen partitions : 5
+           INFO     Final partition sizes : [104  60 268   7   8]
 ```
