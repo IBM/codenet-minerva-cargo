@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='cargo',
-    version='0.1.1',
+    name='minerva-cargo',
+    version='1.1.0',
     url="https://github.com/ibm/codenet-minerva-cargo",
     author="Rahul Krishna",
     description="A data-centric transformation of monoliths into microservices",
