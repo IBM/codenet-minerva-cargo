@@ -1,0 +1,2 @@
+com.ibm.websphere.samples.daytrader.web.servlet.OrdersAlertFilter
+com.ibm.websphere.samples.daytrader.web.jsf.JSFLoginFilter
