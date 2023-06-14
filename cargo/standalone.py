@@ -1,7 +1,6 @@
 from pathlib import Path
 import click
 import json
-from .utils.logging import Log
 from cargo import Cargo
 
 @click.command()
@@ -18,26 +17,26 @@ def minerva_cargo(max_partitions, app_dependency_graph, seed_partitions, output)
     graph built using context and flow-sensitive static analysis of a monolithic application.
     """
     if max_partitions != -1:
-        click.echo(f'Max partitions set to: {max_partitions}')
+        click.secho(f'Max partitions set to: {max_partitions}', fg='green', bold=False)
     else:
-        click.echo('Max partitions set to default: The algorithm will infer the maximum partitions by itself')
+        click.secho(f'Max partitions set to default: The algorithm will infer the maximum partitions by itself', fg='blue', bold=False)
 
     if app_dependency_graph:
-        click.echo(f'App dependency graph path: {app_dependency_graph}')
+        click.secho(f'App dependency graph path: {app_dependency_graph}', fg='green', bold=False)
     else:
-        click.echo('App dependency graph path not provided. Exiting.')
+        click.secho(f'App dependency graph path not provided. Exiting.', fg='red', bold=False)
         return
 
     if seed_partitions is not None:
-        click.echo(f'Seed partitions path: {seed_partitions}')
+        click.secho(f'Seed partitions path: {seed_partitions}', fg='green', bold=False)
     else:
-        click.echo('Seed partitions path not provided. Using automatic inference.')
+        click.secho(f'Seed partitions path not provided. Using automatic inference.', fg='blue', bold=False)
         seed_partitions = 'auto'
 
     if output:
-        click.echo(f'Output path: {output}')
+        click.secho(f'Output path: {output}', fg='green')
     else:
-        click.echo('Output path not provided. Exiting.')
+        click.secho(f'Output path not provided. Exiting.', fg='red')
         return
 
     cargo = Cargo(json_sdg_path=app_dependency_graph)
@@ -46,7 +45,7 @@ def minerva_cargo(max_partitions, app_dependency_graph, seed_partitions, output)
         max_part=max_partitions)
     
     with open(output.joinpath('partitions.json'), 'w') as partitions_file:
-        json.dump(assignments, partitions_file, indent=4, sort_keys=True)
+        json.dump(assignments, partitions_file, indent=4, sort_keys=False)
     
 
 def main():

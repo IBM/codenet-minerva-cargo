@@ -75,6 +75,7 @@ class Cargo:
         with open(path_to_sdg_json, 'r') as sdg_json:
             json_graph = json.load(sdg_json)
 
+        json_graph['links'] = json_graph.pop('edges')
         nodes_dict = defaultdict() 
         for key, group in itertools.groupby(json_graph['nodes'], key=lambda x: x['id']):
             nodes_dict[key] = group.__next__()
@@ -83,7 +84,7 @@ class Cargo:
         self.all_context_graphs = []
         self.full_G = nx.MultiDiGraph()
         self.transaction_graph = nx.MultiDiGraph()
-        for edge in json_graph['edges']:
+        for edge in json_graph['links']:
             node1 = edge['source']
             node2 = edge['target']
 
@@ -513,6 +514,15 @@ class Cargo:
 
         metrics = self.compute_metrics(labelprop_G)
 
-        clear_partitions(labelprop_G)
+        # Compute data centrality
+        nx.set_node_attributes(labelprop_G, nx.degree_centrality(labelprop_G), 'dataCentrality')
 
-        return metrics, assignments
+        graph_view = nx.node_link_data(labelprop_G)
+        # Clean graph_view
+        graph_view.pop('directed')
+        graph_view.pop('graph')
+        graph_view.pop('multigraph')
+
+        graph_view['numPartitions'] = num_gen_partitions
+
+        return metrics, graph_view
