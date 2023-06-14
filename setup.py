@@ -41,5 +41,9 @@ setup(
             "pylint==2.13",
             "ipdb"
         ],
-    }
+    },
+    entry_points='''
+    [console_scripts]
+    minerva-cargo=cargo.standalone:main
+    '''
 )
