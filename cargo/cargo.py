@@ -26,22 +26,22 @@ import numpy as np
 from copy import deepcopy
 from py2neo import Graph
 from ipdb import set_trace
+from tqdm import tqdm
+from utils import Log
 
-from cargo.utils import Log
-from cargo.utils import ProgressBarFactory
-
-from collections import namedtuple
+from collections import defaultdict, namedtuple
 from urllib.parse import urlunparse
-from cargo.helper import *
-from cargo.metrics import Metrics
+from helper import *
+from metrics import Metrics
 
+import itertools
 
 class Cargo:
     """Context Sensitive Label Propagation for partitioning a monolith application into microservices.
     """
     verbose: bool = False
 
-    def __init__(self, use_dgi: bool, dgi_neo4j_hostname: str, dgi_neo4j_hostport: int, dgi_neo4j_auth: str, verbose: bool):
+    def __init__(self, use_dgi: bool=False, json_sdg_path: str=None, dgi_neo4j_hostname: str = "localhost", dgi_neo4j_hostport: int=7687, dgi_neo4j_auth: str="neo4j/konveyor", verbose: bool=True):
 
         # namedtuple to match the internal signature of urlunparse
         Components = namedtuple(typename='Components', field_names=[
@@ -59,7 +59,66 @@ class Cargo:
             neo4j_uname, neo4j_passw = dgi_neo4j_auth.split(":")
             self.graph: nx.MultiDiGraph = self.dgi2networkx(
                 url, neo4j_uname, neo4j_passw)
+        else:
+            self.graph = self.json2nx(json_sdg_path)
         Cargo.verbose = verbose
+    
+    def json2nx(self, path_to_sdg_json: str) -> nx.MultiDiGraph:
+        """Consume a JSON SDG to build a networkx graph out of it. 
+
+        Args:
+            path_to_sdg_json (str): Path to the SDG
+        
+        Returns:
+            nx.MultiDiGraph: A networkx graph
+        """
+        with open(path_to_sdg_json, 'r') as sdg_json:
+            json_graph = json.load(sdg_json)
+
+        nodes_dict = defaultdict() 
+        for key, group in itertools.groupby(json_graph['nodes'], key=lambda x: x['id']):
+            nodes_dict[key] = group.__next__()
+
+        all_contexts = []
+        self.all_context_graphs = []
+        self.full_G = nx.MultiDiGraph()
+        self.transaction_graph = nx.MultiDiGraph()
+        for edge in json_graph['edges']:
+            node1 = edge['source']
+            node2 = edge['target']
+
+            if is_java_method(node1) or is_java_method(node2):
+                continue
+
+            if node1 == node2:
+                continue
+            
+            # TODO: Update when context information is available. For now, they are null
+            ctx1 =  ctx2 = edge['context'] 
+
+            if ctx1 not in all_contexts:
+                all_contexts.append(ctx1)
+                self.all_context_graphs.append(nx.MultiDiGraph())
+
+            if ctx2 not in all_contexts:
+                all_contexts.append(ctx2)
+                self.all_context_graphs.append(nx.MultiDiGraph())
+
+            ctx1_num = all_contexts.index(ctx1)
+            ctx2_num = all_contexts.index(ctx2)
+
+            add_edge_weighted(self.full_G, (node1, node2, {}))
+
+            add_edge_weighted(
+                self.all_context_graphs[ctx1_num], (node1, node2, {}))
+            add_edge_weighted(
+                self.all_context_graphs[ctx2_num], (node1, node2, {}))
+
+        for context_G in self.all_context_graphs:
+            for node in self.full_G.nodes:
+                if node not in context_G:
+                    context_G.add_node(node)
+        
 
     def dgi2networkx(self, neo4j_url: str, dgi_neo4j_uname: str, dgi_neo4j_passw: str) -> nx.MultiDiGraph:
         """Convert the graph in DGI's neo4j to a local networkx instance.
@@ -91,60 +150,60 @@ class Cargo:
         self.full_G = nx.MultiDiGraph()
         self.transaction_graph = nx.MultiDiGraph()
 
-        with ProgressBarFactory.get_progress_bar(debug=True) as p:
-            for record in p.track(graph_data, total=num_records):
-                if 'SQLTable' in record['n'].labels:
-                    node1 = 'DATABASE_' + record['n']['name']
-                    node2 = record['m']['node_method']
-                    self.transaction_graph.add_edge(node2, node1)
-                    continue
-
-                if 'SQLTable' in record['m'].labels:
-                    node1 = record['n']['node_method']
-                    node2 = 'DATABASE_' + record['m']['name']
-                    self.transaction_graph.add_edge(node1, node2)
-                    continue
-
-                node1 = record['n']['node_method']
+        
+        for record in tqdm(graph_data, total=num_records):
+            if 'SQLTable' in record['n'].labels:
+                node1 = 'DATABASE_' + record['n']['name']
                 node2 = record['m']['node_method']
+                self.transaction_graph.add_edge(node2, node1)
+                continue
 
-                if is_java_method(node1) or is_java_method(node2):
-                    continue
+            if 'SQLTable' in record['m'].labels:
+                node1 = record['n']['node_method']
+                node2 = 'DATABASE_' + record['m']['name']
+                self.transaction_graph.add_edge(node1, node2)
+                continue
 
-                if node1 == node2:
-                    continue
+            node1 = record['n']['node_method']
+            node2 = record['m']['node_method']
 
-                def transform_ctx(ctx):
-                    if isinstance(ctx, list):
-                        return '[' + ', '.join(ctx) + ']'
-                    else:
-                        assert isinstance(ctx, str)
-                        return ctx
+            if is_java_method(node1) or is_java_method(node2):
+                continue
 
-                if 'ncontext' in record['r']:
-                    ctx1 = transform_ctx(record['r']['pcontext'])
-                    ctx2 = transform_ctx(record['r']['ncontext'])
+            if node1 == node2:
+                continue
+
+            def transform_ctx(ctx):
+                if isinstance(ctx, list):
+                    return '[' + ', '.join(ctx) + ']'
                 else:
-                    ctx1 = transform_ctx(record['r']['context'])
-                    ctx2 = transform_ctx(record['r']['context'])
+                    assert isinstance(ctx, str)
+                    return ctx
 
-                if ctx1 not in all_contexts:
-                    all_contexts.append(ctx1)
-                    self.all_context_graphs.append(nx.MultiDiGraph())
+            if 'ncontext' in record['r']:
+                ctx1 = transform_ctx(record['r']['pcontext'])
+                ctx2 = transform_ctx(record['r']['ncontext'])
+            else:
+                ctx1 = transform_ctx(record['r']['context'])
+                ctx2 = transform_ctx(record['r']['context'])
 
-                if ctx2 not in all_contexts:
-                    all_contexts.append(ctx2)
-                    self.all_context_graphs.append(nx.MultiDiGraph())
+            if ctx1 not in all_contexts:
+                all_contexts.append(ctx1)
+                self.all_context_graphs.append(nx.MultiDiGraph())
 
-                ctx1_num = all_contexts.index(ctx1)
-                ctx2_num = all_contexts.index(ctx2)
+            if ctx2 not in all_contexts:
+                all_contexts.append(ctx2)
+                self.all_context_graphs.append(nx.MultiDiGraph())
 
-                add_edge_weighted(self.full_G, (node1, node2, {}))
+            ctx1_num = all_contexts.index(ctx1)
+            ctx2_num = all_contexts.index(ctx2)
 
-                add_edge_weighted(
-                    self.all_context_graphs[ctx1_num], (node1, node2, {}))
-                add_edge_weighted(
-                    self.all_context_graphs[ctx2_num], (node1, node2, {}))
+            add_edge_weighted(self.full_G, (node1, node2, {}))
+
+            add_edge_weighted(
+                self.all_context_graphs[ctx1_num], (node1, node2, {}))
+            add_edge_weighted(
+                self.all_context_graphs[ctx2_num], (node1, node2, {}))
 
         for context_G in self.all_context_graphs:
             for node in self.full_G.nodes:

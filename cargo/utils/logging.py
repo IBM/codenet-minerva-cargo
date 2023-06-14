@@ -13,31 +13,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ################################################################################
-
+import sys
 import logging
-from rich.logging import RichHandler
 
-FORMAT = "%(message)s"
-logging.basicConfig(
-    level="INFO", format=FORMAT, datefmt="[%X]", handlers=[RichHandler(show_path=False)]
-)
+logger = logging.getLogger()
 
+class CustomFormatter(logging.Formatter):
+    grey = "\\x1b[38;21m"
+    yellow = "\\x1b[33;21m"
+    red = "\\x1b[31;21m"
+    bold_red = "\\x1b[31;1m"
+    reset = "\\x1b[0m"
+    format = "%(asctime)s - %(levelname)s - %(message)s)"
 
-class Log(object):
-    log = logging.getLogger("rich")
+    FORMATS = {
+        logging.DEBUG: grey + format + reset,
+        logging.INFO: grey + format + reset,
+        logging.WARNING: yellow + format + reset,
+        logging.ERROR: red + format + reset,
+        logging.CRITICAL: bold_red + format + reset
+    }
 
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+    
+logger.addHandler(CustomFormatter)
+
+class Log:
     @staticmethod
-    def warn(msg: str):
-        Log.log.warn(msg, extra={"markup": True})
-
+    def info(msg):
+        logger.info(msg)
+    
     @staticmethod
-    def info(msg: str):
-        Log.log.info(msg, extra={"markup": True})
-
+    def warn(msg):
+        logger.warn(msg)
+    
     @staticmethod
-    def debug(msg: str):
-        Log.log.debug(msg, extra={"markup": True})
-
+    def error(msg):
+        logger.error(msg)
+    
     @staticmethod
-    def error(msg: str):
-        Log.log.error(msg, extra={"markup": True})
+    def debug(msg):
+        logger.debug(msg)
+        

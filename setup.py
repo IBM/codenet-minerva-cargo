@@ -21,8 +21,7 @@ setup(
         'networkx',
         'tqdm',
         'scikit-learn',
-        'tackle-dgi',
-        'rich'
+        'tackle-dgi'
     ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
