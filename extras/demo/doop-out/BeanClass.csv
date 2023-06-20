@@ -1,6 +1,0 @@
-com.ibm.websphere.samples.daytrader.mdb.DTStreamer3MDB
-com.ibm.websphere.samples.daytrader.impl.ejb3.TradeSLSBBean
-com.ibm.websphere.samples.daytrader.impl.ejb3.MarketSummarySingleton
-com.ibm.websphere.samples.daytrader.web.prims.cdi.PingEJBLocal
-com.ibm.websphere.samples.daytrader.impl.session2direct.DirectSLSBBean
-com.ibm.websphere.samples.daytrader.mdb.DTBroker3MDB
