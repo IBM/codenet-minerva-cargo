@@ -1,0 +1,1902 @@
+{
+    "nodes": [
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.PersistenceLayer.searchBooksByTitle"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.06962025316455696,
+            "id": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.SqlData.addParameter"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.ParameterObject.<init>"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0759493670886076,
+            "id": "com.coveros.training.persistence.PersistenceLayer.runQuery"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.0379746835443038,
+            "id": "com.coveros.training.persistence.EmptyDataSource.getConnection"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.PersistenceLayer.searchBorrowerDataByName"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0379746835443038,
+            "id": "com.coveros.training.library.LibraryUtils.searchForBorrowerByName"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.listAllBooks"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryUtils.listAllBooks"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.listAvailableBooks"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.library.LibraryUtils.listAvailableBooks"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.persistence.PersistenceLayer.listAllBorrowers"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryUtils.listAllBorrowers"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBorrower"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryUtils.searchForLoanByBorrower"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBook"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.library.LibraryUtils.searchForLoanByBook"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.library.domainobjects.Book.createEmpty"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0379746835443038,
+            "id": "com.coveros.training.library.domainobjects.Book.<init>"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.05063291139240506,
+            "id": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.08227848101265822,
+            "id": "com.coveros.training.persistence.SqlData.<init>"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.persistence.PersistenceLayer.saveNewBook"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.library.LibraryUtils.saveNewBook"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.bytesToHex"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.PersistenceLayer.createHashedValueFromPassword"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.04430379746835443,
+            "id": "com.coveros.training.persistence.PersistenceLayer.executeUpdateTemplate"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.prepareStatementWithKeys"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.persistence.PersistenceLayer.updateUserWithPassword"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.persistence.PersistenceLayer.saveNewBorrower"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.library.LibraryUtils.saveNewBorrower"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.createLoan"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.library.LibraryUtils.createLoan"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.executeInsertOnPreparedStatement"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.LibraryUtils.registerBook"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.LibraryBookListSearchServlet.searchByTitle"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.library.LibraryBookListSearchServlet.doGet"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.helpers.StringUtils.escapeForJson"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.library.domainobjects.Book.toOutputString"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.LibraryBookListSearchServlet.searchById"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.library.LibraryUtils.deleteBook"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.persistence.PersistenceLayer.deleteBook"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.04430379746835443,
+            "id": "com.coveros.training.library.domainobjects.Book.isEmpty"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.library.domainobjects.Loan.createEmpty"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.04430379746835443,
+            "id": "com.coveros.training.library.LibraryUtils.searchForBookByTitle"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.04430379746835443,
+            "id": "com.coveros.training.library.LibraryUtils.lendBook"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.library.LibraryUtils.deleteBorrower"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.persistence.PersistenceLayer.deleteBorrower"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.domainobjects.Borrower.isEmpty"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.library.LibraryUtils.registerBorrower"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryRegisterBorrowerServlet.doPost"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.domainobjects.Borrower.equals"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.domainobjects.Borrower.createEmpty"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.LibraryUtils.searchForBorrowerById"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.LibraryBorrowerListSearchServlet.searchByName"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.04430379746835443,
+            "id": "com.coveros.training.authentication.RegistrationUtils.processRegistration"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.authentication.domainobjects.RegistrationResult.<init>"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.authentication.domainobjects.PasswordResult.createDefault"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.authentication.domainobjects.PasswordResult.<init>"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.authentication.domainobjects.PasswordResult.toPrettyString"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.authentication.RegistrationUtils.isPasswordGood"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.authentication.RegisterServlet.doPost"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$searchForLoanByBorrower$9"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$listAllBorrowers$8"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.domainobjects.Borrower.<init>"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$listBooks$7"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.library.LibraryLendServlet.doPost"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.06329113924050633,
+            "id": "com.coveros.training.helpers.StringUtils.makeNotNullable"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryRegisterBookServlet.<clinit>"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryUtils.<init>"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.configureFlyway"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.persistence.PersistenceLayer.cleanDatabase"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.persistence.PersistenceLayer.migrateDatabase"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryBookListSearchServlet.listAllBooks"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.expenses.AlcoholResult.returnEmpty"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.expenses.AlcoholResult.<init>"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.expenses.AlcoholCalculator.calculate"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.library.LibraryBookListAvailableServlet.doGet"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckermannIterative$$$Field.values"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckermannIterative$1.<clinit>"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckermannIterative$$.main"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckermannIterative.calculate"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.helpers.ServletUtils.forwardToRestfulResult"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.runBackup"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.TailRecursive.tailie"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckermannIterative$$.<clinit>"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryLendServlet.getDateNow"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.library.LibraryRegisterBookServlet.doPost"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.helpers.ServletUtils.forwardToResult"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.authentication.LoginUtils.isUserRegistered"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.PersistenceLayer.areCredentialsValid"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.ParameterObject.isEmpty"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.ParameterObject.equals"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.DbServlet.doGet"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.persistence.PersistenceLayer.cleanAndMigrateDatabase"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.library.LibraryUtils.searchForBookById"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.domainobjects.Loan.isEmpty"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.PersistenceLayer.searchBooksById"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.PersistenceLayer.searchBorrowersById"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.tomcat.WebAppListener.contextInitialized"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.library.LibraryBorrowerListSearchServlet.doGet"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryBorrowerListSearchServlet.listAllBorrowers"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.domainobjects.Borrower.toOutputString"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.library.LibraryBorrowerListSearchServlet.searchById"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.Ackermann.calculate"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.Ackermann.ack"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.authentication.domainobjects.RegistrationResult.toPrettyString"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.mathematics.AckServlet.doPost"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckServlet.putNumberInRequest"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckServlet.tailRecursive"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckServlet.regularRecursive"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.authentication.LoginServlet.doPost"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.mathematics.FibServlet.doPost"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.FibServlet.tailRecursiveAlgo1Calc"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.FibServlet.tailRecursiveAlgo2Calc"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.FibServlet.defaultRecursiveCalculation"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.authentication.RegistrationUtils.isUserInDatabase"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.authentication.RegistrationUtils.saveToDatabase"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.helpers.CheckUtils.mustBeTrueAtThisPoint"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.PersistenceLayer.searchForUserByName"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.persistence.PersistenceLayer.saveNewUser"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.SqlData.generateParams"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.Calculator.calculateAndMorePart2"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.mathematics.Calculator$Baz.doThirdPartyThing"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.Calculator.calculateAndMorePart3"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.MathServlet.doPost"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.MathServlet.setResultToSum"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.05063291139240506,
+            "id": "com.coveros.training.persistence.NotImplementedException.<init>"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.EmptyDataSource.unwrap"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.EmptyDataSource.isWrapperFor"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.EmptyDataSource.getLogWriter"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.EmptyDataSource.setLogWriter"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.EmptyDataSource.setLoginTimeout"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.EmptyDataSource.getLoginTimeout"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.EmptyDataSource.getParentLogger"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.<init>"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.obtainConnectionPool"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.executeUpdateOnPreparedStatement"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.SqlData.applyParametersToPreparedStatement"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0759493670886076,
+            "id": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.throwingFunctionWrapper"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.0189873417721519,
+            "id": "com.coveros.training.persistence.PersistenceLayer.updateBorrower"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.04430379746835443,
+            "id": "com.coveros.training.helpers.CheckUtils.IntParameterMustBePositive"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.persistence.PersistenceLayer.getBorrowerName"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.03164556962025317,
+            "id": "com.coveros.training.persistence.PersistenceLayer.listBooks"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.02531645569620253,
+            "id": "com.coveros.training.persistence.SqlRuntimeException.<init>"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.runRestore"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$searchForUserByName$11"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.authentication.domainobjects.User.<init>"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$searchForLoanByBook$10"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBorrowersById$6"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBooksById$5"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBooksByTitle$4"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.012658227848101266,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBorrowerDataByName$3"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$getBorrowerName$2"
+        },
+        {
+            "partition": 2,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.persistence.PersistenceLayer.lambda$throwingFunctionWrapper$0"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckermannIterative$$.lambda$static$2"
+        },
+        {
+            "partition": 0,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.mathematics.AckermannIterative$$.tail"
+        },
+        {
+            "partition": 1,
+            "dataCentrality": 0.006329113924050633,
+            "id": "com.coveros.training.helpers.AssertionException.<init>"
+        }
+    ],
+    "links": [
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBooksByTitle",
+            "target": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBooksByTitle",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBooksByTitle",
+            "target": "com.coveros.training.persistence.SqlData.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBooksByTitle",
+            "target": "com.coveros.training.persistence.PersistenceLayer.runQuery"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBooksByTitle",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookByTitle"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchBorrowerDataByName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.persistence.PersistenceLayer.saveNewBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createHashedValueFromPassword"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.persistence.PersistenceLayer.saveNewBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.authentication.RegistrationUtils.processRegistration"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.authentication.RegistrationUtils.isPasswordGood"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.authentication.LoginUtils.isUserRegistered"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchForUserByName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.persistence.PersistenceLayer.saveNewUser"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.StringMustNotBeNullOrEmpty",
+            "target": "com.coveros.training.persistence.PersistenceLayer.updateBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.addParameter",
+            "target": "com.coveros.training.persistence.ParameterObject.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.addParameter",
+            "target": "com.coveros.training.persistence.SqlData.generateParams"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.EmptyDataSource.getConnection"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchBorrowerDataByName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.listAllBorrowers"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.areCredentialsValid"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchBooksById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchBorrowersById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchForUserByName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.getBorrowerName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runQuery",
+            "target": "com.coveros.training.persistence.PersistenceLayer.listBooks"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.EmptyDataSource.getConnection",
+            "target": "com.coveros.training.persistence.NotImplementedException.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.EmptyDataSource.getConnection",
+            "target": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.EmptyDataSource.getConnection",
+            "target": "com.coveros.training.persistence.PersistenceLayer.executeUpdateTemplate"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.EmptyDataSource.getConnection",
+            "target": "com.coveros.training.persistence.PersistenceLayer.runBackup"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.EmptyDataSource.getConnection",
+            "target": "com.coveros.training.persistence.PersistenceLayer.runRestore"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBorrowerDataByName",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBorrowerByName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBorrowerDataByName",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBorrowerDataByName",
+            "target": "com.coveros.training.persistence.SqlData.<init>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBorrowerByName",
+            "target": "com.coveros.training.library.domainobjects.Borrower.createEmpty"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBorrowerByName",
+            "target": "com.coveros.training.library.LibraryUtils.lendBook"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBorrowerByName",
+            "target": "com.coveros.training.library.LibraryUtils.registerBorrower"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBorrowerByName",
+            "target": "com.coveros.training.library.LibraryUtils.deleteBorrower"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBorrowerByName",
+            "target": "com.coveros.training.library.LibraryBorrowerListSearchServlet.searchByName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.listAllBooks",
+            "target": "com.coveros.training.library.LibraryUtils.listAllBooks"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.listAllBooks",
+            "target": "com.coveros.training.persistence.PersistenceLayer.listBooks"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.listAvailableBooks",
+            "target": "com.coveros.training.library.LibraryUtils.listAvailableBooks"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.listAvailableBooks",
+            "target": "com.coveros.training.persistence.PersistenceLayer.listBooks"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.listAvailableBooks",
+            "target": "com.coveros.training.library.LibraryBookListAvailableServlet.doGet"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.listAllBorrowers",
+            "target": "com.coveros.training.library.LibraryUtils.listAllBorrowers"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.listAllBorrowers",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.listAllBorrowers",
+            "target": "com.coveros.training.persistence.SqlData.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBorrower",
+            "target": "com.coveros.training.library.LibraryUtils.searchForLoanByBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBorrower",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBorrower",
+            "target": "com.coveros.training.persistence.SqlData.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBook",
+            "target": "com.coveros.training.library.LibraryUtils.searchForLoanByBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBook",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchForLoanByBook",
+            "target": "com.coveros.training.persistence.SqlData.<init>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForLoanByBook",
+            "target": "com.coveros.training.library.domainobjects.Loan.createEmpty"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForLoanByBook",
+            "target": "com.coveros.training.library.LibraryUtils.lendBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.createEmpty",
+            "target": "com.coveros.training.library.domainobjects.Book.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.createEmpty",
+            "target": "com.coveros.training.library.domainobjects.Book.isEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.createEmpty",
+            "target": "com.coveros.training.library.domainobjects.Loan.createEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.createEmpty",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookByTitle"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.createEmpty",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.<init>",
+            "target": "com.coveros.training.library.LibraryUtils.lendBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchForLoanByBorrower$9"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$listBooks$7"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBooksById$5"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBooksByTitle$4"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate",
+            "target": "com.coveros.training.persistence.SqlData.<init>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.saveNewBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.prepareStatementWithKeys"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.executeInsertOnPreparedStatement"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.saveNewBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createLoan"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeInsertTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.saveNewUser"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.executeUpdateTemplate"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.areCredentialsValid"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchBooksById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchBorrowersById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchForUserByName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.getBorrowerName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlData.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.listBooks"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.saveNewBook",
+            "target": "com.coveros.training.library.LibraryUtils.saveNewBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.saveNewBook",
+            "target": "com.coveros.training.library.LibraryUtils.registerBook"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.bytesToHex",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createHashedValueFromPassword"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.createHashedValueFromPassword",
+            "target": "com.coveros.training.persistence.SqlRuntimeException.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.createHashedValueFromPassword",
+            "target": "com.coveros.training.persistence.PersistenceLayer.updateUserWithPassword"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.createHashedValueFromPassword",
+            "target": "com.coveros.training.persistence.PersistenceLayer.areCredentialsValid"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeUpdateTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.prepareStatementWithKeys"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeUpdateTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.updateUserWithPassword"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeUpdateTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.deleteBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeUpdateTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.deleteBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeUpdateTemplate",
+            "target": "com.coveros.training.persistence.PersistenceLayer.updateBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.updateUserWithPassword",
+            "target": "com.coveros.training.helpers.CheckUtils.IntParameterMustBePositive"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.updateUserWithPassword",
+            "target": "com.coveros.training.authentication.RegistrationUtils.saveToDatabase"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.saveNewBorrower",
+            "target": "com.coveros.training.library.LibraryUtils.saveNewBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.saveNewBorrower",
+            "target": "com.coveros.training.library.LibraryUtils.registerBorrower"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.createLoan",
+            "target": "com.coveros.training.library.LibraryUtils.createLoan"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.createLoan",
+            "target": "com.coveros.training.library.LibraryUtils.lendBook"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.registerBook",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookByTitle"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.registerBook",
+            "target": "com.coveros.training.library.domainobjects.Book.isEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.registerBook",
+            "target": "com.coveros.training.library.LibraryRegisterBookServlet.doPost"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryBookListSearchServlet.searchByTitle",
+            "target": "com.coveros.training.library.LibraryBookListSearchServlet.doGet"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryBookListSearchServlet.searchByTitle",
+            "target": "com.coveros.training.library.domainobjects.Book.toOutputString"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryBookListSearchServlet.searchByTitle",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookByTitle"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryBookListSearchServlet.searchByTitle",
+            "target": "com.coveros.training.library.domainobjects.Book.isEmpty"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryBookListSearchServlet.doGet",
+            "target": "com.coveros.training.library.LibraryBookListSearchServlet.searchById"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryBookListSearchServlet.doGet",
+            "target": "com.coveros.training.library.LibraryBookListSearchServlet.listAllBooks"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.helpers.StringUtils.escapeForJson",
+            "target": "com.coveros.training.library.domainobjects.Book.toOutputString"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.domainobjects.Book.toOutputString",
+            "target": "com.coveros.training.library.LibraryBookListSearchServlet.searchById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryBookListSearchServlet.searchById",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryBookListSearchServlet.searchById",
+            "target": "com.coveros.training.library.domainobjects.Book.isEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.deleteBook",
+            "target": "com.coveros.training.persistence.PersistenceLayer.deleteBook"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.deleteBook",
+            "target": "com.coveros.training.library.domainobjects.Book.isEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.deleteBook",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookByTitle"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.deleteBook",
+            "target": "com.coveros.training.helpers.CheckUtils.IntParameterMustBePositive"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.isEmpty",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookByTitle"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Book.isEmpty",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBookById"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBookByTitle",
+            "target": "com.coveros.training.library.LibraryUtils.lendBook"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.lendBook",
+            "target": "com.coveros.training.library.LibraryLendServlet.doPost"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.lendBook",
+            "target": "com.coveros.training.library.domainobjects.Loan.isEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.deleteBorrower",
+            "target": "com.coveros.training.persistence.PersistenceLayer.deleteBorrower"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.deleteBorrower",
+            "target": "com.coveros.training.library.domainobjects.Borrower.isEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.deleteBorrower",
+            "target": "com.coveros.training.helpers.CheckUtils.IntParameterMustBePositive"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Borrower.isEmpty",
+            "target": "com.coveros.training.library.domainobjects.Borrower.createEmpty"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Borrower.isEmpty",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBorrowerById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Borrower.isEmpty",
+            "target": "com.coveros.training.library.LibraryBorrowerListSearchServlet.searchByName"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.registerBorrower",
+            "target": "com.coveros.training.library.LibraryRegisterBorrowerServlet.doPost"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.registerBorrower",
+            "target": "com.coveros.training.library.domainobjects.Borrower.equals"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryUtils.registerBorrower",
+            "target": "com.coveros.training.library.domainobjects.Borrower.createEmpty"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.domainobjects.Borrower.createEmpty",
+            "target": "com.coveros.training.library.LibraryUtils.searchForBorrowerById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBorrowerById",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchBorrowersById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBorrowerById",
+            "target": "com.coveros.training.library.LibraryBorrowerListSearchServlet.searchById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryBorrowerListSearchServlet.searchByName",
+            "target": "com.coveros.training.library.domainobjects.Borrower.toOutputString"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryBorrowerListSearchServlet.searchByName",
+            "target": "com.coveros.training.library.LibraryBorrowerListSearchServlet.doGet"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.processRegistration",
+            "target": "com.coveros.training.authentication.domainobjects.RegistrationResult.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.processRegistration",
+            "target": "com.coveros.training.authentication.RegistrationUtils.isUserInDatabase"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.processRegistration",
+            "target": "com.coveros.training.authentication.RegistrationUtils.isPasswordGood"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.processRegistration",
+            "target": "com.coveros.training.authentication.domainobjects.PasswordResult.toPrettyString"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.processRegistration",
+            "target": "com.coveros.training.authentication.RegistrationUtils.saveToDatabase"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.processRegistration",
+            "target": "com.coveros.training.authentication.RegisterServlet.doPost"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.domainobjects.PasswordResult.createDefault",
+            "target": "com.coveros.training.authentication.domainobjects.PasswordResult.<init>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.authentication.domainobjects.PasswordResult.createDefault",
+            "target": "com.coveros.training.authentication.RegistrationUtils.isPasswordGood"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.domainobjects.PasswordResult.<init>",
+            "target": "com.coveros.training.authentication.RegistrationUtils.isPasswordGood"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.isPasswordGood",
+            "target": "com.coveros.training.helpers.CheckUtils.mustBeTrueAtThisPoint"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegisterServlet.doPost",
+            "target": "com.coveros.training.authentication.domainobjects.RegistrationResult.toPrettyString"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.lambda$searchForLoanByBorrower$9",
+            "target": "com.coveros.training.helpers.StringUtils.makeNotNullable"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.lambda$listAllBorrowers$8",
+            "target": "com.coveros.training.library.domainobjects.Borrower.<init>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.lambda$listAllBorrowers$8",
+            "target": "com.coveros.training.helpers.StringUtils.makeNotNullable"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Borrower.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchForLoanByBook$10"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Borrower.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBorrowersById$6"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.domainobjects.Borrower.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBorrowerDataByName$3"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.lambda$listBooks$7",
+            "target": "com.coveros.training.helpers.StringUtils.makeNotNullable"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.library.LibraryLendServlet.doPost",
+            "target": "com.coveros.training.library.LibraryLendServlet.getDateNow"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.StringUtils.makeNotNullable",
+            "target": "com.coveros.training.library.LibraryRegisterBookServlet.doPost"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.StringUtils.makeNotNullable",
+            "target": "com.coveros.training.persistence.DbServlet.doGet"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.StringUtils.makeNotNullable",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchForLoanByBook$10"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.StringUtils.makeNotNullable",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBorrowersById$6"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.StringUtils.makeNotNullable",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBooksById$5"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.StringUtils.makeNotNullable",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$searchBorrowerDataByName$3"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.StringUtils.makeNotNullable",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$getBorrowerName$2"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryRegisterBookServlet.<clinit>",
+            "target": "com.coveros.training.library.LibraryUtils.<init>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.configureFlyway",
+            "target": "com.coveros.training.persistence.PersistenceLayer.cleanDatabase"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.configureFlyway",
+            "target": "com.coveros.training.persistence.PersistenceLayer.migrateDatabase"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.cleanDatabase",
+            "target": "com.coveros.training.persistence.DbServlet.doGet"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.cleanDatabase",
+            "target": "com.coveros.training.persistence.PersistenceLayer.cleanAndMigrateDatabase"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.migrateDatabase",
+            "target": "com.coveros.training.persistence.DbServlet.doGet"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.migrateDatabase",
+            "target": "com.coveros.training.persistence.PersistenceLayer.cleanAndMigrateDatabase"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.expenses.AlcoholResult.returnEmpty",
+            "target": "com.coveros.training.expenses.AlcoholResult.<init>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.expenses.AlcoholResult.returnEmpty",
+            "target": "com.coveros.training.expenses.AlcoholCalculator.calculate"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryBookListAvailableServlet.doGet",
+            "target": "com.coveros.training.helpers.ServletUtils.forwardToRestfulResult"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.mathematics.AckermannIterative$$$Field.values",
+            "target": "com.coveros.training.mathematics.AckermannIterative$1.<clinit>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.mathematics.AckermannIterative$$.main",
+            "target": "com.coveros.training.mathematics.AckermannIterative.calculate"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.runBackup",
+            "target": "com.coveros.training.persistence.SqlRuntimeException.<init>"
+        },
+        {
+            "weight": 2.0,
+            "source": "com.coveros.training.mathematics.TailRecursive.tailie",
+            "target": "com.coveros.training.mathematics.AckermannIterative$$.<clinit>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryRegisterBookServlet.doPost",
+            "target": "com.coveros.training.helpers.ServletUtils.forwardToResult"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.ServletUtils.forwardToResult",
+            "target": "com.coveros.training.persistence.DbServlet.doGet"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.LoginUtils.isUserRegistered",
+            "target": "com.coveros.training.persistence.PersistenceLayer.areCredentialsValid"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.LoginUtils.isUserRegistered",
+            "target": "com.coveros.training.authentication.LoginServlet.doPost"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.areCredentialsValid",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.ParameterObject.isEmpty",
+            "target": "com.coveros.training.persistence.ParameterObject.equals"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.DbServlet.doGet",
+            "target": "com.coveros.training.persistence.PersistenceLayer.cleanAndMigrateDatabase"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.cleanAndMigrateDatabase",
+            "target": "com.coveros.training.tomcat.WebAppListener.contextInitialized"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryUtils.searchForBookById",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchBooksById"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBooksById",
+            "target": "com.coveros.training.helpers.CheckUtils.IntParameterMustBePositive"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBooksById",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBorrowersById",
+            "target": "com.coveros.training.helpers.CheckUtils.IntParameterMustBePositive"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchBorrowersById",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.library.LibraryBorrowerListSearchServlet.doGet",
+            "target": "com.coveros.training.library.LibraryBorrowerListSearchServlet.listAllBorrowers"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.Ackermann.calculate",
+            "target": "com.coveros.training.mathematics.Ackermann.ack"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.AckServlet.doPost",
+            "target": "com.coveros.training.mathematics.AckServlet.putNumberInRequest"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.AckServlet.doPost",
+            "target": "com.coveros.training.mathematics.AckServlet.tailRecursive"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.AckServlet.doPost",
+            "target": "com.coveros.training.mathematics.AckServlet.regularRecursive"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.FibServlet.doPost",
+            "target": "com.coveros.training.mathematics.FibServlet.tailRecursiveAlgo1Calc"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.FibServlet.doPost",
+            "target": "com.coveros.training.mathematics.FibServlet.tailRecursiveAlgo2Calc"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.FibServlet.doPost",
+            "target": "com.coveros.training.mathematics.FibServlet.defaultRecursiveCalculation"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.isUserInDatabase",
+            "target": "com.coveros.training.persistence.PersistenceLayer.searchForUserByName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.authentication.RegistrationUtils.saveToDatabase",
+            "target": "com.coveros.training.persistence.PersistenceLayer.saveNewUser"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.mustBeTrueAtThisPoint",
+            "target": "com.coveros.training.helpers.AssertionException.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.searchForUserByName",
+            "target": "com.coveros.training.persistence.PersistenceLayer.createExtractor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.Calculator.calculateAndMorePart2",
+            "target": "com.coveros.training.mathematics.Calculator$Baz.doThirdPartyThing"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.Calculator$Baz.doThirdPartyThing",
+            "target": "com.coveros.training.mathematics.Calculator.calculateAndMorePart3"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.MathServlet.doPost",
+            "target": "com.coveros.training.mathematics.MathServlet.setResultToSum"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.NotImplementedException.<init>",
+            "target": "com.coveros.training.persistence.EmptyDataSource.unwrap"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.NotImplementedException.<init>",
+            "target": "com.coveros.training.persistence.EmptyDataSource.isWrapperFor"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.NotImplementedException.<init>",
+            "target": "com.coveros.training.persistence.EmptyDataSource.getLogWriter"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.NotImplementedException.<init>",
+            "target": "com.coveros.training.persistence.EmptyDataSource.setLogWriter"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.NotImplementedException.<init>",
+            "target": "com.coveros.training.persistence.EmptyDataSource.setLoginTimeout"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.NotImplementedException.<init>",
+            "target": "com.coveros.training.persistence.EmptyDataSource.getLoginTimeout"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.NotImplementedException.<init>",
+            "target": "com.coveros.training.persistence.EmptyDataSource.getParentLogger"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.obtainConnectionPool"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.executeUpdateOnPreparedStatement",
+            "target": "com.coveros.training.persistence.SqlData.applyParametersToPreparedStatement"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.createExtractor",
+            "target": "com.coveros.training.persistence.PersistenceLayer.throwingFunctionWrapper"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.createExtractor",
+            "target": "com.coveros.training.persistence.PersistenceLayer.getBorrowerName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.createExtractor",
+            "target": "com.coveros.training.persistence.PersistenceLayer.listBooks"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.updateBorrower",
+            "target": "com.coveros.training.helpers.CheckUtils.IntParameterMustBePositive"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.helpers.CheckUtils.IntParameterMustBePositive",
+            "target": "com.coveros.training.persistence.PersistenceLayer.getBorrowerName"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlRuntimeException.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.runRestore"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.SqlRuntimeException.<init>",
+            "target": "com.coveros.training.persistence.PersistenceLayer.lambda$throwingFunctionWrapper$0"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.persistence.PersistenceLayer.lambda$searchForUserByName$11",
+            "target": "com.coveros.training.authentication.domainobjects.User.<init>"
+        },
+        {
+            "weight": 1.0,
+            "source": "com.coveros.training.mathematics.AckermannIterative$$.lambda$static$2",
+            "target": "com.coveros.training.mathematics.AckermannIterative$$.tail"
+        }
+    ],
+    "numPartitions": 3
+}

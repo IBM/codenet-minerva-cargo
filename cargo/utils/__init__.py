@@ -16,3 +16,4 @@
 
 from .logging import Log
 from .progress_bar_factory import ProgressBarFactory
+from .transform_graph import TransformGraph

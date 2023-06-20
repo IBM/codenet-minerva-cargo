@@ -16,36 +16,20 @@ def minerva_cargo(max_partitions, app_dependency_graph, seed_partitions, output)
     CLI version of CARGO a un-/semi-supervised partition refinement technique that uses a system dependence 
     graph built using context and flow-sensitive static analysis of a monolithic application.
     """
-    if max_partitions != -1:
-        click.secho(f'Max partitions set to: {max_partitions}', fg='green', bold=False)
-    else:
-        click.secho(f'Max partitions set to default: The algorithm will infer the maximum partitions by itself', fg='blue', bold=False)
 
-    if app_dependency_graph:
-        click.secho(f'App dependency graph path: {app_dependency_graph}', fg='green', bold=False)
-    else:
-        click.secho(f'App dependency graph path not provided. Exiting.', fg='red', bold=False)
-        return
-
-    if seed_partitions is not None:
-        click.secho(f'Seed partitions path: {seed_partitions}', fg='green', bold=False)
-    else:
-        click.secho(f'Seed partitions path not provided. Using automatic inference.', fg='blue', bold=False)
+    if seed_partitions is None:
         seed_partitions = 'auto'
 
-    if output:
-        click.secho(f'Output path: {output}', fg='green')
-    else:
-        click.secho(f'Output path not provided. Exiting.', fg='red')
-        return
-
     cargo = Cargo(json_sdg_path=app_dependency_graph)
-    _, assignments = cargo.run(
+    _, method_partitions, class_partitions = cargo.run(
         init_labels=seed_partitions,
         max_part=max_partitions)
+
+    with open(output.joinpath('method_partitions.json'), 'w') as partitions_file:
+        json.dump(method_partitions, partitions_file, indent=4, sort_keys=False)
     
-    with open(output.joinpath('partitions.json'), 'w') as partitions_file:
-        json.dump(assignments, partitions_file, indent=4, sort_keys=False)
+    with open(output.joinpath('class_partitions.json'), 'w') as partitions_file:
+        json.dump(class_partitions, partitions_file, indent=4, sort_keys=False)
     
 
 def main():

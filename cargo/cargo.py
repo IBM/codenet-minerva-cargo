@@ -33,6 +33,7 @@ from collections import defaultdict, namedtuple
 from urllib.parse import urlunparse
 from .helper import *
 from .metrics import Metrics
+from .utils import TransformGraph
 
 import itertools
 
@@ -73,18 +74,19 @@ class Cargo:
             nx.MultiDiGraph: A networkx graph
         """
         with open(path_to_sdg_json, 'r') as sdg_json:
-            json_graph = json.load(sdg_json)
+            self.json_graph = json.load(sdg_json)
 
-        json_graph['links'] = json_graph.pop('edges')
-        nodes_dict = defaultdict() 
-        for key, group in itertools.groupby(json_graph['nodes'], key=lambda x: x['id']):
-            nodes_dict[key] = group.__next__()
+        self.json_graph['links'] = self.json_graph.pop('edges')
+        self.nodes_dict = defaultdict() 
+        
+        for key, group in itertools.groupby(self.json_graph['nodes'], key=lambda x: x['id']):
+            self.nodes_dict[key] = group.__next__()
 
         all_contexts = []
         self.all_context_graphs = []
         self.full_G = nx.MultiDiGraph()
         self.transaction_graph = nx.MultiDiGraph()
-        for edge in json_graph['links']:
+        for edge in self.json_graph['links']:
             node1 = edge['source']
             node2 = edge['target']
 
@@ -514,15 +516,14 @@ class Cargo:
 
         metrics = self.compute_metrics(labelprop_G)
 
-        # Compute data centrality
-        nx.set_node_attributes(labelprop_G, nx.degree_centrality(labelprop_G), 'dataCentrality')
+        method_graph_view = self.json_graph
 
-        graph_view = nx.node_link_data(labelprop_G)
-        # Clean graph_view
-        graph_view.pop('directed')
-        graph_view.pop('graph')
-        graph_view.pop('multigraph')
+        for method_node in method_graph_view["nodes"]:
+            if method_node["id"] in assignments:
+                method_node['partition'] = assignments[method_node["id"]]
+            else:
+                method_node['partition'] = max_part + 1
 
-        graph_view['numPartitions'] = num_gen_partitions
-
-        return metrics, graph_view
+        class_graph_view = TransformGraph.from_method_graph_to_class_graph(method_graph_view)
+        
+        return metrics, method_graph_view, class_graph_view
