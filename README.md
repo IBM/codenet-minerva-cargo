@@ -91,14 +91,14 @@ docker run --rm \
   -v $ARTIFACTS:/input \
   -v $ARTIFACTS:/output \
   quay.io/codenet-minerva/codenet-minerva-cargo:latest \
---max-partitions=5 \
+--max-partitions=5
 ```
 
 This will produced 2 files: `method_partitions.json` and `class_partitions.json` in the `$ARTIFACTS` folder. 
 
 _Note: In this example, I am saving the partitions in the same folder as the input SDG.json._
 
-### 3. Install CARGO
+### 3. Local usage
 
 CARGO may be used as a CLI tool `minerva-cargo`. To install CARGO, you may use pip as follows
 

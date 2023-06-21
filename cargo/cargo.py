@@ -27,13 +27,13 @@ from copy import deepcopy
 from py2neo import Graph
 from ipdb import set_trace
 from tqdm import tqdm
-from .utils import Log
+from cargo.utils import Log
 
 from collections import defaultdict, namedtuple
 from urllib.parse import urlunparse
-from .helper import *
-from .metrics import Metrics
-from .utils import TransformGraph
+from cargo.helper import *
+from cargo.metrics import Metrics
+from cargo.utils import TransformGraph
 
 import itertools
 
