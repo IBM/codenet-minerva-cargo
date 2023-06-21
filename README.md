@@ -91,7 +91,12 @@ docker run --rm \
   -v $ARTIFACTS:/input \
   -v $ARTIFACTS:/output \
   quay.io/codenet-minerva/codenet-minerva-cargo:latest \
---max-partitions=5
+  --max-partitions=5                                 ## Number of desired final partitions.
+
+# Additional options 
+# --max-partitions=5                                 ## Number of desired final partitions.
+# --sdg-filename=filename.json                       ## (optionally) use non-default SDG filename.
+# --seed-partitions=./path/to/seed/partitions.json   ## (optionally) provide user provided seed partitions.
 ```
 
 This will produced 2 files: `method_partitions.json` and `class_partitions.json` in the `$ARTIFACTS` folder. 
@@ -124,12 +129,17 @@ Usage: minerva-cargo [OPTIONS]
 
 Options:
   -k, --max-partitions INTEGER    The maximum number of partitions
-  -i, --app-dependency-graph PATH
+  -i, --app-dependency-graph-path PATH
                                   Path to the input JSON file. This is a
                                   System Dependency Graph, you can use the
                                   tool from https://github.com/konveyor/dgi-
                                   code-analyzer to get the system dependency
                                   graph of an application.
+  -f, --sdg-filename TEXT         Filename JSON file. If you used
+                                  https://github.com/konveyor/dgi-code-
+                                  analyzer to get the system dependency graph
+                                  of an application, then the default filename
+                                  is sdg.json
   -s, --seed-partitions PATH      Path to the initial seed partitions JSON
                                   file
   -o, --output PATH               Path to save the output JSON file
