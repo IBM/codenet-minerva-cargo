@@ -18,7 +18,6 @@ from ast import Dict, List
 from collections import defaultdict, Counter
 from copy import deepcopy
 from statistics import mode
-from ipdb import set_trace
 
 class TransformGraph:
     @classmethod

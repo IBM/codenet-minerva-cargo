@@ -91,9 +91,8 @@ docker run --rm \
   -v $ARTIFACTS:/input \
   -v $ARTIFACTS:/output \
   quay.io/codenet-minerva/codenet-minerva-cargo:latest \
-  --max-partitions=5                                 ## Number of desired final partitions.
-
-# Additional options 
+  --max-partitions=5                                 
+# Additional options (uncomment to use)
 # --max-partitions=5                                 ## Number of desired final partitions.
 # --sdg-filename=filename.json                       ## (optionally) use non-default SDG filename.
 # --seed-partitions=./path/to/seed/partitions.json   ## (optionally) provide user provided seed partitions.
