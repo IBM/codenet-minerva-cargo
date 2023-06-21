@@ -24,6 +24,13 @@ class TransformGraph:
     @classmethod
     def _method_node_to_class_node(cls, method_nodes: List) -> List:
         """
+        Convert the method node to an aggregated class node
+
+        Args:
+            method_nodes (List): All the methods in the graph.
+
+        Returns:
+            List: Transformed class nodes
         """
         classes = defaultdict()
         
@@ -54,6 +61,13 @@ class TransformGraph:
     @classmethod
     def _method_link_to_class_link(cls, method_links: List) -> List:
         """
+        Aggregate the method links to class links
+
+        Args:
+            method_links (List): All the links between methods in the graph.
+
+        Returns:
+            List: Transformed class links
         """
         links = dict()
         for link in method_links:
