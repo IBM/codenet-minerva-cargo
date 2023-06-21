@@ -82,13 +82,29 @@ You'll see the following output in your console
 
 The output JSON will be saved in `$ARTIFACTS/sdg.json`
 
-### 2. Install CARGO
+### 2. Run using Docker
+
+To use CARGO using docker, you can simply call:
+
+```sh
+docker run --rm \
+  -v $ARTIFACTS:/input \
+  -v $ARTIFACTS:/output \
+  quay.io/codenet-minerva/codenet-minerva-cargo:latest \
+--max-partitions=5 \
+```
+
+This will produced 2 files: `method_partitions.json` and `class_partitions.json` in the `$ARTIFACTS` folder. 
+
+_Note: In this example, I am saving the partitions in the same folder as the input SDG.json._
+
+### 3. Install CARGO
 
 CARGO may be used as a CLI tool `minerva-cargo`. To install CARGO, you may use pip as follows
 
 ```sh
 pip install -U .
-```
+````
 
 For system wide install 
 
@@ -126,6 +142,10 @@ To run CARGO, use `minerva-cargo -i /path/to/sdg.json -k <number-of-desired-part
 ```sh
  minerva-cargo -i $ARTIFACTS/daytrader8.json -k 4 -o $ARTIFACTS
 ```
+
+This will produced 2 files: `method_partitions.json` and `class_partitions.json` in the `$ARTIFACTS` folder. 
+
+_Note: In this example, I am saving the partitions in the same folder as the input SDG.json._
 
 # License
 
