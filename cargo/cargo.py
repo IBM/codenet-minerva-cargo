@@ -27,13 +27,13 @@ from copy import deepcopy
 from py2neo import Graph
 from ipdb import set_trace
 from tqdm import tqdm
-from cargo.utils import Log
+from .utils import Log
 
 from collections import defaultdict, namedtuple
 from urllib.parse import urlunparse
-from cargo.helper import *
-from cargo.metrics import Metrics
-from cargo.utils import TransformGraph
+from .helper import *
+from .metrics import Metrics
+from .utils import TransformGraph
 
 import itertools
 
@@ -122,6 +122,7 @@ class Cargo:
                 if node not in context_G:
                     context_G.add_node(node)
         
+
     def dgi2networkx(self, neo4j_url: str, dgi_neo4j_uname: str, dgi_neo4j_passw: str) -> nx.MultiDiGraph:
         """Convert the graph in DGI's neo4j to a local networkx instance.
 
