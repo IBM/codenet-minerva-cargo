@@ -6,12 +6,12 @@ Thumbs.db
 .idea
 .idea/*
 
-
 # Vagrant
 .vagrant/
 
 # pipenv virtual environment
 .venv
+.vscode
 
 # Test reports
 unittests.xml
