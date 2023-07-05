@@ -22,12 +22,12 @@ CARGO (short for Context-sensitive lAbel pRopaGatiOn) is a novel un-/semi-superv
 
 For the rest of this instructions, we'll assume your project has been built and you have a JAR file(s) (or WAR/EAR file(s)) in a folder `INPUT`, (optional, but highly recommended) your library dependencies in your project will be in a folder called `DEPENDENCIES`, and finally all the generated JSONs will the loaded from and saved to `ARTIFACTS`. 
 
-
 ```sh
 export INPUT=/path/to/input/binaries
 export ARTIFACTS=/path/to/input/artifacts
 export DEPENDENCIES=/path/to/input/dependencies
 ```
+
 ### 1. Obtain SDG 
 
 To get the SDG of the application, we will use [DGI Code Analyzer](https://github.com/rkrsn/dgi-code-analyzer), a Java Static Analysis tool build using [WALA](https://github.com/WALA/WALA). 
@@ -121,10 +121,6 @@ When installed correctly, you'll see the following `--help`
 minerva-cargo --help
 
 Usage: minerva-cargo [OPTIONS]
-
-  CLI version of CARGO a un-/semi-supervised partition refinement technique
-  that uses a system dependence  graph built using context and flow-sensitive
-  static analysis of a monolithic application.
 
 Options:
   -k, --max-partitions INTEGER    The maximum number of partitions

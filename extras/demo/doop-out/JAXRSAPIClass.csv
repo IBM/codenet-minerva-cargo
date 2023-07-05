@@ -1,0 +1,3 @@
+com.ibm.websphere.samples.daytrader.jaxrs.QuoteResource
+com.ibm.websphere.samples.daytrader.jaxrs.BroadcastResource
+com.ibm.websphere.samples.daytrader.web.prims.jaxrs.JAXRSSyncService

@@ -122,7 +122,6 @@ class Cargo:
                 if node not in context_G:
                     context_G.add_node(node)
         
-
     def dgi2networkx(self, neo4j_url: str, dgi_neo4j_uname: str, dgi_neo4j_passw: str) -> nx.MultiDiGraph:
         """Convert the graph in DGI's neo4j to a local networkx instance.
 
