@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright IBM Corporate 2022
+# Copyright IBM Corporate 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ CARGO
 A data-centric transformation of monoliths into microservices
 """
 
+from .utils import logging
 __version__ = "0.1.0"
 __author__ = 'Rahul Krishna <imralk+oss@gmail.com> and Vikram Nitin <vikramnitin9@gmail.com>'
 __credits__ = 'IBM Research :: Columbia University'

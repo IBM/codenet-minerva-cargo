@@ -20,201 +20,152 @@ CARGO (short for Context-sensitive lAbel pRopaGatiOn) is a novel un-/semi-superv
 
 ## Kick-the-tires Instructions (~15 minutes)
 
-The instructions will reproduce the key results in Figure 6 (RQ1), Figure 7 (RQ2), and Table 1 (RQ3).
-
-### Pre-requisites
-
-* A Linux/Mac system with [Docker](http://docker.io).
-* [Python](https://www.python.org/downloads/) >= 3.8, and Pip. Tested with Python 3.9.
-
-### Step 0: Clone this repository
-
-1. We'll clone this repository and save it's location for the next steps
-
-```bash
-git clone https://github.com/IBM/codenet-minerva-cargo && cd codenet-minerva-cargo
-
-export REPO_ROOT=$PWD
-```
-
-### Step 1: Set up Data Gravity Insights CLI
-
-We will use [Data Gravity Insights](https://github.com/konveyor/tackle-data-gravity-insights) (aka. DGI) to first build a system dependency graph and persist the graph in a Neo4j.
-
-#### 1.1 Install DGI
-
-DGI is available as PyPi package, you can also install `dgi` as follows
+For the rest of this instructions, we'll assume your project has been built and you have a JAR file(s) (or WAR/EAR file(s)) in a folder `INPUT`, (optional, but highly recommended) your library dependencies in your project will be in a folder called `DEPENDENCIES`, and finally all the generated JSONs will the loaded from and saved to `ARTIFACTS`. 
 
 ```sh
-pip install -U git+https://github.com/rahlk/tackle-data-gravity-insights 
+export INPUT=/path/to/input/binaries
+export ARTIFACTS=/path/to/input/artifacts
+export DEPENDENCIES=/path/to/input/dependencies
 ```
 
-This will install the dgi command locally under your home folder in a hidden folder called: ~/.local/bin. If not already, you must add this folder to your PATH with:
+### 1. Obtain SDG 
+
+To get the SDG of the application, we will use [DGI Code Analyzer](https://github.com/rkrsn/dgi-code-analyzer), a Java Static Analysis tool build using [WALA](https://github.com/WALA/WALA). 
+
 
 ```sh
-export PATH=$HOME/.local/bin:$PATH
+ docker run --rm \
+  -v $INPUT:/binaries \
+  -v $ARTIFACTS:/output \
+  -v $DEPENDENCIES:/dependencies \
+  quay.io/rkrsn/code-analyzer:latest
 ```
 
-#### 1.2 Creating a Neo4j Docker container
+You'll see the following output in your console
 
-Make sure that your Docker daemon is running, either by starting up the service (on linux) or by opening the desktop application (on mac).
-
-We will need an instance of Neo4j to store the graphs that `dgi` creates. We will start one up in a docker container and set an environment variable to let `dgi` know where to find it.
-
-```bash
-docker run -d --name neo4j \
-    -p 7474:7474 \
-    -p 7687:7687 \
-    -e NEO4J_AUTH="neo4j/konveyor" \
-    -e NEO4J_apoc_export_file_enabled=true \
-    -e NEO4J_apoc_import_file_enabled=true \
-    -e NEO4J_apoc_import_file_use__neo4j__config=true \
-    -e NEO4JLABS_PLUGINS=\["apoc"\] \
-    neo4j:4.4.17
-
-export NEO4J_BOLT_URL="neo4j://neo4j:konveyor@localhost:7687"
+```log
+2023-06-20T20:27:25.712400      [INFO]  Create analysis scope.
+2023-06-20T20:27:25.857454      [INFO]  Add exclusions to scope.
+2023-06-20T20:27:25.858954      [INFO]  Loading Java SE standard libs.
+2023-06-20T20:27:25.999459      [INFO]  Loading popular Java EE standard libs.
+2023-06-20T20:27:26.015997      [INFO]  -> Adding dependency derby-10.16.1.1.jar to analysis scope.
+2023-06-20T20:27:26.018921      [INFO]  -> Adding dependency spring-boot-2.5.4.jar to analysis scope.
+2023-06-20T20:27:26.020195      [INFO]  -> Adding dependency javaee-api-8.0.jar to analysis scope.
+2023-06-20T20:27:26.023490      [INFO]  -> Adding dependency javaee-api-7.0.jar to analysis scope.
+2023-06-20T20:27:26.025250      [INFO]  -> Adding dependency javax.servlet-api-4.0.1.jar to analysis scope.
+2023-06-20T20:27:26.025630      [INFO]  -> Adding dependency jta-1.1.jar to analysis scope.
+2023-06-20T20:27:26.026122      [INFO]  -> Adding dependency javax.persistence-api-2.2.jar to analysis scope.
+2023-06-20T20:27:26.026427      [INFO]  -> Adding dependency validation-api-2.0.1.Final.jar to analysis scope.
+2023-06-20T20:27:26.026899      [INFO]  -> Adding dependency mail-1.4.7.jar to analysis scope.
+2023-06-20T20:27:26.027318      [INFO]  -> Adding dependency javax.websocket-api-1.1.jar to analysis scope.
+2023-06-20T20:27:26.027784      [INFO]  -> Adding dependency javax.json-api-1.1.4.jar to analysis scope.
+2023-06-20T20:27:26.028141      [INFO]  -> Adding dependency javax.ws.rs-api-2.1.1.jar to analysis scope.
+2023-06-20T20:27:26.028465      [INFO]  Loading user specified extra libs.
+2023-06-20T20:27:26.044673      [INFO]  -> Adding dependency activation-1.1.jar to analysis scope.
+2023-06-20T20:27:26.057588      [INFO]  -> Adding dependency derby-10.14.2.0.jar to analysis scope.
+2023-06-20T20:27:26.075825      [INFO]  -> Adding dependency javaee-api-8.0.jar to analysis scope.
+2023-06-20T20:27:26.097050      [INFO]  -> Adding dependency javax.mail-1.6.0.jar to analysis scope.
+2023-06-20T20:27:26.111486      [INFO]  -> Adding dependency jaxb-api-2.3.0.jar to analysis scope.
+2023-06-20T20:27:26.125049      [INFO]  -> Adding dependency standard-1.1.1.jar to analysis scope.
+2023-06-20T20:27:26.163170      [INFO]  Loading application jar(s).
+2023-06-20T20:27:26.171148      [INFO]  -> Adding application daytrader8.jar to analysis scope.
+2023-06-20T20:27:26.184572      [INFO]  Make class hierarchy.
+2023-06-20T20:27:29.049712      [DONE]  There were a total of 16912 classes of which 155 are application classes.
+2023-06-20T20:27:29.124264      [INFO]  Registered 1244 entrypoints.
+2023-06-20T20:27:29.141498      [INFO]  Building call graph.
+2023-06-20T20:27:46.430851      [DONE]  Finished construction of call graph. Took 18.0 seconds.
+2023-06-20T20:27:46.431067      [INFO]  Building System Dependency Graph.
+2023-06-20T20:27:46.450459      [INFO]  Pruning SDG to keep only Application classes.
+2023-06-20T20:27:51.440773      [DONE]  SDG built and pruned. It has 32120 nodes.
+2023-06-20T20:27:55.676598      [DONE]  SDG saved at /output
 ```
 
-#### Installation complete
+The output JSON will be saved in `$ARTIFACTS/sdg.json`
 
-We can now use the `dgi` command to load information about an application into a graph database. We start with `dgi --help`. This should produce:
+### 2. Run using Docker
 
-```bash
-$ dgi --help
+To use CARGO using docker, you can simply call:
 
- Usage: dgi [OPTIONS] COMMAND [ARGS]...
-
- Tackle Data Gravity Insights
-
-╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --neo4j-bolt  -n  TEXT  Neo4j Bolt URL                                                                          │
-│ --quiet       -q        Be more quiet                                                                           │
-│ --validate    -v        Validate but don't populate graph                                                       │
-│ --clear       -c        Clear graph before loading                                                              │
-│ --help                  Show this message and exit.                                                             │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ──────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ c2g            Code2Graph add various program dependencies (i.e., call return, heap, and data) into the graph   │
-│ partition      Partition is a command runs the CARGO algorithm to (re-)partition a monolith into microservices  │
-│ s2g            Schema2Graph parses SQL schema (*.DDL file) into the graph                                       │
-│ tx2g           Transaction2Graph add edges denoting CRUD operations to the graph.                               │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-```
-
-### Step 2: Setting up a sample application
-
-For rest of this walkthrough, we'll work with [DayTrader8](https://github.com/OpenLiberty/sample.daytrader8).
-
-### Step 3: Build a Program Dependency Graph with DOOP
-
-#### 3.1 Prepare the application
-
-Obtain the sample application WAR file. We'll save this in `extras/demo/doop-in`:
-
-```bash
-wget https://github.com/OpenLiberty/sample.daytrader8/releases/download/v1.2/io.openliberty.sample.daytrader8.war --directory-prefix=$REPO_ROOT/extras/demo/doop-in
-```
-
-#### 3.2 Getting facts with DOOP
-
-We first need to run [DOOP](https://bitbucket.org/yanniss/doop/src/master/). For ease of use, DOOP has been pre-compiled and hosted as a docker image at [quay.io/rkrsn/doop-main](https://quay.io/rkrsn/doop-main). We'll use that for this demo.
-
-```bash
-docker run -it --rm \
-  -v $REPO_ROOT/extras/demo/doop-in:/root/doop-data/input \
-  -v $REPO_ROOT/extras/demo/doop-out:/root/doop-data/output/ \
-  quay.io/rkrsn/doop-main:latest rundoop
-```
-
-_Notes:_
-
-_1. If you encounter any error above, please rerun the `docker run ...` command_
-
-_2. Running DOOP for the first time may take up to 15 minutes._
-
-
-#### 3.3 Run DGI code2graph
-
-In this step, we'll run DGI code2graph to populate a Neo4j graph database with various static code interaction features pertaining to object/dataflow dependencies.
-
-```bash
-dgi -c c2g --input=$REPO_ROOT/extras/demo/doop-out
-```
-
-This will take 4-5 minutes. After successful completion, we should see something like this :
-
-```bash
-❯ dgi -c c2g --input=$REPO_ROOT/extras/demo/doop-out
-[15:57:56] INFO     code2graph generator started.
-           INFO     Verbose mode: ON
-           INFO     Building Graph.
-           INFO     Class level abstraction.
-           WARNING  The option clear is turned ON. Deleting pre-existing nodes.
-           INFO     Populating heap carried dependencies edges
-  • 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • Completed/Total: 1192/1192 • Elapsed: 0:00:02 • Remaining: 0:00:00
-[15:57:58] INFO     Populating dataflow edges
-  • 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • Completed/Total: 991/991 • Elapsed: 0:00:01 • Remaining: 0:00:00
-[15:58:00] INFO     Populating call-return dependencies edges
-  • 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • Completed/Total: 2404/2404 • Elapsed: 0:00:04 • Remaining: 0:00:00
-[15:58:04] INFO     Populating entrypoints
-           INFO     code2graph build complete
-```
-
-#### 3.4 Extracting Database Transactions with Tackle-DiVA
-
-Note that this step is only for applications with database transactions. We will run [Tackle-DiVA](https://github.com/konveyor/tackle-diva) to extract transactions from our application. DiVA is available as a docker image, so we just need to run DiVA by pointing to the *source code directory* of the application and the desired output directory.
-
-1. Let's first get the source code for DayTrader8:
-
-```bash
-wget -c https://github.com/OpenLiberty/sample.daytrader8/archive/refs/tags/v1.2.tar.gz  -O - | tar -xvz -C $REPO_ROOT/extras/demo
-```
-
-```bash
+```sh
 docker run --rm \
-  -v $REPO_ROOT/extras/demo/sample.daytrader8-1.2:/app \
-  -v $REPO_ROOT/extras/demo/txns:/diva-distribution/output \
-  quay.io/konveyor/tackle-diva
+  -v $ARTIFACTS:/input \
+  -v $ARTIFACTS:/output \
+  quay.io/codenet-minerva/codenet-minerva-cargo:latest \
+  --max-partitions=5                                 
+# Additional options (uncomment to use)
+# --max-partitions=5                                 ## Number of desired final partitions.
+# --sdg-filename=filename.json                       ## (optionally) use non-default SDG filename.
+# --seed-partitions=./path/to/seed/partitions.json   ## (optionally) provide user provided seed partitions.
 ```
 
-This should generate a file `transaction.json` containing all discovered transactions. Finally, we run DGI to load these transaction edges into the program dependency graph.
+This will produced 2 files: `method_partitions.json` and `class_partitions.json` in the `$ARTIFACTS` folder. 
 
-```bash
-dgi -c tx2g --input=$REPO_ROOT/extras/demo/txns/transaction.json
+_Note: In this example, I am saving the partitions in the same folder as the input SDG.json._
+
+### 3. Local usage
+
+CARGO may be used as a CLI tool `minerva-cargo`. To install CARGO, you may use pip as follows
+
+```sh
+pip install -U .
+````
+
+For system wide install 
+
+```sh
+sudo pip install -U .
+```
+When installed correctly, you'll see the following `--help`
+
+```sh
+minerva-cargo --help
+
+Usage: minerva-cargo [OPTIONS]
+
+Options:
+  -k, --max-partitions INTEGER    The maximum number of partitions
+  -i, --app-dependency-graph-path PATH
+                                  Path to the input JSON file. This is a
+                                  System Dependency Graph, you can use the
+                                  tool from https://github.com/konveyor/dgi-
+                                  code-analyzer to get the system dependency
+                                  graph of an application.
+  -f, --sdg-filename TEXT         Filename JSON file. If you used
+                                  https://github.com/konveyor/dgi-code-
+                                  analyzer to get the system dependency graph
+                                  of an application, then the default filename
+                                  is sdg.json
+  -s, --seed-partitions PATH      Path to the initial seed partitions JSON
+                                  file
+  -o, --output PATH               Path to save the output JSON file
+  --help                          Show this message and exit.
+```
+### 3. Run CARGO
+
+To run CARGO, use `minerva-cargo -i /path/to/sdg.json -k <number-of-desired-partitions> -o  /path/to/output/partitions.json`. For example, 
+
+```sh
+ minerva-cargo -i $ARTIFACTS/daytrader8.json -k 4 -o $ARTIFACTS
 ```
 
-After successful completion, we should see something like this :
+This will produced 2 files: `method_partitions.json` and `class_partitions.json` in the `$ARTIFACTS` folder. 
 
-```bash
-❯ dgi -c tx2g --input=$REPO_ROOT/extras/demo/txns/transaction.json
+_Note: In this example, I am saving the partitions in the same folder as the input SDG.json._
 
-[16:05:36] INFO     Verbose mode: ON
-           WARNING  The CLI argument clear is turned ON. Deleting pre-existing nodes.
-           INFO     ClassTransactionLoader: Populating transactions
-  • 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ • Completed/Total: 175/175 • Elapsed: 0:00:01 • Remaining: 0:00:00
-[16:05:38] INFO     Transactions populated
-```
+# License
 
-### Step 4: Running CARGO
-
-Once we have created the Neo4j graphs by following the above steps, we can run CARGO as follows:
-
-```bash
-dgi partition --partitions=<int> --parititions-output=<dir/to/save/partitions.json>
-```
-
-After running this, you'll see:
-
-```bash
-❯ dgi partition -k 5 --partitions-output=$PWD                                                              
-[00:00:04] INFO     Partitioning the monolith with CARGO
-           WARNING  Loading graphs from Neo4j database. This could take a few minutes to complete.
-[00:00:09] INFO     DGI graph loaded from Neo4j.
-           INFO     Found 5619 records.
-[00:00:10] INFO     Cargo with auto initial labels
-           INFO     Found database transaction edges. Performing first round of label propogation.
-           INFO     Doing LPA on graph with database edges temporarily added
-           INFO     Found 137 contexts.
-[00:00:11] INFO     Max partitions : 5, Gen partitions : 5
-           INFO     Final partition sizes : [104  60 268   7   8]
+```License
+Copyright IBM Corporate 2023
+ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+ 
+    http://www.apache.org/licenses/LICENSE-2.0
+ 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright IBM Corporate 2022
+# Copyright IBM Corporate 2023
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,6 @@
 ################################################################################
 
 from .logging import Log
-from .progress_bar_factory import ProgressBarFactory
+from .transform_graph import TransformGraph
 
-from .logging import Log 
+__all__ = ["Log", "TransformGraph"]

@@ -21,8 +21,7 @@ setup(
         'networkx',
         'tqdm',
         'scikit-learn',
-        'tackle-dgi',
-        'rich'
+        'tackle-dgi'
     ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
@@ -42,5 +41,9 @@ setup(
             "pylint==2.13",
             "ipdb"
         ],
-    }
+    },
+    entry_points='''
+    [console_scripts]
+    minerva-cargo=cargo.standalone:main
+    '''
 )
