@@ -480,6 +480,7 @@ class Cargo:
         Log.info(
             "Copied {} classes directly from the initial file".format(copy_count))
 
+     
     def run(self, init_labels, max_part: Optional[int] = None, labels_file: Union[str, Path, None] = None):
 
         if init_labels == 'file':
@@ -525,5 +526,5 @@ class Cargo:
                 method_node['partition'] = max_part + 1
 
         class_graph_view = TransformGraph.from_method_graph_to_class_graph(method_graph_view)
-        
+
         return metrics, method_graph_view, class_graph_view

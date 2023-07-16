@@ -14,5 +14,5 @@
 # limitations under the License.
 ################################################################################
 
-from .logging import Log
 from .transform_graph import TransformGraph
+from .logging import Log
