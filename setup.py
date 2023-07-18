@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='minerva-cargo',
-    version='1.1.0',
+    name="minerva-cargo",
+    version="1.1.0",
     url="https://github.com/ibm/codenet-minerva-cargo",
     author="Rahul Krishna",
     description="A data-centric transformation of monoliths into microservices",
@@ -14,24 +14,25 @@ setup(
     packages=find_packages(exclude=["tests"]),
     include_package_data=True,
     install_requires=[
-        'scipy',
-        'py2neo',
-        'numpy',
-        'pandas',
-        'networkx',
-        'tqdm',
-        'scikit-learn',
-        'tackle-dgi'
+        "scipy",
+        "py2neo",
+        "numpy",
+        "pandas",
+        "networkx",
+        "tqdm",
+        "scikit-learn",
+        "tackle-dgi",
+        "mo-sql-parsing==9.422.23190",
     ],
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.9',
+        "Development Status :: 2 - Pre-Alpha",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.9",
     ],
     extras_require={
         "dev": [
@@ -39,11 +40,11 @@ setup(
             "pinocchio==0.4.3",
             "coverage==6.3.2",
             "pylint==2.13",
-            "ipdb"
+            "ipdb",
         ],
     },
-    entry_points='''
+    entry_points="""
     [console_scripts]
     minerva-cargo=cargo.standalone:main
-    '''
+    """,
 )
