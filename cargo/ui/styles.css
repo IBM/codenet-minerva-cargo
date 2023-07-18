@@ -1,0 +1,327 @@
+.partitionRect{
+    stroke-width: 1.0px;
+    /* stroke: black */
+}
+.partitionRect.partitionHovered {
+    stroke-width: 3.0px;
+}
+.partitionRect.partitionNotHovered {
+    stroke-width: 1.0px;
+}
+.partitionRect.partitionClicked {
+    stroke-width: 3.0px;
+}
+.partitionRect.partitionNotClicked {
+    stroke-width: 1.0px;
+}
+
+.node {
+    /* stroke: #ffffff;
+    stroke-width: 1px; */
+    fill-opacity: 1.0;
+    stroke-opacity: 1.0;
+}
+
+.node.highlight {
+    fill-opacity:1.0;
+    stroke-opacity: 1.0;
+}
+.node.downlight {
+    fill-opacity: 0.2;
+    stroke-opacity: 0.2
+}
+.node.clicked {
+    fill-opacity:1.0;
+    stroke-opacity: 1.0;
+    stroke-width: 3.0;
+    stroke: black
+    
+}
+.node.notClicked {
+    fill-opacity: 0.1;
+    stroke-opacity: 0
+}
+.link.clicked {
+    stroke: black;
+    stroke-opacity: 1.0;
+}
+.link.notClicked {
+    stroke-opacity: 0.1;
+}
+.link {
+    fill: none;
+    /* stroke: #888888; */
+    stroke-width: 1px;
+    stroke-opacity: 0.5;
+}
+
+.link.highlight {
+    /* stroke: black; */
+    /* stroke-opacity: 1.0; */
+    opacity: 1.0;
+
+}
+.link.downlight {
+    /* stroke-opacity: 0.075; */
+    opacity: 0.075;
+
+}
+.arrowHead.highlight {
+  /* stroke: black; */
+  stroke-opacity: 1.0;
+  fill-opacity: 1.0;
+}
+.arrowHead.downlight {
+  stroke-opacity: 0.1;
+  fill-opacity: 0.1;
+}
+
+.tooltip {
+    display: inline;
+    position: fixed;
+    opacity:1.0
+  }
+  
+/* for outline version */
+body {
+font-family: sans-serif, Arial;  
+font-size: 12px;
+/* font-weight: regular; */
+}
+.links line {
+stroke: #999;
+stroke-opacity: 0.6;
+}
+
+.nodes circle {
+stroke: #fff;
+stroke-width: 1.5px;
+}
+
+path {
+fill-opacity: .1;
+stroke-opacity: 1;
+}
+  
+
+/* for context menu */
+
+
+
+#context-menu {
+  position: fixed;
+  z-index: 10000;
+  width: 150px;
+  /* background: #1b1a1a; */
+  border-radius: 5px;
+  display:none
+}
+#context-menu.visible{
+    display:block
+  }
+#context-menu .item {
+  padding: 8px 10px;
+  font-size: 15px;
+  color: #eee;
+  cursor: pointer;
+  border-radius: inherit;
+}
+#context-menu .item :hover{
+    background: #343434
+}
+
+/* for side navigation menu */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  .sidenav h2 {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+  }
+  .sidenav p {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+  }
+  .sidenav p .smallLabels {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 12px;
+    display: block;
+  }
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 28px;
+    margin-left: 50px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+  
+  .openbtn:hover {
+    background-color: #444;
+  }
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+  
+  .openbtn:hover {
+    background-color: #444;
+  }
+  /* for side navigation menu flex */
+  .mainContainer {
+    display: flex;
+    width: 100%;
+  }
+  .containerRight {
+    /* height: 50vh; */
+    flex-grow: 1;
+    padding: 0.5rem 0.5rem;
+  }
+
+  .container-right {
+    overflow: hidden;
+  }
+
+/* TEST NAVIGATION MENU */
+/* essential to add this as there's a default 8px margin */
+
+body {
+  margin: 0;
+}
+
+
+/* this is also essential to avoid a world of width-based pain */
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* Just making things pretty here */
+
+nav {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: grey;
+  color: white;
+}
+
+/*the menu button is basically a hidden check box, we use label to style it as a button */
+.menubutton>input {
+  display: none;
+}
+
+/*these toggles the display of the menu button, it works because the label after the input element */
+.menubutton>input:checked+label .not-active {
+  display: none;
+}
+
+.menubutton>input:not(:checked)+label .active {
+  display: none;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.container-left {
+  background-color: lightgrey;
+  height: 100vh;
+  padding: 0rem 0rem;
+  border: 1px solid transparent;
+  /* width: 0rem; */
+  width: 15rem;
+  transition: width 300ms;
+  /* position: absolute;
+  z-index: 2; */
+}
+
+/* this is the bit that styles the width of the sidebar when the checkbox is checked. */
+body:has(.menubutton > input:checked) .container-left {
+  width: 15rem 
+}
+body:has(.menubutton > input:not(:checked)) .containerLeftDiv {
+  /* display: none */
+  display: block
+
+}
+
+body:has(.menubutton > input:checked) .containerLeftDiv {
+  display: block
+}
+/* just style the right box for visibility */
+
+.container-right {
+  border: 1px solid lightgray;
+  height: 100vh;
+  flex-grow: 1;
+  padding: 0.5rem 0.5rem;
+}
+
+.button {
+  background-color: white; /* Green */
+  border: 2px solid #555555;
+  color: black;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #555555;
+  color: white;
+}
+
+/* RANGE SLIDER */
