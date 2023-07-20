@@ -21,28 +21,25 @@ const svg = d3.select(".container-right")
 
 var linksExpanded=0
 
+var movedNodes=[]
+
+var minSlider
+var maxSlider
 // at first, add the top node, and its children by using expand()
 var links = [];
 var newLinks
-// var nodes= data
 var newLinksFiltered
-// const force = d3.forceSimulation()
-//   .force("charge", d3.forceManyBody())
-//   .force("x", d3.forceX(width / 2))
-//   .force("y", d3.forceY(height / 2));
+
 
 var force = d3.forceSimulation(nodes)
-                //.force("link", d3.forceLink().id(function(d) { return d.name; }).distance(80).strength(0))
-                // .force("x", d3.forceX(d => {
-                //   if (d.data.partition === 1) {
-                //     return width / (numPartitions+1); 
-                //   }
-                //   return width / (numPartitions+1) * d.data.partition; 
-                // }).strength(0.95))
                 .force("x", d3.forceX(d => {
                   //return 10
                   var deltaX = Math.random() *100//returns random number between 0 and 1
-                  var partitionNum= groupIds.indexOf(String(d.partition))
+                  var partitionNames=[]
+                  groupIds.forEach(function(partition){
+                    partitionNames.push(partition.groupId)
+                  })
+                  var partitionNum= partitionNames.indexOf(String(d.partition))
                   if (partitionNum != -1){
                     return (width /(numPartitions+1) * partitionNum)+ deltaX
                   }
@@ -95,13 +92,20 @@ function loadData(){
     groupIds = d3.set(nodes.map(n => { return n.partition; }))
                   .values()
                   .map( groupId =>  {
-                  return { 
-                  groupId : groupId,
-                  count : nodes.filter(n => { return n.partition == groupId; }).length
-                  };
+                    return { 
+                    groupId : groupId,
+                    partitionType: nodes.filter(n => { 
+                      if (n.partition == groupId){
+                        return n.type; 
+                      }
+                    })[0].type,
+                    count : nodes.filter(n => { return n.partition == groupId; }).length
+                    };
                   })
                   // .filter( group => { return group.count > 2;})
-                  .map( group => { return group.groupId; });
+                  //.map( group => { return group.groupId; });
+
+    console.log("groupIds is ",groupIds)
 
     linkData = d.links
 
@@ -148,18 +152,37 @@ function loadData(){
 
     links = createLinksNum(links)
 
+    minSlider=99999999
+    maxSlider=0
+    links.forEach(function(link){
+      if (parseInt(link.weight)>maxSlider){
+        maxSlider = parseInt(link.weight)
+      }
+      if (parseInt(link.weight)<minSlider){
+        minSlider = parseInt(link.weight)
+      }
+    })
+    document.getElementById("minSlider").min = minSlider;
+    document.getElementById("minSlider").value = minSlider
+    document.getElementById("maxSlider").max = maxSlider;
+    document.getElementById("maxSlider").value = maxSlider;
+
+    document.getElementById("minNumber").value = minSlider;
+    document.getElementById("maxNumber").value = maxSlider;
+
+    minEdgeWeight = parseInt(document.getElementById("minSlider").value)
+    maxEdgeWeight = parseInt(document.getElementById("maxSlider").value)
+
     setup(nodes,links, numPartitions);
   })  
 }
 
 loadData()
                 
-
 // set the color scale
 var linkColors = d3.scaleOrdinal()
     .domain(["heap_dependency", "data_dependency", "read", "write"])
     .range(["#888888","#888888","#888888","#565656"]);
-
 
 var linkColors2 = d3.scaleOrdinal(d3.schemeCategory10)
 
@@ -185,7 +208,9 @@ function marker(linkColors2) {
     return "url(" + linkColors2 + ")";
 };
 
-
+//==================================================
+//=============Side Menu Functions==================
+//==================================================
 function openNav(type, d) {
     if (type=="partition"){ //click on partition
       d3.select('#chartSVG').remove() //remove bar chart showing contained methods
@@ -202,7 +227,6 @@ function openNav(type, d) {
       //==================================================
       d3.selectAll("#navTitle").on("keypress", function() {
         if(d3.event.keyCode === 13){
-          console.log("Congrats, you pressed enter")
           var newPartitionName= d3.select(this).property("value")
           var oldPartitionName= d3.select(this).property("placeholder")
           //==========================================================
@@ -219,13 +243,6 @@ function openNav(type, d) {
               //change all partitions to new one
               node.partition = newPartitionName
               node.method_partitions = node.method_partitions.toString().split(',') //convert method partition to string
-              console.log("method partition is ",node.method_partitions)
-              console.log("old partition name is ",oldPartitionName)
-              // node.method_partitions.forEach(methodPartition =>{
-              //   if (methodPartition == oldPartitionName){
-              //     methodPartition = newPartitionName
-              //   }
-              // })
               function getAllIndexes(arr, val) {
                 var indexes = [], i = -1;
                 while ((i = arr.indexOf(val, i+1)) != -1){
@@ -233,14 +250,10 @@ function openNav(type, d) {
                 }
                 return indexes;
             }
-
-              // var itemIndex= node.method_partitions.indexOf(oldPartitionName)
               var itemIndices= getAllIndexes(node.method_partitions,oldPartitionName)
-              console.log("index of current method partition is ",itemIndices)
               itemIndices.forEach(index => {
                 node.method_partitions[index] = newPartitionName //swap old partition for new partition in method_partitions array
               })
-              console.log("new method partition is ",node.method_partitions)
             }
           })
           d3.selectAll("#graphSVGMethod").remove()
@@ -254,7 +267,6 @@ function openNav(type, d) {
           }
           document.getElementById("navTitle").placeholder = newPartitionName //change partition name placeholder
           document.getElementById("navTitle").value = ""//clear input box
-
         }
       })
 
@@ -264,12 +276,9 @@ function openNav(type, d) {
       document.getElementById("navTitleLabel").style.display = "block"
       document.getElementById("navTitleLabel").innerText = d.name
       document.getElementById("description").innerText = "Total number of methods: "+ d.children.length
-      // document.getElementById("mySidenav").style.width = "250px";     //open navigation menu
 
       //remove chart svg
       d3.select('#chartSVG').remove()
-
-      console.log("clicked. node data is ",d)
 
       var dataPartitions= []
       d.children.forEach(function(childNode){
@@ -278,9 +287,6 @@ function openNav(type, d) {
 
       var sampleData = Array.from(new Set(dataPartitions)).map(a =>
         ({label:a, value: dataPartitions.filter(f => f === a).length}));
-
-      console.log("dataChart is ",sampleData)
-      console.log("dataChart is ",Object.keys(sampleData))
 
       var colorTest=  d3.scaleOrdinal()
                     .domain(Object.keys(sampleData))
@@ -403,38 +409,90 @@ function openNav(type, d) {
       document.getElementById("navTitle").style.display = "none"
       document.getElementById("navTitleLabel").innerText = d.name
       document.getElementById("description").innerText = ""
-      // document.getElementById("dataCentrality").innerText = "Data Centrality: "+d.data.dataCentrality
-      // document.getElementById("mySidenav").style.width = "250px";     //open navigation menu
     }
 }
+//==================================================
+//=================Repartition=======================
+//==================================================
+d3.selectAll("#repartitionBtn").on("click",function(){
+  console.log("moved nodes is ",movedNodes)
+})
     
 //==================================================
 //===================Min- Max Edge Weight===========
 //==================================================
 
-var minEdgeWeight=parseFloat(document.getElementById('minEdge').value)
-var maxEdgeWeight=51-parseFloat(document.getElementById('maxEdge').value)
+var minEdgeWeight=0
+var maxEdgeWeight=99999999
 
-d3.selectAll("#minEdge").on("input",function(value){
-  minEdgeWeight=parseFloat(document.getElementById('minEdge').value)
-  console.log("min edge weight is ",minEdgeWeight)
-
-})
-d3.selectAll("#maxEdge").on("input",function(value){
-  maxEdgeWeight=51-parseFloat(document.getElementById('maxEdge').value)
-  console.log("max edge weight is ",maxEdgeWeight)
-
-})
-
-function setup() {
+function setup(callOrigin) {
     //var newLinks = []
-    newLinks = []
-    console.log("in setup ")
-    console.log("nodes is ",nodes)
-    console.log("links is ",links)
 
-    console.log("minEdgeWeight is ",minEdgeWeight)
-    console.log("maxEdgeWeight is ",maxEdgeWeight)
+    let rangeMin = 1;
+    const range = document.querySelector(".range-selected");
+    const rangeInput = document.querySelectorAll(".range-input input");
+    const rangePrice = document.querySelectorAll(".range-price input");
+
+    rangeInput.forEach((input) => {
+      input.addEventListener("change", (e) => {
+        let minRange = parseInt(rangeInput[0].value);
+        let maxRange = parseInt(rangeInput[1].value);
+        if (maxRange - minRange < rangeMin) {     
+          if (e.target.className === "min") {
+            rangeInput[0].value = maxRange - rangeMin;        
+          } else {
+            rangeInput[1].value = minRange + rangeMin;        
+          }
+        } else {
+          rangePrice[0].value = minRange;
+          rangePrice[1].value = maxRange;
+          range.style.left = (minRange / rangeInput[0].max) * 100 + "%";
+          range.style.right = 100 - (maxRange / rangeInput[1].max) * 100 + "%";
+
+          maxEdgeWeight = maxRange
+          minEdgeWeight = minRange
+        }
+
+        svg.selectAll(".link").remove()
+
+        svg.selectAll(".link")
+            .data(newLinksFiltered)
+            .enter().append("path")
+            .filter(function(d){
+              return (d.weight >= minEdgeWeight && d.weight <= maxEdgeWeight)
+            })
+            .attr("id",function(d,i){
+              return "linkId_"+i
+            })
+            .classed('link', true)
+            .style("stroke","#565656")
+            .style("stroke-opacity","0.7")
+            .style("stroke-width",1)
+            .each(function(d) {
+              var thisColor = linkColors("write")
+              d3.select(this)
+                  .style("stroke", thisColor)
+                  .attr("marker-end", marker(thisColor))
+            });
+        ticked()
+      });
+    });
+    rangePrice.forEach((input) => {
+      input.addEventListener("input", (e) => {
+        let minPrice = rangePrice[0].value;
+        let maxPrice = rangePrice[1].value;
+        if (maxPrice - minPrice >= rangeMin && maxPrice <= rangeInput[1].max) {
+          if (e.target.className === "min") {
+            rangeInput[0].value = minPrice;
+            range.style.left = (minPrice / rangeInput[0].max) * 100 + "%";
+          } else {
+            rangeInput[1].value = maxPrice;
+            range.style.right = 100 - (maxPrice / rangeInput[1].max) * 100 + "%";
+          }
+        }
+      });
+    });
+
 
     function createNewLinks(){
       newLinks = []
@@ -484,43 +542,23 @@ function setup() {
       })
     }
     
-    //console.log("newLinks is ",newLinks)
-    
-    // var exampleData = {
-    //   source: "class1",
-    //   target: "class4",
-    //   weight: 9,
-    //   weightArray: [1,1,3,2,1],
-    //   typeArray:["call_dependency","control_dependency","call_dependency","heap_dependency","heap_dependency"],
-    //   children:[
-    //     {source: "class1.method1",target: "class4.method2", weight: 1, type:["call_dependency"]},
-    //     {source: "class1.method1",target: "class4.method2", weight: 1, type:["control_dependency"]},
-    //     {source: "class1.method1",target: "class4.method2", weight: 3, type:["call_dependency"]},
-    //     {source: "class1.method1",target: "class4.method1", weight: 2, type:["heap_dependency"]},
-    //     {source: "class1.method1",target: "class4.method2", weight: 1, type:["heap_dependency"]},
-    //   ]
-    // }
-    
-    
     createNewLinks()
     createLinksNum(newLinks)
     newLinksFiltered = newLinks
-    console.log("newLinks is ",newLinks)
     
     //==================================================
     //===================Filter links===================
     //==================================================
 
     function filterLinks(){
-      console.log("input clicked")
       var checkedLinks=[]
       var boxes = d3.selectAll("input.checkbox:checked");
       boxes.each(function() {
         checkedLinks.push(this.value)
       })
-      console.log("boxes are ",checkedLinks)
       if (checkedLinks.includes("ALL")){
-        console.log("newLinks is ",newLinks)
+        createNewLinks()
+        createLinksNum(newLinks)
         newLinksFiltered = newLinks
       }
       else{
@@ -528,32 +566,27 @@ function setup() {
           return checkedLinks.includes(l.type)
         })
       }
-
-      console.log("newLinks filtered is ",newLinksFiltered)
+      ticked()
     }
-    d3.selectAll("input").on("click", function() {
+    d3.selectAll(".checkbox").on("click", function() {
       filterLinks()
 
       svg.selectAll(".link").remove()
+
       svg.selectAll(".link")
         .data(newLinksFiltered)
         // .data(links)
         .enter().append("path")
+        .filter(function(d){
+          return (d.weight >= minEdgeWeight && d.weight <= maxEdgeWeight)
+        })
         .attr("id",function(d,i){
           return "linkId_"+i
         })
         .classed('link', true)
         .style("stroke","#565656")
         .style("stroke-opacity","0.7")
-        .style("stroke-width",function(d,i){
-          var listWeights=[]
-          newLinksFiltered.forEach(function(l){
-            listWeights.push(l.weight)
-          })
-          
-          var arrayNormalized= listWeights.map(normalize(minEdgeWeight, maxEdgeWeight))
-          return arrayNormalized[i]
-        })
+        .style("stroke-width",1)
         .each(function(d) {
           // var thisColor = linkColors(Object.getPrototypeOf(d).transaction_type)
           var thisColor = linkColors("write")
@@ -573,176 +606,75 @@ function setup() {
     //=================Expand Links function=====================
     //===========================================================
     function expandLinks(){
-      console.log("in expand links")
       //TO DO: If classes, don't display links to itself
     
       var arrayTypes=[]
       newLinksFiltered.forEach(function(link){
           var thisLink = Object.assign({}, link) //deep copy
-          //thisLink.weight=1
           thisLink.type=link.type
           arrayTypes.push(thisLink)
-          // link.weightArray.forEach(function(linkWeight,i){
-          //   //var thisLink = link 
-          //   var thisLink = Object.assign({}, link) //deep copy
-          //   thisLink.weight=linkWeight
-          //   thisLink.type=link.typeArray[i]
-          //   arrayTypes.push(thisLink)
-          // })
       })
       newLinksFiltered = arrayTypes
     }
+    //=========================================
+    //============Draw Link Arrows=============
+    //=========================================
 
-    d3.selectAll("#expandLinksBtn")
-      .on("click",function(){
-        console.log("clicked")
-        if(linksExpanded==0){ //expand links
-          linksExpanded=1
-          d3.selectAll("#expandLinksBtn").text("Collapse Links") //change button text
-          expandLinks()
-          createLinksNum(newLinksFiltered)
-          console.log("new links is ",newLinksFiltered)
-        
-          svg.selectAll(".link").remove()
+    expandLinks()
+    createLinksNum(newLinksFiltered)
+  
+    svg.selectAll(".link").remove()
+  
+    function noClassLinks(link) {
+      return link.source.name != link.target.name
+    }
     
-          function noClassLinks(link) {
-            return link.source.name != link.target.name
-          }
-         
-          var newLinksFiltered2 = newLinksFiltered.filter(noClassLinks)
-    
-          svg.selectAll(".link")
-            .data(newLinksFiltered2)
-            // .data(links)
-            .enter().append("path")
-            .attr("id",function(d,i){
-              return "linkId_"+i
-            })
-            .classed('link', true)
-            .style("stroke","#565656")
-            .style("stroke-opacity","0.7")
-            .style("stroke-width",function(d,i){
-              var listWeights=[]
-              newLinksFiltered2.forEach(function(l){
-                listWeights.push(l.weight)
-              })
-              
-              var arrayNormalized= listWeights.map(normalize(minEdgeWeight, maxEdgeWeight))
-              return arrayNormalized[i]
-            })
-            // .attr("marker-end", "none")
-            //.attr("marker-end", "url(#triangle)")   //append arrow tip
-            .each(function(d) {
-              // var thisColor = linkColors(Object.getPrototypeOf(d).transaction_type)
-              var thisColor = linkColors("write")
-              d3.select(this)
-                  // .style("stroke", "#888888")
-                  // .attr("marker-end", "#888888")
-                  .style("stroke", thisColor)
-                  .attr("marker-end", marker(thisColor))
-            });
-        
-          ticked()
-        }
-        else{ //collapse links
-          console.log("in collapse links")
-          d3.selectAll("#expandLinksBtn").text("Expand Links") //change button text
-          linksExpanded=0
-          // createNewLinks()
-          // createLinksNum(newLinks)
-          // newLinksFiltered = newLinks
-          console.log("newLinks is ",newLinksFiltered)
-    
-          svg.selectAll(".link").remove()
-    
-          svg.selectAll(".link")
-            .data(newLinksFiltered)
-            // .data(links)
-            .enter().append("path")
-            .attr("id",function(d,i){
-              return "linkId_"+i
-            })
-            .classed('link', true)
-            .style("stroke","#565656")
-            .style("stroke-opacity","0.7")
-            .style("stroke-width",function(d,i){
-              var listWeights=[]
-              newLinksFiltered.forEach(function(l){
-                listWeights.push(l.weight)
-              })
-              
-              var arrayNormalized= listWeights.map(normalize(minEdgeWeight, maxEdgeWeight))
-              return arrayNormalized[i]
-            })
-            .attr("marker-end", "none")
-      
-          ticked()
-        }
+    var newLinksFiltered2 = newLinksFiltered.filter(noClassLinks)
+
+    svg.selectAll(".link").remove()
+
+    svg.selectAll(".link")
+      .data(newLinksFiltered2)
+      // .data(links)
+      .filter(function(d){
+        return (d.weight >= minEdgeWeight && d.weight <= maxEdgeWeight)
       })
-      
-    console.log("links expanded is ",linksExpanded)
-    
-    if (linksExpanded==1){ //expand links
-      expandLinks()
-      createLinksNum(newLinksFiltered)
-      console.log("new links is ",newLinksFiltered)
-    
-      svg.selectAll(".link").remove()
-    
-      function noClassLinks(link) {
-        return link.source.name != link.target.name
-      }
-     
-      var newLinksFiltered2 = newLinksFiltered.filter(noClassLinks)
-    
-      svg.selectAll(".link")
-        .data(newLinksFiltered2)
-        // .data(links)
-        .enter().append("path")
-        .attr("id",function(d,i){
-          return "linkId_"+i
+      .enter().append("path")
+      .attr("id",function(d,i){
+        return "linkId_"+i
+      })
+      .classed('link', true)
+      .style("stroke","#565656")
+      .style("stroke-opacity","0.7")
+      .style("stroke-width",1)
+      .each(function(d) {
+        // var thisColor = linkColors(Object.getPrototypeOf(d).transaction_type)
+        var thisColor = linkColors("write")
+        d3.select(this)
+            .style("stroke", thisColor)
+            .attr("marker-end", marker(thisColor))
+      });
+
+    svg.selectAll(".node")
+        .attr("transform", function(d) { 
+            d.fixed=true; 
+            //bind position of node to stay within svg
+            d.x = Math.max(10, Math.min(width - 10, d.x)); 
+            d.y = Math.max(10, Math.min(height - 10, d.y)); 
+            return "translate(" + d.x + "," + d.y + ")"; 
         })
-        .classed('link', true)
-        .style("stroke","#565656")
-        .style("stroke-opacity","0.7")
-        .style("stroke-width",function(d,i){
-          var listWeights=[]
-          newLinksFiltered2.forEach(function(l){
-            listWeights.push(l.weight)
-          })
-          
-          var arrayNormalized= listWeights.map(normalize(minEdgeWeight, maxEdgeWeight))
-          return arrayNormalized[i]
+        .style("fill", function(d) { 
+          // return "#888888"
+          return colorPartition(d.partition) 
         })
-        .each(function(d) {
-          // var thisColor = linkColors(Object.getPrototypeOf(d).transaction_type)
-          var thisColor = linkColors("write")
-          d3.select(this)
-              .style("stroke", thisColor)
-              .attr("marker-end", marker(thisColor))
-        });
 
-      svg.selectAll(".node")
-          .attr("transform", function(d) { 
-              d.fixed=true; 
-              //bind position of node to stay within svg
-              d.x = Math.max(10, Math.min(width - 10, d.x)); 
-              d.y = Math.max(10, Math.min(height - 10, d.y)); 
-              return "translate(" + d.x + "," + d.y + ")"; 
-          })
-          .style("fill", function(d) { 
-            // return "#888888"
-            return colorPartition(d.partition) 
-          })
+    svg.selectAll('.node').raise()
 
-
-      svg.selectAll('.node').raise()
-
-      ticked()
-    }
-    else{
+    ticked()
+    // }
+    // else{
       
-    }
+    // }
     
     // //draw links between current method nodes for nodes that are expanded
     // //for links that aren't expanded, replace method name by class name
@@ -830,72 +762,42 @@ function setup() {
     //==================================
 
     groupIds = d3.set(nodes.map(n => { return n.partition; }))
-    .values()
-    .map( groupId =>  {
-    return { 
-      groupId : groupId,
-      count : nodes.filter(n => { return n.partition == groupId; }).length
-    };
-    })
-    // .filter( group => { return group.count > 2;})
-    .map( group => { return group.groupId; });
+                  .values()
+                  .map( groupId =>  {
+                    return { 
+                    groupId : groupId,
+                    partitionType: nodes.filter(n => { 
+                      if (n.partition == groupId){
+                        return n.type; 
+                      }
+                    })[0].type,
+                    count : nodes.filter(n => { return n.partition == groupId; }).length
+                    };
+                  })
 
     // set the color scale
     colorPartition = d3.scaleOrdinal()
                       .domain(groupIds)
                       .range(d3.schemeDark2);
 
-    // //create Partition rects
-    // var partitionRects = svg.selectAll('rect')
-    //   .data(groupIds, function(d) { return +d; })
-    //   .enter()
-    //   .append('g')
-    //   .attr('class', 'rect_placeholder')
-    //   .attr('id',d=>{
-    //     return 'rectPlaceholder'+d
-    //   })
-    //   .append('rect')
-    //   .classed("partitionRect",true)
-    //   .attr("id",d=>{
-    //     return d
-    //   })
-    //   .attr('stroke', d=>{
-    //     return colorPartition(d)
-    //   })
-    //   .attr('fill',  d=>{
-    //     return colorPartition(d)
-    //   })
-    //   .attr('opacity', 1)
-
     //==================================
     //============Draw Links============
     //==================================
-    function normalize(min, max) {
-      var delta = max - min;
-      return function (val) {
-          return (val - min) / delta;
-      };
-    }
-  
+
     svg.selectAll(".link")
         .data(newLinksFiltered)
         // .data(links)
         .enter().append("path")
+        .filter(function(d){
+          return (d.weight >= minEdgeWeight && d.weight <= maxEdgeWeight)
+        })
         .attr("id",function(d,i){
           return "linkId_"+i
         })
         .classed('link', true)
         .style("stroke","#565656")
         .style("stroke-opacity","0.7")
-        .style("stroke-width",function(d,i){
-          var listWeights=[]
-          newLinksFiltered.forEach(function(l){
-            listWeights.push(l.weight)
-          })
-          
-          var arrayNormalized= listWeights.map(normalize(minEdgeWeight, maxEdgeWeight))
-          return arrayNormalized[i]
-        })
+        .style("stroke-width",1)
         .attr("marker-end", "none")
 
     //==================================
@@ -1031,19 +933,20 @@ function setup() {
         })
         .on('contextmenu', (node) => { //right click 
           d3.event.preventDefault();
-          console.log("right clicked")
           if (node.type != "SQLTable"){ //only allow right click on code nodes
             if (node.isMethod != true){ //if node is a class, expand 
               force.stop();
               expand(node);
 
-              console.log("in right click")
-
               force = d3.forceSimulation(nodes)
                         .force("x", d3.forceX(d => {
                           //return 0
                           var deltaX = Math.random() //returns random number between 0 and 1
-                          var partitionNum= groupIds.indexOf(String(d.partition))
+                          var partitionNames=[]
+                          groupIds.forEach(function(partition){
+                            partitionNames.push(partition.groupId)
+                          })
+                          var partitionNum= partitionNames.indexOf(String(d.partition))
                           if (partitionNum != -1){
                             return (width /(numPartitions+1) * partitionNum)+ deltaX
                           }
@@ -1053,7 +956,7 @@ function setup() {
                         }).strength(0))
                         .force("charge", d3.forceManyBody().distanceMin(10).distanceMax(15))
 
-              setup();
+              setup("expandNodes");
               makePartitions()
 
               force.nodes(nodes); 
@@ -1069,7 +972,7 @@ function setup() {
             else{ //if node is a method, collapse
               force.stop();
               collapse(node);
-              setup();
+              setup("collapseNodes");
               makePartitions()
 
               // SOLUTION: reset alpha, for the simulation to actually run again
@@ -1091,7 +994,6 @@ function setup() {
 
     //drag nodes
     function dragstarted(d) {
-    console.log("dragstarted")
     if (!d3.event.active) force.alphaTarget(0.3).restart();
     d.fx = d.x;
     d.fy = d.y;
@@ -1099,21 +1001,20 @@ function setup() {
     var thisPartition= d.partition
 
     partitionBeforeNodeDragX = d3.selectAll('rect')
-                      .filter(function(d) { return d == thisPartition})
+                      .filter(function(d) { return d.groupId == thisPartition})
                       .attr("x")
 
     partitionBeforeNodeDragY = d3.selectAll('rect')
-                    .filter(function(d) { return d == thisPartition})
+                    .filter(function(d) { return d.groupId == thisPartition})
                     .attr("y")
 
     partitionBeforeNodeDragWidth = d3.selectAll('rect')
-                                      .filter(function(d) { return d == thisPartition})
+                                      .filter(function(d) { return d.groupId == thisPartition})
                                       .attr("width")
 
     partitionBeforeNodeDragWidth = d3.selectAll('rect')
-                                      .filter(function(d) { return d == thisPartition})
+                                      .filter(function(d) { return d.groupId == thisPartition})
                                       .attr("height")
-
     }
 
     function dragged(d) {
@@ -1125,82 +1026,171 @@ function setup() {
 
       //fix_nodes(d);
       svg.selectAll('.partitionLabel').remove()
-
     }
 
     function dragended(this_node) {
-    console.log("in drag ended")
-    this_node.x = d3.event.x;
-    this_node.y = d3.event.y;
-    //flag to differentiate between drag and click event
-    if (isDragged == 1) {
+      this_node.x = d3.event.x;
+      this_node.y = d3.event.y;
+      //flag to differentiate between drag and click event
+      if (isDragged == 1) {
+        node.each(function(d) {
+          if (this_node == d) {  //found dragged node
+            var foundPartition = 0
+            d3.selectAll('rect').each(function(rect) {
+              //find which rectangle partition we want to move it to
+              var x1= parseFloat(d3.select(this).attr("x")) + parseFloat(d3.select(this).attr("width"))
+              var y1= parseFloat(d3.select(this).attr("y")) + parseFloat(d3.select(this).attr("height"))
+              
+              if ((this_node.x > d3.select(this).attr("x")) && (this_node.x < x1) && (this_node.y > d3.select(this).attr("y")) && (this_node.y < y1)){
 
-      node.each(function(d) {
-        // if (!partitionCount[d.partition]){
-        //   partitionCount[d.partition]= 1
-        // }
-        // else{
-        //   partitionCount[d.partition]= partitionCount[d.partition]+1
-        // }
-        // console.log("partitionCount is ",partitionCount)
-        if (this_node == d) {  //found dragged node
-          var foundPartition = 0
-          d3.selectAll('rect').each(function(rect) {
-            //find which rectangle partition we want to move it to
-            var x1= parseFloat(d3.select(this).attr("x")) + parseFloat(d3.select(this).attr("width"))
-            var y1= parseFloat(d3.select(this).attr("y")) + parseFloat(d3.select(this).attr("height"))
-
-            
-            if ((this_node.x > d3.select(this).attr("x")) && (this_node.x < x1) && (this_node.y > d3.select(this).attr("y")) && (this_node.y < y1)){
-              foundPartition = 1
-
-              console.log("node coordinates are x:",this_node.x," and y: ",this_node.y)
-              var oldPartition= d.partition
-              console.log("old partition is ",oldPartition)
-
-              var newPartition = d3.select(this).attr("id")
-              d.partition=newPartition //destination partition
-              console.log("new partition is ",d.partition)
-              console.log("d is ",d)
-              console.log("d children is ",d.children)
-
-              if (d.children) {//if class,
-                //change all children's partitions to this partition
-                d.children.forEach(function(childNode){
-                  console.log(childNode)
-                  childNode.partition = newPartition
-                })
-              }
-              else{ //if method
-                var parentNode= d.parent
-                var methodPartitions=[]
-                parentNode.children.forEach(function(childNode){
-                  methodPartitions.push(childNode.partition) //get all method partitions
-                })
-                //find most frequent method partition in array
-                var mf = 1;
-                var m = 0;
-                var item;
-                var arr1= methodPartitions
-
-                if (arr1.length > 1){
-                  for (var i=0; i<arr1.length; i++){
-                    for (var j=i; j<arr1.length; j++) {
-                      if (arr1[i] == arr1[j]) m++;
-                      if (mf<=m){
-                        mf=m; 
-                        item = arr1[i];
-                      }
-                    }
-                    m=0;
+                var oldPartition= d.partition
+                var newPartitionName = d3.select(this).attr("id")
+                var newPartitionType
+                groupIds.forEach(function(partition){
+                  if (partition.groupId ==newPartitionName){
+                    newPartitionType = partition.partitionType
                   }
-                  parentNode.partition = item //reset partition for class
+                })
+                if (d.type=="ClassNode" && newPartitionType=="ClassNode"){
+                  foundPartition = 1
                 }
-                else{
-                  parentNode.partition = methodPartitions[0] //reset partition for class
+                else if (d.type=="MethodNode" && newPartitionType=="ClassNode"){
+                  foundPartition = 1
                 }
+                else if (d.type=="SQLTable" && newPartitionType=="SQLTable"){                  
+                  foundPartition = 1
+                }
+                else{ //do not drag node
+                  console.log("else")
+                  foundPartition="doNotDrag"
+                }
+
+                if (foundPartition == 1) {
+                  d.partition=newPartitionName //destination partition
+
+                  if (d.children) {//if class,
+                    //change all children's partitions to this partition
+                    d.children.forEach(function(childNode){
+                      childNode.partition = newPartitionName
+                    })
+                  }
+                  else{ //if method
+                    var parentNode= d.parent
+                    var methodPartitions=[]
+                    parentNode.children.forEach(function(childNode){
+                      methodPartitions.push(childNode.partition) //get all method partitions
+                    })
+                    //find most frequent method partition in array
+                    var mf = 1;
+                    var m = 0;
+                    var item;
+                    var arr1= methodPartitions
+  
+                    if (arr1.length > 1){
+                      for (var i=0; i<arr1.length; i++){
+                        for (var j=i; j<arr1.length; j++) {
+                          if (arr1[i] == arr1[j]) m++;
+                          if (mf<=m){
+                            mf=m; 
+                            item = arr1[i];
+                          }
+                        }
+                        m=0;
+                      }
+                      parentNode.partition = item //reset partition for class
+                    }
+                    else{
+                      parentNode.partition = methodPartitions[0] //reset partition for class
+                    }
+                  }
+                  var partitionCount = {}
+                  node.each(function(d) {
+                    if (!partitionCount[d.partition]){
+                      partitionCount[d.partition]= 1
+                    }
+                    else{
+                      partitionCount[d.partition]= partitionCount[d.partition]+1
+                    }
+                  })
+  
+                  if (newPartitionName != oldPartition){
+                    //if old partition is empty, remove it from groupIds
+                    if (partitionCount[oldPartition] == 0){
+                      groupIds = groupIds.filter(function(item) {
+                        return item.groupId !== oldPartition
+                      })
+                    }
+                  }
+                } 
+              makePartitions() //recreate partitions
+            }
+          })
+            //==================================================================
+            //============If node is not inside existing partition=========
+            //==================================================================
+            if (foundPartition == 0){
+              //if a node is being dragged too far from partition
+              //create new partition for that node
+              var minX = partitionBeforeNodeDragX
+              var maxX = partitionBeforeNodeDragWidth
+              var minY = partitionBeforeNodeDragY
+              var maxY = partitionBeforeNodeDragHeight
+          
+              if ((this_node.x < minX - 30) || (this_node.x > maxX + 30) || (this_node.y < minY - 30) || (this_node.y > maxY + 30) ){
+                var oldPartition = this_node.partition
+                if (this_node.type=="SQLTable"){
+                  var newPartitionName = "untitledDatabase"+ (groupIds.length + 1)
+                  var partitionType="SQLTable"
+                }
+                else if (this_node.type=="ClassNode"){
+                  var newPartitionName = "untitledPartition"+ (groupIds.length + 1)
+                  var partitionType="ClassNode"
+                }
+                else if (this_node.type=="MethodNode"){
+                  var newPartitionName = "untitledPartition"+ (groupIds.length + 1)
+                  var partitionType="ClassNode"
+                }
+                this_node.partition= newPartitionName
+                groupIds.push({"groupId":newPartitionName, "partitionType":partitionType})
+                //move all children to this new partition
+                if (d.children) {//if class,
+                  //change all children's partitions to this partition
+                  d.children.forEach(function(childNode){
+                    console.log(childNode)
+                    childNode.partition = newPartitionName
+                  })
+                }
+                else{ //if method
+                  var parentNode= d.parent
+                  var methodPartitions=[]
+                  parentNode.children.forEach(function(childNode){
+                    methodPartitions.push(childNode.partition) //get all method partitions
+                  })
+                  //find most frequent method partition in array
+                  var mf = 1;
+                  var m = 0;
+                  var item;
+                  var arr1= methodPartitions
+
+                  if (arr1.length > 1){
+                    for (var i=0; i<arr1.length; i++){
+                      for (var j=i; j<arr1.length; j++) {
+                        if (arr1[i] == arr1[j]) m++;
+                        if (mf<=m){
+                          mf=m; 
+                          item = arr1[i];
+                        }
+                      }
+                      m=0;
+                    }
+                    parentNode.partition = item //reset partition for class
+                  }
+                  else{
+                    parentNode.partition = methodPartitions[0] //reset partition for class
+                  }
+                }
+
               }
-              console.log("node is ",node)
               var partitionCount = {}
               node.each(function(d) {
                 if (!partitionCount[d.partition]){
@@ -1209,172 +1199,74 @@ function setup() {
                 else{
                   partitionCount[d.partition]= partitionCount[d.partition]+1
                 }
-                console.log("partitionCount is ",partitionCount)
               })
-
-              if (newPartition != oldPartition){
+              //svg.selectAll('rect').remove()
+              //if old partition is empty, remove it from groupIds
+              if (newPartitionName != oldPartition){
                 //if old partition is empty, remove it from groupIds
                 if (partitionCount[oldPartition] == 0){
-                  console.log("partition is now empty")
-                  console.log("oldPartition is ",oldPartition)
-
-                  console.log("old groupIds is ",groupIds)
                   groupIds = groupIds.filter(function(item) {
-                    return item !== oldPartition
+                    return item.groupId !== oldPartition
                   })
-                  console.log("new groupIds is ",groupIds)
                 }
+              }
+              makePartitions()
+
             }
-            makePartitions() //recreate partitions
           }
         })
-          //==================================================================
-          //============If node is not inside existing partition=========
-          //==================================================================
-          if (foundPartition == 0){
-            //if a node is being dragged too far from partition
-            //create new partition for that node
-            var minX = partitionBeforeNodeDragX
-            var maxX = partitionBeforeNodeDragWidth
-            var minY = partitionBeforeNodeDragY
-            var maxY = partitionBeforeNodeDragHeight
-        
-            if ((this_node.x < minX - 30) || (this_node.x > maxX + 30) || (this_node.y < minY - 30) || (this_node.y > maxY + 30) ){
-              console.log("node dragged too far outside partition")
-              var oldPartition = this_node.partition
-              var newPartitionName = "untitledPartition"+ (groupIds.length + 1)
-              this_node.partition= newPartitionName
-              groupIds.push(newPartitionName)
-              console.log("d is ",d)
-              //move all children to this new partition
-              if (d.children) {//if class,
-                console.log("node is a class")
-                //change all children's partitions to this partition
-                d.children.forEach(function(childNode){
-                  console.log(childNode)
-                  childNode.partition = newPartitionName
-                })
-              }
-              else{ //if method
-                var parentNode= d.parent
-                console.log("parent node is ",parentNode)
-
-                var methodPartitions=[]
-                parentNode.children.forEach(function(childNode){
-                  methodPartitions.push(childNode.partition) //get all method partitions
-                })
-                console.log("method partitions is ",methodPartitions)
-                //find most frequent method partition in array
-                var mf = 1;
-                var m = 0;
-                var item;
-                var arr1= methodPartitions
-
-                if (arr1.length > 1){
-                  for (var i=0; i<arr1.length; i++){
-                    for (var j=i; j<arr1.length; j++) {
-                      if (arr1[i] == arr1[j]) m++;
-                      if (mf<=m){
-                        mf=m; 
-                        item = arr1[i];
-                        console.log("item is ",item)
-
-                      }
-                    }
-                    m=0;
-                  }
-                  console.log("item is ",item)
-
-                  parentNode.partition = item //reset partition for class
-                }
-                else{
-                  parentNode.partition = methodPartitions[0] //reset partition for class
-                }
-              }
-
-            }
-            console.log("node is ",node)
-            var partitionCount = {}
-            node.each(function(d) {
-              if (!partitionCount[d.partition]){
-                partitionCount[d.partition]= 1
-              }
-              else{
-                partitionCount[d.partition]= partitionCount[d.partition]+1
-              }
-              console.log("partitionCount is ",partitionCount)
-            })
-            //svg.selectAll('rect').remove()
-            //if old partition is empty, remove it from groupIds
-            if (newPartitionName != oldPartition){
-              //if old partition is empty, remove it from groupIds
-              if (partitionCount[oldPartition] == 0){
-                console.log("partition is now empty")
-                console.log("oldPartition is ",oldPartition)
-
-                console.log("old groupIds is ",groupIds)
-                groupIds = groupIds.filter(function(item) {
-                  return item !== oldPartition
-                })
-                console.log("new groupIds is ",groupIds)
-              }
-            }
-
-            makePartitions()
-
+        movedNodes.forEach(function(movedNode){
+          if (movedNode.name != this_node.name){
+            movedNodes.push(this_node)
           }
-        }
-      })
-      isDragged = 0
-    }
-    else{ //click
-        console.log("clicked")
-          //unclick all partitions
-        svg.selectAll(".partitionRect")
-        .classed("partitionClicked", false)
-        .classed("partitionNotClicked", true)      
+        })
+        isDragged = 0
+      }
+      else{ //click
+            //unclick all partitions
+          svg.selectAll(".partitionRect")
+          .classed("partitionClicked", false)
+          .classed("partitionNotClicked", true)      
 
-        //first set all nodes and links to not clicked to avoid duplicate classes
-        svg.selectAll(".link")
-        .classed("clicked notClicked", false);
+          //first set all nodes and links to not clicked to avoid duplicate classes
+          svg.selectAll(".link")
+          .classed("clicked notClicked", false);
 
-        svg.selectAll(".node")
-            .classed("clicked notClicked", false)
+          svg.selectAll(".node")
+              .classed("clicked notClicked", false)
 
-        Tooltip
-          .style("opacity", 1)
-          
-        Tooltip.style("display","block")
+          Tooltip
+            .style("opacity", 1)
+            
+          Tooltip.style("display","block")
 
 
-        svg.selectAll(".link")
-            .filter(function(l) { 
-              return l.source.name === this_node.name || l.target.name === this_node.name; 
-            })
-            .classed("clicked", true);
+          svg.selectAll(".link")
+              .filter(function(l) { 
+                return l.source.name === this_node.name || l.target.name === this_node.name; 
+              })
+              .classed("clicked", true);
 
-        svg.selectAll(".link")
-          .filter(function(l) { return l.source.named != this_node.name && l.target.name != this_node.name; })
-          .classed("notClicked", true);
+          svg.selectAll(".link")
+            .filter(function(l) { return l.source.named != this_node.name && l.target.name != this_node.name; })
+            .classed("notClicked", true);
 
-        //node that is selected
-        svg.selectAll(".node")
-          .filter(function(n) { return n.name === this_node.name })
-          .classed("clicked", true)
-          .classed("notClicked", false)
+          //node that is selected
+          svg.selectAll(".node")
+            .filter(function(n) { return n.name === this_node.name })
+            .classed("clicked", true)
+            .classed("notClicked", false)
 
-        //populate side menu
-        var nodeChildren = this_node.children
-        if (nodeChildren){ //class
-          openNav("class",this_node)
-        }
-        else{ //method
-          openNav("method",this_node)
-        }
-    }
-} //end of setup
-
-console.log("here")
+          //populate side menu
+          var nodeChildren = this_node.children
+          if (nodeChildren){ //class
+            openNav("class",this_node)
+          }
+          else{ //method
+            openNav("method",this_node)
+          }
+      }
+} 
 
 svg.selectAll('.node').filter((d,i)=> d.expanded === true).remove();  //remove expanded nodes from display
 svg.selectAll('.link').filter((d,i)=> d.source.expanded == true).remove();   //remove any links touching expanded nodes
@@ -1415,8 +1307,6 @@ var Tooltip = d3.selectAll(".container-right")
               .style("border-width", "1px")
               .style("border-radius", "5px")
               .style("padding", "5px")
-              // .style("opacity", "0")
-
 
 //======================================
 //===========Drag Partition=============
@@ -1425,126 +1315,69 @@ var offsetX
 var offsetY
 
 var dragHandler = d3.drag()
-.on("start",function(){
+  .on("start",function(){
+      var currPartition=  d3.select(this)
+
+      offsetX =  d3.event.x - currPartition.attr("x") 
+      offsetY=  d3.event.y - currPartition.attr("y") 
+
+      svg.selectAll(".node")
+        .filter(function(n) { 
+          if (n.partition ==  currPartition.attr("id")){
+          }
+          return n.partition ==  currPartition.attr("id")
+        })
+        .each(function(n) {
+          n.startX = d3.event.x;
+          n.startY = d3.event.y
+          n.offsetX = d3.event.x - n.x
+          n.offsetY = d3.event.y - n.y
+        })
+  })
+  .on("drag", function (d) {
+      var currPartition=  d3.select(this)
+
+      var nodesToDrag = svg.selectAll(".node")
+        .filter(function(n) { 
+          if (n.partition ==  currPartition.attr("id")){
+          }
+          return n.partition ==  currPartition.attr("id")
+        })
+        // .attr("transform", "translate(20,0)")
+        .each(function(n) {
+          var xDist = d3.event.x - n.startX
+          var yDist = d3.event.y - n.startY
+
+          // Update the position with the delta x and y applied by the drag:
+          n.x += d3.event.dx;
+          n.y += d3.event.dy
+
+        // Apply the translation to the shape:
+          d3.select(this).attr("transform", "translate(" + n.x + "," + n.y + ")");
+          // d3.select(this).attr("cx",d3.event.x - n.offsetX)
+          // d3.select(this).attr("cy",d3.event.y - n.offsetY)
+        })
+
+      //move current partititon
+      //offset to avoid prevent moving center to where the mouse is
+      d3.select(this).attr("x", d3.event.x - offsetX)
+      d3.select(this).attr("y", d3.event.y - offsetY)
+
+  })
+  .on("end", function () {
     var currPartition=  d3.select(this)
-
-    offsetX =  d3.event.x - currPartition.attr("x") 
-    offsetY=  d3.event.y - currPartition.attr("y") 
-
-    svg.selectAll(".node")
-      .filter(function(n) { 
-        if (n.partition ==  currPartition.attr("id")){
-        }
-        return n.partition ==  currPartition.attr("id")
-      })
-      .each(function(n) {
-        n.startX = d3.event.x;
-        n.startY = d3.event.y
-        console.log("n is ",n)
-        n.offsetX = d3.event.x - n.x
-        n.offsetY = d3.event.y - n.y
-      })
-})
-.on("drag", function (d) {
-    var currPartition=  d3.select(this)
-
-    var nodesToDrag = svg.selectAll(".node")
-      .filter(function(n) { 
-        if (n.partition ==  currPartition.attr("id")){
-        }
-        return n.partition ==  currPartition.attr("id")
-      })
-      // .attr("transform", "translate(20,0)")
-      .each(function(n) {
-        var xDist = d3.event.x - n.startX
-        var yDist = d3.event.y - n.startY
-
-        // Update the position with the delta x and y applied by the drag:
-        n.x += d3.event.dx;
-        n.y += d3.event.dy
-        console.log("dx, dy is ", d3.event.dx, d3.event.dy)
-
-        console.log("node is ", n.x, n.y)
-        console.log("mouse is ", d3.event.x, d3.event.y)
-
-      // Apply the translation to the shape:
-        d3.select(this).attr("transform", "translate(" + n.x + "," + n.y + ")");
-        // d3.select(this).attr("cx",d3.event.x - n.offsetX)
-        // d3.select(this).attr("cy",d3.event.y - n.offsetY)
-      })
-
-    //move current partititon
-    //offset to avoid prevent moving center to where the mouse is
-    d3.select(this).attr("x", d3.event.x - offsetX)
-    d3.select(this).attr("y", d3.event.y - offsetY)
-
-})
-.on("end", function () {
-  var currPartition=  d3.select(this)
-  //update n.x and n.y
-})
-
-// var dragHandler = d3.drag()
-//   // .origin(function(d,i) { return {x:0, y:0}; })
-//   .on("start",function(){
-//       console.log("drag started")
-//       //d3.event.sourceEvent.stopPropagation() //stop other events
-//       var currPartition=  d3.select(this)
-//       svg.selectAll(".node")
-//         .filter(function(n) { 
-//           if (n.partition ==  currPartition.attr("id")){
-//           }
-//           return n.partition ==  currPartition.attr("id")
-//         })
-//         .each(function(n) {
-//           n.fx=n.x
-//           n.fy=n.y
-//           n.startX = d3.event.x;
-//           n.startY = d3.event.y
-//         })
-//   })
-//   .on("drag", function () {
-//       console.log("partition is dragged")
-//       var currPartition=  d3.select(this)
-//       var nodesToDrag = svg.selectAll(".node")
-//         .filter(function(n) { 
-//           if (n.partition ==  currPartition.attr("id")){
-//           }
-//           return n.partition ==  currPartition.attr("id")
-//         })
-//         // .attr("transform", "translate(20,0)")
-//         .each(function(n) {
-//           var xDist = d3.event.x - n.startX
-//           var yDist = d3.event.y - n.startY
-
-//           //moving the nodes will move the rect
-//           n.fx+= xDist
-//           n.fy+=yDist
-
-//           n.startX = d3.event.x;
-//           n.startY = d3.event.y
-//         })
-//       makePartitions()
-//   })
-//   .on("end", function () {
-//   })
+    //update n.x and n.y
+  })
 
 svg.selectAll('.rect_placeholder')
-.append("text")
-.classed("partitionLabel",true)
-.attr("fill",d=>{
-  return colorPartition(d)
-  // return "#888888"
-
+  .append("text")
+  .classed("partitionLabel",true)
+  .attr("fill",d=>{
+    return colorPartition(d.groupId)
+    // return "#888888"
 })
 
 function ticked(){
-  // svg.selectAll(".link")
-  //   .attr("x1", function(d) { return d.source.x; }) 
-  //   .attr("y1", function(d) { return d.source.y; }) 
-  //   .attr("x2", function(d) { return d.target.x; }) 
-  //   .attr("y2", function(d) { return d.target.y; }); 
-
   //generate equidistant quadratic curves
   function link_arc(d) {
     // draw line for 1st link
@@ -1583,34 +1416,31 @@ function ticked(){
   var newLinksFiltered2 = newLinksFiltered.filter(noClassLinks)
 
   svg.selectAll(".link")
-      .data(newLinksFiltered2)
       .attr("d", function(d) { 
         let dx = d.target.x - d.source.x,
             dy = d.target.y - d.source.y
             return 'M' + d.source.x + ',' + d.source.y + link_arc(d) + d.target.x + ',' + d.target.y
+      })
+      .style("stroke-width",1)
 
-  })
   svg.selectAll(".link")
       .data(newLinksFiltered2)
       .style("stroke-opacity",d=>{
         return 0.7
       })
-      .style("stroke-width",function(d,i){
-        var listWeights=[]
-        newLinksFiltered2.forEach(function(l){
-          listWeights.push(l.weight)
-        })
-        
-        var arrayNormalized= listWeights.map(normalize(minEdgeWeight, maxEdgeWeight))
-        return arrayNormalized[i]
-      })
+      .style("stroke-width",1)
       .attr("d", function(d) { 
         var pl = this.getTotalLength() //get length of link
         var r=22/2
         var m = this.getPointAtLength(pl - r);
-
         return 'M' + d.source.x + ',' + d.source.y + link_arc(d) + m.x + ',' + m.y
-  });
+      })
+      .each(function(d) {
+        var thisColor = linkColors("write")
+        d3.select(this)
+            .style("stroke", thisColor)
+            .attr("marker-end", marker(thisColor))
+      });
 
   svg.selectAll(".node")
     .attr("transform", function(d) { 
@@ -1624,17 +1454,7 @@ function ticked(){
       return colorPartition(d.partition) 
       // return "#888888"
     })
-    // .style("fill-opacity", function(d) { 
-    //   // return "#888888"
-    //   console.log("d is ",d)
-    //   console.log("uncertainty is ",d.uncertainity)
-    //   if (d.uncertainity){
-    //     return 1 - d.uncertainity
-    //   }
-    //   else{
-    //     return 1
-    //   }
-    // })
+
   svg.selectAll('.node').raise()
 
   //labels for nodes
@@ -1661,21 +1481,12 @@ function fix_nodes() {
     d.fy = d.y;
   })
 
-  // node.each(function(d) {
-  //   if (this_node != d) {
-  //     d.fx = d.x;
-  //     d.fy = d.y;
-  //   }
-  // })
 }
 
 force.on("tick", function(e) {
-  //makePartitions()
   ticked()
-  //fix_nodes()
-
   })
-//simulation.alphaTarget(0.3)
+
 force
   .on("end", d=>{
     console.log("simulation ended")
@@ -1683,19 +1494,6 @@ force
     makePartitions()
     //createInitialPartitions()
   })
-// force.on("tick", function(e) {
-//     console.log("ticked")
-//     // SOLUTION: do not use variables for the links and nodes
-//     svg.selectAll("line.link")
-//     .attr("x1", function(d) { return d.source.x; }) 
-//     .attr("y1", function(d) { return d.source.y; }) 
-//     .attr("x2", function(d) { return d.target.x; }) 
-//     .attr("y2", function(d) { return d.target.y; }); 
-//     svg.selectAll("circle.node")
-//         .attr("cx", function(d) { return d.x; }) 
-//         .attr("cy", function(d) { return d.y; }); 
-//     //makePartitions()
-// });
 
 function polygonGenerator(groupId) {
   var node_coords = node
@@ -1752,10 +1550,6 @@ function polygonGenerator(groupId) {
 //==========Update partitions===============
 //==========================================
 function makePartitions() {
-  console.log("in make partitions")
-  //setup()
-  console.log("node make partitions is ",node)
-
   //svg.selectAll('rect').remove()
   svg.selectAll('.rect_placeholder').remove()
 
@@ -1765,25 +1559,24 @@ function makePartitions() {
                           .append('g')
                           .attr('class', 'rect_placeholder')
                           .attr('id',d=>{
-                            return 'rectPlaceholder'+d
+                            return 'rectPlaceholder'+d.groupId
                           })
                           .append('rect')
                           .classed("partitionRect",true)
                           .attr("id",d=>{
-                            return d
+                            return d.groupId
                           })
                           .attr('stroke', d=>{
-                            return colorPartition(d)
+                            return colorPartition(d.groupId)
                             // return "#888888"
-
                           })
                           .attr('fill',  d=>{
-                            return colorPartition(d)
+                            return colorPartition(d.groupId)
                             // return "white"
                           })
-                          .attr('opacity', 1)
+                          .style('fill-opacity', 0.2)
                           .attr("width",function(d) {
-                            var polygon = polygonGenerator(d)
+                            var polygon = polygonGenerator(d.groupId)
                             var x0=polygon[0][0]
                             var x1=polygon[0][0]
                             polygon.forEach(point =>{
@@ -1793,7 +1586,7 @@ function makePartitions() {
                             return (x1-x0)+100
                           })
                           .attr("height",function(d) {
-                            var polygon = polygonGenerator(d)
+                            var polygon = polygonGenerator(d.groupId)
                     
                             var y0=polygon[0][1]
                             var y1=polygon[0][1]
@@ -1805,7 +1598,7 @@ function makePartitions() {
                             return (y1-y0)+100
                           })
                           .attr("x",function(d) {
-                            var polygon = polygonGenerator(d)
+                            var polygon = polygonGenerator(d.groupId)
                             var x0=polygon[0][0]
                             polygon.forEach(point =>{
                               if (point[0] < x0){x0 = point[0]}
@@ -1814,7 +1607,7 @@ function makePartitions() {
                             return x0-50
                           })
                           .attr("y",function(d) {
-                            var polygon = polygonGenerator(d)
+                            var polygon = polygonGenerator(d.groupId)
                             var y0=polygon[0][1]
                             polygon.forEach(point =>{
                               if (point[1] < y0){y0 = point[1]}
@@ -1822,15 +1615,15 @@ function makePartitions() {
                             return y0-50
                           })
 
-  groupIds.forEach(groupId => {
+  groupIds.forEach(p => {
+
     d3.selectAll('rect')
-      .filter(function(d) { return d == groupId;})
-      .attr('pathId',"path"+groupId)
+      .filter(function(d) { return d == p.groupId;})
+      .attr('pathId',"path"+p.groupId)
       .attr('transform', 'scale(1) translate(0,0)')
       .style('fill-opacity', 0.2)
       .attr('stroke', d=>{
         // return "#888888"
-
         return colorPartition(d)
       })
       .attr('fill',  d=>{
@@ -1887,11 +1680,11 @@ function makePartitions() {
         .append("text")
         .classed("partitionLabel",true)
         .attr("fill",d=>{
-          return colorPartition(d)
+          return colorPartition(d.groupId)
           // return "white"
         })
         .attr("x",function(d) {
-          var polygon = polygonGenerator(d)
+          var polygon = polygonGenerator(d.groupId)
           var x0=polygon[0][0]
           polygon.forEach(point =>{
             if (point[0] < x0){x0 = point[0]}
@@ -1900,7 +1693,7 @@ function makePartitions() {
           return x0-50
         })
         .attr("y",function(d) {
-          var polygon = polygonGenerator(d)
+          var polygon = polygonGenerator(d.groupId)
           var y0=polygon[0][1]
           polygon.forEach(point =>{
             if (point[1] < y0){y0 = point[1]}
@@ -1908,34 +1701,11 @@ function makePartitions() {
           return y0-55
         })
         .text(function(d){
-          return d
+          return d.groupId
         })
         .style("font-size","14px")
   })
-  //==============================================
-  //========Update Forces================
-  //==============================================
-  // force = d3.forceSimulation(nodes)
-  //           .force("link", d3.forceLink().id(function(d) { return d.name; }).distance(40).strength(0))
-  //           .force("x", d3.forceX(d => {
-  //             //return 10
-  //             var deltaX = Math.random() *100//returns random number between 0 and 1
-  //             var partitionNum= groupIds.indexOf(String(d.partition))
-  //             if (partitionNum != -1){
-  //               return (width /(numPartitions+1) * partitionNum)+ deltaX
-  //             }
-  //             else{
-  //               return (width / (numPartitions+1)) + deltaX
-  //             }
-  //           }).strength(0.95))
-  //           .force("y", d3.forceY(height/6).strength(0.001))
-  //           .force("center", d3.forceCenter(width / 2, height / 2))
-  //           // .force("cluster", forceCluster())
-  //           .force("collide", forceCollide())
-  //           .force("charge", d3.forceManyBody().distanceMin(40).distanceMax(80))
 
-  // setup()
-  //raise nodes and links to be on top of partitions
   svg.selectAll('.node').raise()
 
   //==============================================
@@ -1959,7 +1729,6 @@ function makePartitions() {
     .classed("partitionNotHovered", true)
   })
   .on("click",d=>{
-    console.log("partition ",d)
     //node unclicked
     svg.selectAll(".node").classed("clicked",false)
     svg.selectAll(".node").classed("notClicked",false)
@@ -2019,7 +1788,6 @@ function collapse(methodNode) {
 }
 
 function expand(node) {
-
   function fix_nodes(node) {
     // simulation.stop()
     node.each(function(d) {

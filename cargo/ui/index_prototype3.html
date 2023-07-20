@@ -55,18 +55,40 @@
             <p id="nodeType"></p>
             <p id="useCase"></p>
             <!-- Filter links -->  
-            <h2 class="calibrateLinks" >Calibrate</h2>
-            <div class="slidecontainer">
+            <!-- <h2 class="calibrateLinks" >Calibrate</h2><br> -->
+
+            <!-- <div class="slidecontainer">
               <p>Minimum Edge weight:</p>
               <input type="range" min="0" max="50" value="1" id="minEdge">
               
               <p>Maximum Edge Weight:</p>
               <input type="range" min="2" max="50" value="1" class="slider" id="maxEdge">
-            </div>
+            </div> -->
             <h2 class="filterLinks" >Filter</h2>
-
+            <p>Edge Weight</p><br>
+            <div class="range">
+              <div class="range-slider">
+                <span class="range-selected"></span>
+              </div>
+              <div class="range-input">
+                <input id ="minSlider" type="range" class="min" min="0" max="100" value="40" step="1">
+                <input id = "maxSlider" type="range" class="max" min="0" max="100" value="70" step="1">
+              </div><br><br>
+              <div class="range-price">      
+                <div>
+                  <input id="minNumber" type="number" name="min" value="300">   
+                </div>
+                <br>
+                <div>
+                  <input id="maxNumber" type="number" name="max" value="700">   
+                </div>
+   
+              </div>
+            </div> 
             <p>Edge Type</p>
             <form>
+              <input class="checkbox" type="checkbox" id="CALL_DEP" name="CALL_DEP" value="CALL_DEP">
+              <label for="CALL_DEP">CALL_DEP</label><br>
               <input class="checkbox" type="checkbox" id="CONTROL_DEP" name="CONTROL_DEP" value="CONTROL_DEP">
               <label for="CONTROL_DEP">CONTROL_DEP</label><br>
               <input class="checkbox" type="checkbox" id="DATA_DEP" name="DATA_DEP" value="DATA_DEP">
@@ -86,8 +108,7 @@
       </div>
       <div class='container-right' style="display:flex;flex-direction:column">
         <div>
-          <!-- <button class="button" id="expandCollapseNodesBtn">Method View</button>   -->
-          <button class="button" id="expandLinksBtn">Expand Links</button>  
+          <button class="button" id="repartitionBtn">Repartition</button>  
         </div>
         <!-- <button class="openbtn" id="openNavBtn">&#9776;</button>   -->
         <div id="div_method"></div>
