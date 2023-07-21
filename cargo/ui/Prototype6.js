@@ -85,7 +85,7 @@ function createLinksNum(links){
                 
                 
 function loadData(){
-  d3.json("data/partitions_nested.json").then((d) => {
+  d3.json("data/partitions.json").then((d) => {
     console.log("d is ",d)
     nodes = d.nodes
 
