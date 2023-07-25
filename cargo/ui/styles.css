@@ -38,15 +38,20 @@
   
 }
 .node.notClicked {
-  fill-opacity: 0.1;
-  stroke-opacity: 0
+  fill-opacity: 0.2;
+  stroke-opacity: 0.2;
+  stroke-width: 1.0;
+  stroke: black
 }
 .link.clicked {
-  stroke: black;
-  stroke-opacity: 1.0;
+  /* stroke: black; */
+  /* stroke-opacity: 1.0; */
+  opacity: 1.0;
+
 }
 .link.notClicked {
-  stroke-opacity: 0.1;
+  /* stroke-opacity: 0.1; */
+  opacity: 0.075;
 }
 .link {
   fill: none;
@@ -234,6 +239,12 @@ body {
 margin: 0;
 }
 
+p {
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
 
 /* this is also essential to avoid a world of width-based pain */
 
@@ -278,7 +289,7 @@ height: 100vh;
 padding: 0rem 0rem;
 border: 1px solid transparent;
 /* width: 0rem; */
-width: 15rem;
+width: 20rem;
 transition: width 300ms;
 /* position: absolute;
 z-index: 2; */
@@ -286,7 +297,7 @@ z-index: 2; */
 
 /* this is the bit that styles the width of the sidebar when the checkbox is checked. */
 body:has(.menubutton > input:checked) .container-left {
-width: 15rem 
+width: 30rem 
 }
 body:has(.menubutton > input:not(:checked)) .containerLeftDiv {
 /* display: none */
@@ -323,8 +334,10 @@ cursor: pointer;
 background-color: #555555;
 color: white;
 }
+/* ========================= */
+/* ========RANGE SLIDER===== */
+/* ========================= */
 
-/* RANGE SLIDER */
 .range-slider {
 height: 5px;
 position: relative;
@@ -388,4 +401,91 @@ padding: 5px;
 }
 .range-price input:first-of-type {
 margin-right: 100px;
+}
+/* ========================= */
+/* ========SEARCH BAR======= */
+/* ========================= */
+
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap')
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+} */
+
+::selection{
+  color: #fff;
+  background: blue;
+}
+
+.wrapper{
+  max-width: 450px;
+  margin: 50px auto;
+}
+
+.wrapper .search-input{
+  background: #fff;
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12);
+}
+
+.search-input input{
+  height: 35px;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0 60px 0 10px;
+  font-size: 14px;
+  box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+}
+
+.search-input.active input{
+  border-radius: 5px 5px 0 0;
+}
+
+.search-input .autocom-box{
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.search-input.active .autocom-box{
+  padding: 10px 8px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.autocom-box li{
+  list-style: none;
+  padding: 8px 12px;
+  display: none;
+  width: 100%;
+  cursor: default;
+  border-radius: 3px;
+}
+
+.search-input.active .autocom-box li{
+  display: block;
+}
+.autocom-box li:hover{
+  background: #efefef;
+}
+
+.search-input .icon{
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 30px;
+  width: 55px;
+  text-align: center;
+  line-height: 35px;
+  font-size: 14px;
+  color: blue;
+  cursor: pointer;
 }

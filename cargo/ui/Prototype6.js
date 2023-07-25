@@ -173,6 +173,12 @@ function loadData(){
     minEdgeWeight = parseInt(document.getElementById("minSlider").value)
     maxEdgeWeight = parseInt(document.getElementById("maxSlider").value)
 
+    //set list of suggestions for the search bar
+
+    nodes.forEach(function(node){
+      suggestions.push(node.name)
+    })
+
     setup(nodes,links, numPartitions);
   })  
 }
@@ -207,210 +213,16 @@ function marker(linkColors2) {
         .style("fill-opacity", "0.7");
     return "url(" + linkColors2 + ")";
 };
+//==================================================
+//===================Table View=====================
+//==================================================
+
+
 
 //==================================================
-//=============Side Menu Functions==================
+//=================Create New Classes===============
 //==================================================
-function openNav(type, d) {
-    if (type=="partition"){ //click on partition
-      d3.select('#chartSVG').remove() //remove bar chart showing contained methods
-      document.getElementById("navTitle").innerText = "Partition name: "+d
-      document.getElementById("description").innerText = "This partition describes the set of modules and data tables belonging to the client business use case"
-      // document.getElementById("mySidenav").style.width = "250px";       //open navigation menu
-      
-      document.getElementById("navTitle").style.display = "block"
-      document.getElementById("navTitleLabel").style.display = "none"
-      document.getElementById("navTitle").placeholder = d //display placeholder
 
-      //==================================================
-      //========Edit Partition Name in side menu==========
-      //==================================================
-      d3.selectAll("#navTitle").on("keypress", function() {
-        if(d3.event.keyCode === 13){
-          var newPartitionName= d3.select(this).property("value")
-          var oldPartitionName= d3.select(this).property("placeholder")
-          //==========================================================
-          //====Change partition name in method and classes data======
-          //==========================================================
-          originalMethodData.nodes.forEach(node => {
-            if (node.partition == oldPartitionName){
-              //change all partitions to new one
-              node.partition = newPartitionName
-            }
-          })
-          originalClassData.nodes.forEach(node => {
-            if (node.partition == oldPartitionName){
-              //change all partitions to new one
-              node.partition = newPartitionName
-              node.method_partitions = node.method_partitions.toString().split(',') //convert method partition to string
-              function getAllIndexes(arr, val) {
-                var indexes = [], i = -1;
-                while ((i = arr.indexOf(val, i+1)) != -1){
-                    indexes.push(i);
-                }
-                return indexes;
-            }
-              var itemIndices= getAllIndexes(node.method_partitions,oldPartitionName)
-              itemIndices.forEach(index => {
-                node.method_partitions[index] = newPartitionName //swap old partition for new partition in method_partitions array
-              })
-            }
-          })
-          d3.selectAll("#graphSVGMethod").remove()
-          d3.selectAll("#graphSVGClass").remove()
-          d3.selectAll(".tooltip").remove()
-          if (methodOrClass == "method"){
-            renderChart(originalMethodData,dataSourceMethods)
-          }
-          else if (methodOrClass == "class"){
-            renderChart(originalClassData,dataSourceClasses)
-          }
-          document.getElementById("navTitle").placeholder = newPartitionName //change partition name placeholder
-          document.getElementById("navTitle").value = ""//clear input box
-        }
-      })
-
-    }
-    else if (type=="class"){ //click on class node
-      document.getElementById("navTitle").style.display = "none"
-      document.getElementById("navTitleLabel").style.display = "block"
-      document.getElementById("navTitleLabel").innerText = d.name
-      document.getElementById("description").innerText = "Total number of methods: "+ d.children.length
-
-      //remove chart svg
-      d3.select('#chartSVG').remove()
-
-      var dataPartitions= []
-      d.children.forEach(function(childNode){
-        dataPartitions.push(childNode.partition)
-      })
-
-      var sampleData = Array.from(new Set(dataPartitions)).map(a =>
-        ({label:a, value: dataPartitions.filter(f => f === a).length}));
-
-      var colorTest=  d3.scaleOrdinal()
-                    .domain(Object.keys(sampleData))
-                    .range(d3.schemeDark2)
-
-      function groupData (data, total) {
-        // use scale to get percent values
-        const percent = d3.scaleLinear()
-          .domain([0, total])
-          .range([0, 100])
-        // filter out data that has zero values
-        // also get mapping for next placement
-        // (save having to format data for d3 stack)
-        let cumulative = 0
-        const _data = data.map(d => {
-          cumulative += d.value
-          return {
-            value: d.value,
-            // want the cumulative to prior value (start of rect)
-            cumulative: cumulative - d.value,
-            label: d.label,
-            percent: percent(d.value)
-          }
-        }).filter(d => d.value > 0)
-        return _data
-      }
-
-      var bind = ".chart"
-      var data= sampleData
-      var config = {
-        f: d3.format('.1f'),
-        margin: {top: 40, right: 30, bottom: 40, left: 1},
-        width: 220,
-        height: 100,
-        barHeight: 40,
-      }
-
-      const { f, margin, width, height, barHeight, colors } = config
-      const w = width - margin.left - margin.right
-      const h = height - margin.top - margin.bottom
-      const halfBarHeight = barHeight / 2
-
-      const total = d3.sum(data, d => d.value)
-      const _data = groupData(data, total)
-
-      // set up scales for horizontal placement
-      const xScale = d3.scaleLinear()
-        .domain([0, total])
-        .range([0, w])
-
-      // create svg in passed in div
-      const selection = d3.selectAll("#nodePie")
-        .append('svg')
-        .attr("id","chartSVG")
-        .attr('width', width)
-        .attr('height', height)
-        .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-
-      console.log("selection is ",selection)
-      // stack rect for each data value
-      selection.selectAll('rect')
-        .data(_data)
-        .enter().append('rect')
-        .attr('class', 'rect-stacked')
-        .attr('x', d => xScale(d.cumulative))
-        .attr('y', h / 2 - halfBarHeight)
-        .attr('height', barHeight)
-        .attr('width', d => xScale(d.value))
-        // .style('fill', (d, i) => colors[i])
-        .style('fill', function(d){
-          console.log("d is ",d)
-          // return "#8888"
-          return colorPartition(d.label)
-        }) 
-        
-      // add values on bar
-      selection.selectAll('.text-value')
-        .data(_data)
-        .enter().append('text')
-        .attr('class', 'text-value')
-        .attr('text-anchor', 'middle')
-        .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
-        .attr('y', (h / 2) + 5)
-        .text(d => d.value)
-        .style('fill', "white")
-
-
-      // add some labels for percentages
-      selection.selectAll('.text-percent')
-        .data(_data)
-        .enter().append('text')
-        .attr('class', 'text-percent')
-        .attr('text-anchor', 'middle')
-        .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
-        .attr('y', (h / 2) - (halfBarHeight * 1.1))
-        .text(d => f(d.percent) + ' %')
-        .style('fill', "white")
-
-
-      // add the labels
-      selection.selectAll('.text-label')
-        .data(_data)
-        .enter().append('text')
-        .attr('class', 'text-label')
-        .attr('text-anchor', 'middle')
-        .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
-        .attr('y', (h / 2) + (halfBarHeight * 1.1) + 20)
-        // .style('fill', (d, i) => colors[i])
-       .style('fill', d=> colorPartition(d.label))
-        // .style('fill', "#888888")
-        .text(d => d.label)
-
-    }
-    else if (type=="method"){ //click on method node
-      d3.select('#chartSVG').remove() //remove bar chart showing contained methods
-
-      // document.getElementById("nodeType").innerText = "Entity Type: "+entityTypes[d.data.entity_type-1]
-      document.getElementById("navTitleLabel").style.display = "block"
-      document.getElementById("navTitle").style.display = "none"
-      document.getElementById("navTitleLabel").innerText = d.name
-      document.getElementById("description").innerText = ""
-    }
-}
 //==================================================
 //=================Repartition=======================
 //==================================================
@@ -425,8 +237,14 @@ d3.selectAll("#repartitionBtn").on("click",function(){
 var minEdgeWeight=0
 var maxEdgeWeight=99999999
 
+
+let suggestions = [ ];
+
 function setup(callOrigin) {
     //var newLinks = []
+    d3.selectAll(".partitionMenu").style("display","none")
+    d3.selectAll(".classMenu").style("display","none")
+    d3.selectAll(".methodMenu").style("display","none")
 
     let rangeMin = 1;
     const range = document.querySelector(".range-selected");
@@ -731,31 +549,30 @@ function setup(callOrigin) {
       else{
         d3.selectAll(".nodeLabel").style("display","none")
       }
-   }))
+   }), {passive:false})
     //======================================
     //============Click outside graph=======
     //======================================
     function equalToEventTarget() {
     return this == d3.event.target;
     }
-    d3.select("body").on("click",function(){
-    var graphContent = d3.selectAll(".partitionRect, .link, .node");
-    var outside = graphContent.filter(equalToEventTarget).empty();
-    if (outside) {
-        //unselect all selections
-        d3.selectAll('rect').classed("partitionClicked", false);
-        d3.selectAll('rect').classed("partitionNotClicked", true);
-        d3.selectAll('.node').classed("clicked", false);
-        d3.selectAll('.node').classed("notClicked", false);
-        d3.selectAll('.link').classed("clicked", false);
-        d3.selectAll('.link').classed("notClicked", false);
-        //nav overview
-        document.getElementById("navTitle").innerText = "Overview"
-        document.getElementById("description").innerText = "This is an overview of the current partitioning"
-        document.getElementById("dataCentrality").innerText = ""
-        document.getElementById("useCase").innerText = ""
-        document.getElementById("nodePie").innerHTML=""
-    }
+    d3.selectAll(".container-right").on("click",function(){
+      var graphContent = d3.selectAll(".partitionRect, .link, .node");
+      var outside = graphContent.filter(equalToEventTarget).empty();
+      if (outside) {
+          //unselect all selections
+          d3.selectAll('rect').classed("partitionClicked", false);
+          d3.selectAll('rect').classed("partitionNotClicked", true);
+          d3.selectAll('.node').classed("clicked", false);
+          d3.selectAll('.node').classed("notClicked", false);
+          d3.selectAll('.link').classed("clicked", false);
+          d3.selectAll('.link').classed("notClicked", false);
+          //nav overview
+          d3.selectAll(".overviewMenu").style("display","block")
+          d3.selectAll(".partitionMenu").style("display","none")
+          d3.selectAll(".classMenu").style("display","none")
+          d3.selectAll(".methodMenu").style("display","none")
+      }
     });
     //==================================
     //============Draw Partitions=======
@@ -900,7 +717,6 @@ function setup(callOrigin) {
         .on("mousemove",function(node){
           var mouse = d3.mouse(svg.node()).map(function(d) { return parseInt(d); });
 
-
             // Tooltip
             //   .style("left",d3.event.pageX + 10 +"px")
             //   .style("top", d3.event.pageY +10+"px")
@@ -932,7 +748,7 @@ function setup(callOrigin) {
           Tooltip.style("display","none")
         })
         .on('contextmenu', (node) => { //right click 
-          d3.event.preventDefault();
+          //d3.event.preventDefault();
           if (node.type != "SQLTable"){ //only allow right click on code nodes
             if (node.isMethod != true){ //if node is a class, expand 
               force.stop();
@@ -983,6 +799,62 @@ function setup(callOrigin) {
             }
           }
         })
+
+
+    function nodeClick(this_node){
+      console.log("in nodeClick")
+      console.log("this node is ",this_node)
+
+      //unclick all partitions
+      svg.selectAll(".partitionRect")
+        .classed("partitionClicked", false)
+        .classed("partitionNotClicked", true)      
+
+      //first set all nodes and links to not clicked to avoid duplicate classes
+      svg.selectAll(".link")
+      // .classed("clicked notClicked", false);
+      .classed("notClicked", true)
+
+      svg.selectAll(".node")
+          // .classed("clicked notClicked", false)
+          .classed("notClicked", true)
+
+      // Tooltip
+      svg.selectAll(".tooltip")
+        .style("opacity", 1)
+        .style("display","block")
+
+      // Tooltip.style("display","block")
+
+      svg.selectAll(".link")
+          .filter(function(l) { 
+            return l.source.name === this_node.name || l.target.name === this_node.name; 
+          })
+          .classed("clicked", true);
+
+      svg.selectAll(".link")
+        .filter(function(l) { return l.source.named != this_node.name && l.target.name != this_node.name; })
+        .classed("notClicked", true);
+
+      //node that is selected
+      svg.selectAll(".node")
+        .filter(function(n) { return n.name === this_node.name })
+        .classed("clicked", true)
+        .classed("notClicked", false)
+        
+
+      //populate side menu
+      var nodeChildren = this_node.children
+
+      if (nodeChildren){ //class
+        openNav("class",this_node)
+      }
+      else{ //method
+        openNav("method",this_node)
+      }
+    }
+
+
 
    node.call(drag)
 
@@ -1040,7 +912,9 @@ function setup(callOrigin) {
               //find which rectangle partition we want to move it to
               var x1= parseFloat(d3.select(this).attr("x")) + parseFloat(d3.select(this).attr("width"))
               var y1= parseFloat(d3.select(this).attr("y")) + parseFloat(d3.select(this).attr("height"))
-              
+             //==================================================================
+             //============If node is dragged to existing partition==============
+             //==================================================================
               if ((this_node.x > d3.select(this).attr("x")) && (this_node.x < x1) && (this_node.y > d3.select(this).attr("y")) && (this_node.y < y1)){
 
                 var oldPartition= d.partition
@@ -1103,24 +977,36 @@ function setup(callOrigin) {
                       parentNode.partition = methodPartitions[0] //reset partition for class
                     }
                   }
-                  var partitionCount = {}
+                  var updatedPartition=[]
                   node.each(function(d) {
-                    if (!partitionCount[d.partition]){
-                      partitionCount[d.partition]= 1
-                    }
-                    else{
-                      partitionCount[d.partition]= partitionCount[d.partition]+1
+                    if (!updatedPartition.includes(String(d.partition))){
+                      updatedPartition.push(String(d.partition))
                     }
                   })
-  
-                  if (newPartitionName != oldPartition){
-                    //if old partition is empty, remove it from groupIds
-                    if (partitionCount[oldPartition] == 0){
-                      groupIds = groupIds.filter(function(item) {
-                        return item.groupId !== oldPartition
-                      })
-                    }
-                  }
+                  console.log("oldPartition is ",oldPartition)
+                  console.log("updatedPartition is ",updatedPartition)
+    
+                  groupIds = groupIds.filter(function(item) {
+                    return updatedPartition.includes(item.groupId)
+                  })
+                  console.log("groupId is ",groupIds)
+                  // var partitionCount = {}
+                  // node.each(function(d) {
+                  //   if (!partitionCount[d.partition]){
+                  //     partitionCount[d.partition]= 1
+                  //   }
+                  //   else{
+                  //     partitionCount[d.partition]= partitionCount[d.partition]+1
+                  //   }
+                  // })
+                  // if (newPartitionName != oldPartition){ //if node is not just being moved inside its own partition
+                  //   //if old partition is empty, remove it from groupIds
+                  //   if (partitionCount[oldPartition] == 0){
+                  //     groupIds = groupIds.filter(function(item) {
+                  //       return item.groupId != oldPartition
+                  //     })
+                  //   }
+                  // }
                 } 
               makePartitions() //recreate partitions
             }
@@ -1151,7 +1037,7 @@ function setup(callOrigin) {
                   var partitionType="ClassNode"
                 }
                 this_node.partition= newPartitionName
-                groupIds.push({"groupId":newPartitionName, "partitionType":partitionType})
+                groupIds.push({"groupId":newPartitionName, "partitionType":partitionType,"count":1})
                 //move all children to this new partition
                 if (d.children) {//if class,
                   //change all children's partitions to this partition
@@ -1191,27 +1077,40 @@ function setup(callOrigin) {
                 }
 
               }
-              var partitionCount = {}
+              var updatedPartition=[]
               node.each(function(d) {
-                if (!partitionCount[d.partition]){
-                  partitionCount[d.partition]= 1
-                }
-                else{
-                  partitionCount[d.partition]= partitionCount[d.partition]+1
+                if (!updatedPartition.includes(String(d.partition))){
+                  updatedPartition.push(String(d.partition))
                 }
               })
-              //svg.selectAll('rect').remove()
-              //if old partition is empty, remove it from groupIds
-              if (newPartitionName != oldPartition){
-                //if old partition is empty, remove it from groupIds
-                if (partitionCount[oldPartition] == 0){
-                  groupIds = groupIds.filter(function(item) {
-                    return item.groupId !== oldPartition
-                  })
-                }
-              }
-              makePartitions()
+              console.log("oldPartition is ",oldPartition)
+              console.log("updatedPartition is ",updatedPartition)
 
+              groupIds = groupIds.filter(function(item) {
+                return updatedPartition.includes(item.groupId)
+              })
+              console.log("groupId is ",groupIds)
+              // var partitionCount = {}
+              // node.each(function(d) {
+              //   if (!partitionCount[d.partition]){
+              //     partitionCount[d.partition]= 1
+              //   }
+              //   else{
+              //     partitionCount[d.partition]= partitionCount[d.partition]+1
+              //   }
+              // })
+              // console.log("partitionCount is ",partitionCount)
+              // console.log("oldPartition is ",oldPartition)
+
+              // // if (newPartitionName != oldPartition){ //if node is not just being moved inside its own partition
+              //   //if old partition is empty, remove it from groupIds
+              //   if (partitionCount[oldPartition] == 0){
+              //     groupIds = groupIds.filter(function(item) {
+              //       return item.groupId != oldPartition
+              //     })
+              //   }
+              // }
+              makePartitions()
             }
           }
         })
@@ -1223,48 +1122,7 @@ function setup(callOrigin) {
         isDragged = 0
       }
       else{ //click
-            //unclick all partitions
-          svg.selectAll(".partitionRect")
-          .classed("partitionClicked", false)
-          .classed("partitionNotClicked", true)      
-
-          //first set all nodes and links to not clicked to avoid duplicate classes
-          svg.selectAll(".link")
-          .classed("clicked notClicked", false);
-
-          svg.selectAll(".node")
-              .classed("clicked notClicked", false)
-
-          Tooltip
-            .style("opacity", 1)
-            
-          Tooltip.style("display","block")
-
-
-          svg.selectAll(".link")
-              .filter(function(l) { 
-                return l.source.name === this_node.name || l.target.name === this_node.name; 
-              })
-              .classed("clicked", true);
-
-          svg.selectAll(".link")
-            .filter(function(l) { return l.source.named != this_node.name && l.target.name != this_node.name; })
-            .classed("notClicked", true);
-
-          //node that is selected
-          svg.selectAll(".node")
-            .filter(function(n) { return n.name === this_node.name })
-            .classed("clicked", true)
-            .classed("notClicked", false)
-
-          //populate side menu
-          var nodeChildren = this_node.children
-          if (nodeChildren){ //class
-            openNav("class",this_node)
-          }
-          else{ //method
-            openNav("method",this_node)
-          }
+          nodeClick(this_node)
       }
 } 
 
@@ -1307,6 +1165,7 @@ var Tooltip = d3.selectAll(".container-right")
               .style("border-width", "1px")
               .style("border-radius", "5px")
               .style("padding", "5px")
+              .style("display", "none")
 
 //======================================
 //===========Drag Partition=============
@@ -1377,7 +1236,117 @@ svg.selectAll('.rect_placeholder')
     // return "#888888"
 })
 
+//==================================================
+    //=====================Search Bar===================
+    //==================================================
+    // let suggestions = [
+    //   // ABC Normal Letters
+    //   "Channel",
+    //   "Google",
+    //   "Google Fonts",
+    //   "Google Plus",
+    //   "Google Drive",
+    //   "Github",
+    // ];
+
+    // getting all required elements
+    const searchWrapper = document.querySelector(".search-input");
+    const inputBox = searchWrapper.querySelector("input");
+    const suggBox = searchWrapper.querySelector(".autocom-box");
+    const icon = searchWrapper.querySelector(".icon");
+    let linkTag = searchWrapper.querySelector("a");
+    let webLink;
+
+    function select(element,event){
+    let selectData = element.textContent;
+    inputBox.value = selectData;
+    icon.onclick = ()=>{
+        webLink = "https://www.google.com/search?q=" + selectData;
+        linkTag.setAttribute("href", webLink);
+        linkTag.click();
+    }
+    searchWrapper.classList.remove("active");
+    }
+
+    function showSuggestions(list){
+    let listData;
+    if(!list.length){
+        userValue = inputBox.value;
+        listData = '<li>'+ userValue +'</li>';
+    }else{
+        listData = list.join('');
+    }
+    suggBox.innerHTML = listData;
+    }
+
+    // if user press any key and release
+    inputBox.onkeyup = (e)=>{
+    let userData = e.target.value; //user entered data
+    let emptyArray = [];
+    if(userData){
+        icon.onclick = ()=>{
+            // webLink = "https://www.google.com/search?q=" + userData;
+            // linkTag.setAttribute("href", webLink);
+            // console.log(webLink);
+            // linkTag.click();
+            //=================================================
+            //========Click on the corresponding node==========
+            //=================================================
+            nodes.forEach(function(node){
+              if (node.name == userData){
+                nodeClick(node)
+                ticked()
+              }
+            })
+        }
+        emptyArray = suggestions.filter((data)=>{
+            //filtering array value and user characters to lowercase and return only those words which are start with user entered chars
+            return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase()); 
+        });
+        emptyArray = emptyArray.map((data)=>{
+            // passing return data inside li tag
+            return data = '<li>'+ data +'</li>';
+        });
+        searchWrapper.classList.add("active"); //show autocomplete box
+        showSuggestions(emptyArray);
+        let allList = suggBox.querySelectorAll("li");
+        for (let i = 0; i < allList.length; i++) {
+            //adding onclick attribute in all li tag
+            allList[i].onclick = ()=>{
+              //"select(this)";
+              console.log("in select")
+              var element= allList[i]
+              console.log("element is ",element)
+              let selectData = element.textContent;
+              inputBox.value = selectData;
+              icon.onclick = ()=>{
+                  // webLink = "https://www.google.com/search?q=" + selectData;
+                  // linkTag.setAttribute("href", webLink);
+                  // linkTag.click();
+                  //=================================================
+                  //========Click on the corresponding node==========
+                  //=================================================
+                  console.log("nodes is ",nodes)
+                  nodes.forEach(function(node){
+                    if (node.name == selectData){
+                      console.log("node found")
+                      nodeClick(node)
+                      ticked()
+                    }
+                  })
+
+              }
+              searchWrapper.classList.remove("active");
+
+          }
+        }
+    } else{
+        searchWrapper.classList.remove("active"); //hide autocomplete box
+    }
+    }
+
 function ticked(){
+  console.log("ticked")
   //generate equidistant quadratic curves
   function link_arc(d) {
     // draw line for 1st link
@@ -1534,6 +1503,10 @@ function polygonGenerator(groupId) {
     node_coords.push([-20,-20])
     node_coords.push([-20,-20])
     node_coords.push([-20,-20])
+
+    // //remove partition
+    // d3.selectAll(".rect_placeholder")
+    //   .filter()
   }
   else if (node_coords.length < 2){ //if there are less than 2 points in this partition
     node_coords.push(extraPoint1)
@@ -1546,145 +1519,116 @@ function polygonGenerator(groupId) {
 };
 
 
-//==========================================
-//==========Update partitions===============
-//==========================================
-function makePartitions() {
-  //svg.selectAll('rect').remove()
-  svg.selectAll('.rect_placeholder').remove()
+  //==========================================
+  //==========Update partitions===============
+  //==========================================
+  function makePartitions() {
+    //svg.selectAll('rect').remove()
+    svg.selectAll('.rect_placeholder').remove()
 
-  var partitionRects = svg.selectAll('rect')
-                          .data(groupIds, function(d) { return +d; })
-                          .enter()
-                          .append('g')
-                          .attr('class', 'rect_placeholder')
-                          .attr('id',d=>{
-                            return 'rectPlaceholder'+d.groupId
-                          })
-                          .append('rect')
-                          .classed("partitionRect",true)
-                          .attr("id",d=>{
-                            return d.groupId
-                          })
-                          .attr('stroke', d=>{
-                            return colorPartition(d.groupId)
-                            // return "#888888"
-                          })
-                          .attr('fill',  d=>{
-                            return colorPartition(d.groupId)
-                            // return "white"
-                          })
-                          .style('fill-opacity', 0.2)
-                          .attr("width",function(d) {
-                            var polygon = polygonGenerator(d.groupId)
-                            var x0=polygon[0][0]
-                            var x1=polygon[0][0]
-                            polygon.forEach(point =>{
-                              if (point[0] < x0){x0 = point[0]}
-                              if (point[0] > x1){x1 = point[0]}
-                            })
-                            return (x1-x0)+100
-                          })
-                          .attr("height",function(d) {
-                            var polygon = polygonGenerator(d.groupId)
-                    
-                            var y0=polygon[0][1]
-                            var y1=polygon[0][1]
-                            polygon.forEach(point =>{
-                              if (point[1] < y0){y0 = point[1]}
-                              if (point[1] > y1){y1 = point[1]}
-                            })
-                    
-                            return (y1-y0)+100
-                          })
-                          .attr("x",function(d) {
-                            var polygon = polygonGenerator(d.groupId)
-                            var x0=polygon[0][0]
-                            polygon.forEach(point =>{
-                              if (point[0] < x0){x0 = point[0]}
-                            })
-                    
-                            return x0-50
-                          })
-                          .attr("y",function(d) {
-                            var polygon = polygonGenerator(d.groupId)
-                            var y0=polygon[0][1]
-                            polygon.forEach(point =>{
-                              if (point[1] < y0){y0 = point[1]}
-                            })
-                            return y0-50
-                          })
+    console.log("groupIds is ",groupIds)
 
-  groupIds.forEach(p => {
+    var partitionRects = svg.selectAll('rect')
+                            .data(groupIds, function(d) { return +d; })
+                            .enter()
+                            .append('g')
+                            .attr('class', 'rect_placeholder')
+                            .attr('id',d=>{
+                              return 'rectPlaceholder'+d.groupId
+                            })
+                            .append('rect')
+                            .classed("partitionRect",true)
+                            .attr("id",d=>{
+                              return d.groupId
+                            })
+                            .attr('stroke', d=>{
+                              return colorPartition(d.groupId)
+                              // return "#888888"
+                            })
+                            .attr('fill',  d=>{
+                              return colorPartition(d.groupId)
+                              // return "white"
+                            })
+                            .style('fill-opacity', 0.2)
+                            .attr("width",function(d) {
+                              var polygon = polygonGenerator(d.groupId)
+                              var x0=polygon[0][0]
+                              var x1=polygon[0][0]
+                              polygon.forEach(point =>{
+                                if (point[0] < x0){x0 = point[0]}
+                                if (point[0] > x1){x1 = point[0]}
+                              })
+                              return (x1-x0)+100
+                            })
+                            .attr("height",function(d) {
+                              var polygon = polygonGenerator(d.groupId)
+                      
+                              var y0=polygon[0][1]
+                              var y1=polygon[0][1]
+                              polygon.forEach(point =>{
+                                if (point[1] < y0){y0 = point[1]}
+                                if (point[1] > y1){y1 = point[1]}
+                              })
+                      
+                              return (y1-y0)+100
+                            })
+                            .attr("x",function(d) {
+                              var polygon = polygonGenerator(d.groupId)
+                              var x0=polygon[0][0]
+                              polygon.forEach(point =>{
+                                if (point[0] < x0){x0 = point[0]}
+                              })
+                      
+                              return x0-50
+                            })
+                            .attr("y",function(d) {
+                              var polygon = polygonGenerator(d.groupId)
+                              var y0=polygon[0][1]
+                              polygon.forEach(point =>{
+                                if (point[1] < y0){y0 = point[1]}
+                              })
+                              return y0-50
+                            })
 
-    d3.selectAll('rect')
-      .filter(function(d) { return d == p.groupId;})
-      .attr('pathId',"path"+p.groupId)
-      .attr('transform', 'scale(1) translate(0,0)')
-      .style('fill-opacity', 0.2)
-      .attr('stroke', d=>{
-        // return "#888888"
-        return colorPartition(d)
-      })
-      .attr('fill',  d=>{
-        return colorPartition(d)
-        // return "white"
-      })
-      .attr("width",function(d) {
-          var polygon = polygonGenerator(d)
-          var x0=polygon[0][0]
-          var x1=polygon[0][0]
-          polygon.forEach(point =>{
-            if (point[0] < x0){x0 = point[0]}
-            if (point[0] > x1){x1 = point[0]}
-          })
-          return (x1-x0)+100
-      })
-      .attr("height",function(d) {
-        var polygon = polygonGenerator(d)
+    groupIds.forEach(p => {
 
-        var y0=polygon[0][1]
-        var y1=polygon[0][1]
-        polygon.forEach(point =>{
-          if (point[1] < y0){y0 = point[1]}
-          if (point[1] > y1){y1 = point[1]}
+      d3.selectAll('rect')
+        .filter(function(d) { return d == p.groupId;})
+        .attr('pathId',"path"+p.groupId)
+        .attr('transform', 'scale(1) translate(0,0)')
+        .style('fill-opacity', 0.2)
+        .attr('stroke', d=>{
+          // return "#888888"
+          return colorPartition(d)
         })
-
-        return (y1-y0)+100
-      })
-      .attr("x",function(d) {
-        var polygon = polygonGenerator(d)
-        var x0=polygon[0][0]
-        polygon.forEach(point =>{
-          if (point[0] < x0){x0 = point[0]}
-        })
-
-        return x0-50
-      })
-      .attr("y",function(d) {
-        var polygon = polygonGenerator(d)
-        var y0=polygon[0][1]
-        polygon.forEach(point =>{
-          if (point[1] < y0){y0 = point[1]}
-        })
-        return y0-50
-      })
-      
-    //svg.selectAll(".rect_placeholder").exit().remove()
-    svg.selectAll('.rect_placeholder').selectAll('.partitionLabel').remove()
-
-    var partitionLabel = svg.selectAll('.partitionLabel')
-      .data(groupIds, function(d) { return +d; })
-      .enter()
-      svg.selectAll(".rect_placeholder")
-        .append("text")
-        .classed("partitionLabel",true)
-        .attr("fill",d=>{
-          return colorPartition(d.groupId)
+        .attr('fill',  d=>{
+          return colorPartition(d)
           // return "white"
         })
+        .attr("width",function(d) {
+            var polygon = polygonGenerator(d)
+            var x0=polygon[0][0]
+            var x1=polygon[0][0]
+            polygon.forEach(point =>{
+              if (point[0] < x0){x0 = point[0]}
+              if (point[0] > x1){x1 = point[0]}
+            })
+            return (x1-x0)+100
+        })
+        .attr("height",function(d) {
+          var polygon = polygonGenerator(d)
+
+          var y0=polygon[0][1]
+          var y1=polygon[0][1]
+          polygon.forEach(point =>{
+            if (point[1] < y0){y0 = point[1]}
+            if (point[1] > y1){y1 = point[1]}
+          })
+
+          return (y1-y0)+100
+        })
         .attr("x",function(d) {
-          var polygon = polygonGenerator(d.groupId)
+          var polygon = polygonGenerator(d)
           var x0=polygon[0][0]
           polygon.forEach(point =>{
             if (point[0] < x0){x0 = point[0]}
@@ -1693,73 +1637,310 @@ function makePartitions() {
           return x0-50
         })
         .attr("y",function(d) {
-          var polygon = polygonGenerator(d.groupId)
+          var polygon = polygonGenerator(d)
           var y0=polygon[0][1]
           polygon.forEach(point =>{
             if (point[1] < y0){y0 = point[1]}
           })
-          return y0-55
+          return y0-50
         })
-        .text(function(d){
-          return d.groupId
+        
+      //svg.selectAll(".rect_placeholder").exit().remove()
+      svg.selectAll('.rect_placeholder').selectAll('.partitionLabel').remove()
+
+      var partitionLabel = svg.selectAll('.partitionLabel')
+        .data(groupIds, function(d) { return +d; })
+        .enter()
+        svg.selectAll(".rect_placeholder")
+          .append("text")
+          .classed("partitionLabel",true)
+          .attr("fill",d=>{
+            return colorPartition(d.groupId)
+            // return "white"
+          })
+          .attr("x",function(d) {
+            var polygon = polygonGenerator(d.groupId)
+            var x0=polygon[0][0]
+            polygon.forEach(point =>{
+              if (point[0] < x0){x0 = point[0]}
+            })
+
+            return x0-50
+          })
+          .attr("y",function(d) {
+            var polygon = polygonGenerator(d.groupId)
+            var y0=polygon[0][1]
+            polygon.forEach(point =>{
+              if (point[1] < y0){y0 = point[1]}
+            })
+            return y0-55
+          })
+          .text(function(d){
+            return d.groupId
+          })
+          .style("font-size","14px")
+    })
+
+    svg.selectAll('.node').raise()
+
+    //==============================================
+    //========Partition Mouse Events================
+    //==============================================
+
+    svg.selectAll('rect')
+      .on("mouseover",d=>{
+        //node that is selected
+        svg.selectAll(".partitionRect")
+        .filter(function(n) { 
+          return n === d
         })
-        .style("font-size","14px")
-  })
+        .classed("partitionNotClicked", false)
+        .classed("partitionHovered", true)
+        .classed("partitionNotHovered", false)
+      })
+      .on("mouseout",d=>{
+        svg.selectAll(".partitionRect")
+        .classed("partitionHovered", false)
+        .classed("partitionNotHovered", true)
+      })
+      .on("click",d=>{
+        //node unclicked
+        svg.selectAll(".node").classed("clicked",false)
+        svg.selectAll(".node").classed("notClicked",false)
+        svg.selectAll(".link").classed("clicked",false)
+        svg.selectAll(".link").classed("notClicked",false)
 
-  svg.selectAll('.node').raise()
+      //unclick all other partitions
+      svg.selectAll(".partitionRect")
+            .classed("partitionClicked", false)
+            .classed("partitionNotClicked", false)
 
-  //==============================================
-  //========Partition Mouse Events================
-  //==============================================
+      //partition clicked
+      // d3.event.stopImmediatePropagation() //stops over concurrent events from happening like mouseover
 
-  svg.selectAll('rect')
-  .on("mouseover",d=>{
-    //node that is selected
-    svg.selectAll(".partitionRect")
-    .filter(function(n) { 
-      return n === d
+      svg.selectAll(".partitionRect")
+      .filter(function(n) { 
+        return n === d
+      })
+      .classed("partitionClicked", true)
+      .classed("partitionNotClicked", false)
+
+      //open and populate nav with partition info
+      openNav("partition",d)
     })
-    .classed("partitionNotClicked", false)
-    .classed("partitionHovered", true)
-    .classed("partitionNotHovered", false)
-  })
-  .on("mouseout",d=>{
-    svg.selectAll(".partitionRect")
-    .classed("partitionHovered", false)
-    .classed("partitionNotHovered", true)
-  })
-  .on("click",d=>{
-    //node unclicked
-    svg.selectAll(".node").classed("clicked",false)
-    svg.selectAll(".node").classed("notClicked",false)
-    svg.selectAll(".link").classed("clicked",false)
-    svg.selectAll(".link").classed("notClicked",false)
+    //ticked()
+  }//end of make
 
-    //unclick all other partitions
-    svg.selectAll(".partitionRect")
-          .classed("partitionClicked", false)
-          .classed("partitionNotClicked", false)
+  //==================================================
+  //=============Side Menu Functions==================
+  //==================================================
+  function openNav(type, d) {
+    console.log("in open nav")
+    if (type=="partition"){ //click on partition
+      console.log("click on partition")
+      d3.selectAll(".overviewMenu").style("display","none")
+      d3.selectAll(".partitionMenu").style("display","block")
+      d3.selectAll(".classMenu").style("display","none")
+      d3.selectAll(".methodMenu").style("display","none")
 
-    //partition clicked
-    // d3.event.stopImmediatePropagation() //stops over concurrent events from happening like mouseover
+      console.log("partition is ",d)
+      document.getElementById("numClasses").innerText = d['count']
 
-    svg.selectAll(".partitionRect")
-    .filter(function(n) { 
-      return n === d
-    })
-    .classed("partitionClicked", true)
-    .classed("partitionNotClicked", false)
+      document.getElementById("partitionNameEdit").placeholder = d['groupId'] //change partition name placeholder
 
-    //set partition name placeholder
-    document.getElementById("navTitle").placeholder = d
+      //==================================================
+      //========Edit Partition Name in side menu==========
+      //==================================================
+      d3.selectAll("#partitionNameEdit").on("keypress", function() {
+        if(d3.event.keyCode === 13){
+          var newPartitionName= d3.select(this).property("value")
+          var oldPartitionName= d3.select(this).property("placeholder")
+          //==========================================================
+          //====Change partition name in method and classes data======
+          //==========================================================
+          node.each(node => {
+            if (node.partition == oldPartitionName){
+              node.partition = newPartitionName  //change all class nodes to new partition
+            }
+            (node.children || []).forEach(function(childNode) {
+              if (childNode.partition == oldPartitionName){
+                childNode.partition=newPartitionName //change all method nodes to new partition
+              }
+            })
+          })
+                    //makePartitions()
+          //ticked()
 
-    //open and populate nav with partition info
-    openNav("partition",d)
-  })
-  //ticked()
-}
-} //end of make
-//dragHandler(svg.selectAll(".partitionRect"));
+          //change groupId partition name
+          groupIds.forEach(function(partition){
+            if (partition.groupId == oldPartitionName){
+              partition['groupId']=newPartitionName
+            }
+          })
+          makePartitions()
+          ticked()
+          d3.select(this).property("value","")
+          d3.select(this).property("placeholder",newPartitionName)
+
+          // d3.selectAll(".partitionLabel")
+          //   .filter(function(d){
+          //     console.log("d is ",d)
+          //     return d==newPartitionName
+          //   })
+          //   .text(newPartitionName)
+
+        }
+      })
+
+    }
+    else if (type=="class"){ //click on class node
+      d3.selectAll(".overviewMenu").style("display","none")
+      d3.selectAll(".partitionMenu").style("display","none")
+      d3.selectAll(".classMenu").style("display","block")
+      d3.selectAll(".methodMenu").style("display","none")
+      d3.select('#chartSVG').remove() //remove bar chart showing contained methods
+
+      document.getElementById("className").innerText = d.name
+      document.getElementById("classUncertainty").innerText = "text"
+      document.getElementById("numMethod").innerText = d.children.length
+
+      //remove chart svg
+      d3.select('#chartSVG').remove()
+
+      var dataPartitions= []
+      d.children.forEach(function(childNode){
+        dataPartitions.push(childNode.partition)
+      })
+
+      var sampleData = Array.from(new Set(dataPartitions)).map(a =>
+        ({label:a, value: dataPartitions.filter(f => f === a).length}));
+
+      var colorTest=  d3.scaleOrdinal()
+                    .domain(Object.keys(sampleData))
+                    .range(d3.schemeDark2)
+
+      function groupData (data, total) {
+        // use scale to get percent values
+        const percent = d3.scaleLinear()
+          .domain([0, total])
+          .range([0, 100])
+        // filter out data that has zero values
+        // also get mapping for next placement
+        // (save having to format data for d3 stack)
+        let cumulative = 0
+        const _data = data.map(d => {
+          cumulative += d.value
+          return {
+            value: d.value,
+            // want the cumulative to prior value (start of rect)
+            cumulative: cumulative - d.value,
+            label: d.label,
+            percent: percent(d.value)
+          }
+        }).filter(d => d.value > 0)
+        return _data
+      }
+
+      var bind = ".chart"
+      var data= sampleData
+      var config = {
+        f: d3.format('.1f'),
+        margin: {top: 40, right: 30, bottom: 40, left: 1},
+        width: 220,
+        height: 100,
+        barHeight: 40,
+      }
+
+      const { f, margin, width, height, barHeight, colors } = config
+      const w = width - margin.left - margin.right
+      const h = height - margin.top - margin.bottom
+      const halfBarHeight = barHeight / 2
+
+      const total = d3.sum(data, d => d.value)
+      const _data = groupData(data, total)
+
+      // set up scales for horizontal placement
+      const xScale = d3.scaleLinear()
+        .domain([0, total])
+        .range([0, w])
+
+      // create svg in passed in div
+      const selection = d3.selectAll("#nodePie")
+        .append('svg')
+        .attr("id","chartSVG")
+        .attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+
+      console.log("selection is ",selection)
+      // stack rect for each data value
+      selection.selectAll('rect')
+        .data(_data)
+        .enter().append('rect')
+        .attr('class', 'rect-stacked')
+        .attr('x', d => xScale(d.cumulative))
+        .attr('y', h / 2 - halfBarHeight)
+        .attr('height', barHeight)
+        .attr('width', d => xScale(d.value))
+        // .style('fill', (d, i) => colors[i])
+        .style('fill', function(d){
+          console.log("d is ",d)
+          // return "#8888"
+          return colorPartition(d.label)
+        }) 
+        
+      // add values on bar
+      selection.selectAll('.text-value')
+        .data(_data)
+        .enter().append('text')
+        .attr('class', 'text-value')
+        .attr('text-anchor', 'middle')
+        .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
+        .attr('y', (h / 2) + 5)
+        .text(d => d.value)
+        .style('fill', "white")
+
+
+      // add some labels for percentages
+      selection.selectAll('.text-percent')
+        .data(_data)
+        .enter().append('text')
+        .attr('class', 'text-percent')
+        .attr('text-anchor', 'middle')
+        .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
+        .attr('y', (h / 2) - (halfBarHeight * 1.1))
+        .text(d => f(d.percent) + ' %')
+        .style('fill', "white")
+
+
+      // add the labels
+      selection.selectAll('.text-label')
+        .data(_data)
+        .enter().append('text')
+        .attr('class', 'text-label')
+        .attr('text-anchor', 'middle')
+        .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
+        .attr('y', (h / 2) + (halfBarHeight * 1.1) + 20)
+        // .style('fill', (d, i) => colors[i])
+      .style('fill', d=> colorPartition(d.label))
+        // .style('fill', "#888888")
+        .text(d => d.label)
+
+    }
+    else if (type=="method"){ //click on method node
+      d3.selectAll(".overviewMenu").style("display","none")
+      d3.selectAll(".partitionMenu").style("display","none")
+      d3.selectAll(".classMenu").style("display","none")
+      d3.selectAll(".methodMenu").style("display","block")
+      d3.select('#chartSVG').remove() //remove bar chart showing contained methods
+
+      // document.getElementById("nodeType").innerText = "Entity Type: "+entityTypes[d.data.entity_type-1]
+      document.getElementById("methodName").innerText = d.name
+    }
+  }
+
+}  //end of setup
 
 
 function collapse(methodNode) {

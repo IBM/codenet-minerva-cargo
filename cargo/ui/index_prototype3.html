@@ -12,11 +12,12 @@
       <script src="http://marvl.infotech.monash.edu/webcola/cola.v3.min.js"></script>
       <script src="https://d3js.org/d3-array.v2.min.js"></script>
       <script type="module" src = "Prototype6.js" ></script>
-      <!-- <script type="module" src = "outlineGroups.js" ></script> -->
       <script src = "https://d3js.org/d3.v5.min.js"></script>
-      <!-- <script src = "https://d3js.org/d3.v2.min.js"></script> -->
-
-   </head>
+      <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+      <script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi0RCj8aLdKFX-cvYkW6kDveuaUlMnpes&libraries=places&callback=initMap">
+      </script>
+      <script type="text/javascript" src="https://unpkg.com/default-passive-events"></script>
 
    <body>
 
@@ -44,28 +45,57 @@
     <div class='container'>
       <div class='container-left'>
         <div class="containerLeftDiv" style="margin:20px;">
-            <h2 id="navTitleLabel" class="navTitle" >Your application</h2>
-            <input id="navTitle" class="navTitle" style="font:16px Arial, Serif, bold ;margin-top:20px; margin-bottom:20px"></input>
+
+            <div class="wrapper">
+              <div class="search-input">
+                <a href="" target="_blank" hidden></a>
+                <input type="text" placeholder="Type to search..">
+                <div class="autocom-box">
+                </div>
+                <div class="icon"><i class="fas fa-search"></i></div>
+              </div>
+            </div>
+            <!-- Overview menu content -->
+            <p id="overviewMenuTitle" class="overviewMenu" style="font-weight:bold">About CARGO</p>
+            <p id="overviewMenuDescription" class="overviewMenu" >CARGO (Context Sensitive Label Propagation) partitions classes and methods
+              based on business logic as well as database interactions.
+
+            </p> <br>
+
+            <!-- Partition menu content -->
+            <p id="partitionNameLabel" class="partitionMenu" style="font-weight:bold">Partition name</p>
+            <input id="partitionNameEdit" class="partitionMenu" style="font:16px Arial, Serif, bold ;margin-top:20px; margin-bottom:20px"></input> <br>
+
+            <p id="numClassesLabel" class="partitionMenu" style="font-weight:bold">Number of classes</p>
+            <p id="numClasses" class="partitionMenu" ></p> <br>
+
+            <!-- Class menu content -->
+            <p id="classNameLabel" class="classMenu" style="font-weight:bold">Class name</p>
+            <p id="className" class="classMenu" ></p> <br>
+
+            <p id="classUncertaintyLabel" class="classMenu" style="font-weight:bold">Class uncertainty</p>
+            <p id="classUncertainty" class="classMenu" ></p> <br>
+
+            <p id="numMethodLabel" class="classMenu" style="font-weight:bold">Number of methods</p>
+            <p id="numMethod" class="classMenu" ></p> <br>
+
+            <p id="methodPartitions" class="classMenu" style="font-weight:bold">Method Partitions</p>
+            <div id="nodePie" class="classMenu" style="display:inline-flex; margin-right:20px"></div>
+
+            <!-- Method menu content -->
+            <p id="methodNameLabel" class="methodMenu" style="font-weight:bold">Method name</p>
+            <p id="methodName" class="methodMenu" ></p> <br>
+
+            
+
             <!-- <div style="height:150px;width:180px;border:1px solid white;font:14px Arial, Serif;overflow:scroll;background-color: white;margin-top:20px; margin-bottom:20px;padding:10px">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan metus vitae purus tempor, vel sollicitudin nulla aliquam. Morbi tincidunt tellus nec nibh faucibus porttitor.        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed accumsan metus vitae purus tempor, vel sollicitudin nulla aliquam. Morbi tincidunt tellus nec nibh faucibus porttitor.
             </div> -->
-            <p style="margin-top:20px; margin-bottom:20px" id="description"></p>
-            <p id="dataCentrality"></p>
-            <div id="nodePie" style="display:inline-flex; margin-right:20px"></div>
-            <p id="nodeType"></p>
-            <p id="useCase"></p>
-            <!-- Filter links -->  
-            <!-- <h2 class="calibrateLinks" >Calibrate</h2><br> -->
 
-            <!-- <div class="slidecontainer">
-              <p>Minimum Edge weight:</p>
-              <input type="range" min="0" max="50" value="1" id="minEdge">
-              
-              <p>Maximum Edge Weight:</p>
-              <input type="range" min="2" max="50" value="1" class="slider" id="maxEdge">
-            </div> -->
+            <!-- Filter links -->  
+
             <h2 class="filterLinks" >Filter</h2>
-            <p>Edge Weight</p><br>
+            <p style="font-weight:bold">Edge Weight</p><br>
             <div class="range">
               <div class="range-slider">
                 <span class="range-selected"></span>
@@ -85,7 +115,7 @@
    
               </div>
             </div> 
-            <p>Edge Type</p>
+            <p style="font-weight:bold">Edge Type</p>
             <form>
               <input class="checkbox" type="checkbox" id="CALL_DEP" name="CALL_DEP" value="CALL_DEP">
               <label for="CALL_DEP">CALL_DEP</label><br>
