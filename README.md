@@ -30,7 +30,7 @@ export DEPENDENCIES=/path/to/input/dependencies
 
 ### 1. Obtain SDG 
 
-To get the SDG of the application, we will use [DGI Code Analyzer](https://github.com/rkrsn/dgi-code-analyzer), a Java Static Analysis tool build using [WALA](https://github.com/WALA/WALA). 
+To get the SDG of the application, we will use [DGI Code Analyzer](https://github.com/rahlk/dgi-code-analyzer), a Java Static Analysis tool build using [WALA](https://github.com/WALA/WALA). 
 
 
 ```sh
