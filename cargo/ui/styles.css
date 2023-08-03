@@ -244,6 +244,8 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 300px;
+  font-size: 14px;
+
 }
 
 /* this is also essential to avoid a world of width-based pain */
@@ -256,12 +258,12 @@ box-sizing: border-box;
 /* Just making things pretty here */
 
 nav {
-display: flex;
-width: 100%;
-gap: 1rem;
-padding: 0.5rem 1rem;
-background-color: grey;
-color: white;
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: grey;
+  color: white;
 }
 
 /*the menu button is basically a hidden check box, we use label to style it as a button */
@@ -285,7 +287,7 @@ width: 100%;
 
 .container-left {
 background-color: lightgrey;
-height: 100vh;
+height: 200vh;
 padding: 0rem 0rem;
 border: 1px solid transparent;
 /* width: 0rem; */
@@ -295,18 +297,33 @@ transition: width 300ms;
 z-index: 2; */
 }
 
+.container-top {
+  background-color:#FAFAFA;
+  /* height: 100px; */
+  display: flex;
+  width: 100%;
+
+}
+.filterSection {
+  background-color:#FAFAFA;
+  /* height: 100px; */
+  padding: 20px 20px;
+  height: 0rem;
+  display:none;
+
+}
 /* this is the bit that styles the width of the sidebar when the checkbox is checked. */
-body:has(.menubutton > input:checked) .container-left {
-width: 30rem 
-}
-body:has(.menubutton > input:not(:checked)) .containerLeftDiv {
-/* display: none */
-display: block
+body:has(.menubutton > input:checked) .filterSection {
+  height: 15rem;
+  display: block
 
 }
+body:has(.menubutton > input:not(:checked)) .filterSection{
+  display: none
+}
 
-body:has(.menubutton > input:checked) .containerLeftDiv {
-display: block
+body:has(.menubutton > input:checked) .container-top {
+  display: flex
 }
 /* just style the right box for visibility */
 
@@ -420,16 +437,22 @@ margin-right: 100px;
 }
 
 .wrapper{
-  max-width: 450px;
-  margin: 50px auto;
+  /* max-width: 450px; */
+  margin-left: 225px;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  /* align-items: left; */
+
 }
 
 .wrapper .search-input{
   background: #fff;
   width: 100%;
+  width:600px;
   border-radius: 5px;
   position: relative;
-  box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12);
+  /* box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12); */
 }
 
 .search-input input{
@@ -438,7 +461,7 @@ margin-right: 100px;
   outline: none;
   border: none;
   border-radius: 5px;
-  padding: 0 60px 0 10px;
+  padding: 0 0px 0 10px;
   font-size: 14px;
   box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
 }
@@ -468,6 +491,9 @@ margin-right: 100px;
   width: 100%;
   cursor: default;
   border-radius: 3px;
+  color:black;
+  border-color:lightgray
+
 }
 
 .search-input.active .autocom-box li{
@@ -489,3 +515,122 @@ margin-right: 100px;
   color: blue;
   cursor: pointer;
 }
+/* SORTABLE LIST TO SPLIT CLASS */
+
+li {
+  list-style-type: none;
+  padding: 8px 16px 5px 5px;
+  border: 1px solid black;
+  /* border-bottom:none; */
+
+  margin-top: 8px;
+}
+
+li {
+  touch-action: none;
+}
+
+div{
+  touch-action: none
+}
+
+
+/* CSS */
+button {
+  appearance: none;
+  background-color: #FAFBFC;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+button:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+button:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+button:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+button:focus {
+  outline: 1px transparent;
+}
+
+button:before {
+  display: none;
+}
+
+button:-webkit-details-marker {
+  display: none;
+}
+
+/* table view drop down button to change partitions */
+
+/* .dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .partitionOption {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border:none
+}
+
+.dropdown .partitionOption:hover {background-color: #ddd;}
+
+.show {display: block;} */

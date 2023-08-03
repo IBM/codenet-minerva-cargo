@@ -1,11 +1,22 @@
 
+// // Default SortableJS
+// import Sortable from 'sortablejs';
+//import Sortable from 'https://raw.githack.com/SortableJS/Sortable/master/Sortable.js';
+
+//
+// // Core SortableJS (without default plugins)
+//import Sortable from 'sortablejs/modular/sortable.core.esm.js';
+
+// // Complete SortableJS (with all plugins)
+//import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
+
 var nodes
 var linkData
 
 var numPartitions
 
 const width  = 1400;
-const height = 800;
+const height = 1000;
 const colors = d3.scaleOrdinal(d3.schemeCategory10);
 
 var node 
@@ -30,6 +41,8 @@ var links = [];
 var newLinks
 var newLinksFiltered
 
+var this_node
+
 
 var force = d3.forceSimulation(nodes)
                 .force("x", d3.forceX(d => {
@@ -40,14 +53,29 @@ var force = d3.forceSimulation(nodes)
                     partitionNames.push(partition.groupId)
                   })
                   var partitionNum= partitionNames.indexOf(String(d.partition))
-                  if (partitionNum != -1){
-                    return (width /(numPartitions+1) * partitionNum)+ deltaX
+                  if (d.type =="SQLTable"){
+                    return (width /(numPartitions+1) * (numPartitions/2))+ deltaX
                   }
                   else{
-                    return (width / (numPartitions+1)) + deltaX
+                    if (partitionNum != -1){
+                      return (width /(numPartitions+1) * partitionNum)+ deltaX
+                    }
+                    else{
+                      return (width / (numPartitions+1)) + deltaX
+                    }
                   }
+
                 }).strength(0.99))
-                .force("y", d3.forceY(height/6).strength(0))
+                // .force("y", d3.forceY(height/6).strength(0))
+                .force("y", d3.forceY(d=>{
+                  var deltaY = Math.random() *100//returns random number between 0 and 1
+                  if (d.type =="SQLTable"){
+                    return (height/10)+deltaY
+                  }
+                  else{
+                    return (height)+deltaY
+                  }
+                }).strength(0.01))
                 .force("center", d3.forceCenter(width / 2, height / 2))
                 // .force("cluster", forceCluster())
                 .force("collide", forceCollide())
@@ -86,7 +114,6 @@ function createLinksNum(links){
                 
 function loadData(){
   d3.json("data/partitions.json").then((d) => {
-    console.log("d is ",d)
     nodes = d.nodes
 
     groupIds = d3.set(nodes.map(n => { return n.partition; }))
@@ -108,6 +135,7 @@ function loadData(){
     console.log("groupIds is ",groupIds)
 
     linkData = d.links
+    console.log("linkData is ",linkData)
 
     numPartitions=0
     //create original links
@@ -134,13 +162,13 @@ function loadData(){
       //create children links
       link.children.forEach(function(childLink) {
         var targetChildNode
-        nodeTarget.children.forEach(function(childNode) {
+        (nodeTarget.children || []).forEach(function(childNode) {
           if (childLink.target == childNode.name){
             targetChildNode = childNode
           }
         })
         var sourceChildNode
-        nodeSource.children.forEach(function(childNode) {
+        (nodeSource.children || []).forEach(function(childNode) {
           if (childLink.source == childNode.name){
             sourceChildNode = childNode
           }
@@ -228,6 +256,11 @@ function marker(linkColors2) {
 //==================================================
 d3.selectAll("#repartitionBtn").on("click",function(){
   console.log("moved nodes is ",movedNodes)
+  // async function getRepartitioned() {
+  //   const response = await fetch("http://example.com/movies.json");
+  //   const partitions = await response.json();
+  //   console.log(partitions);
+  // }
 })
     
 //==================================================
@@ -250,6 +283,10 @@ function setup(callOrigin) {
     const range = document.querySelector(".range-selected");
     const rangeInput = document.querySelectorAll(".range-input input");
     const rangePrice = document.querySelectorAll(".range-price input");
+
+    //================================================================
+    //====================Filter Link Weight==========================
+    //================================================================
 
     rangeInput.forEach((input) => {
       input.addEventListener("change", (e) => {
@@ -346,7 +383,7 @@ function setup(callOrigin) {
           if (targetNode.expanded != true){
             //draw connection from methods to class
             (sourceNode.children || []).forEach(function(childNode) {
-              var thisLink = {source: childNode, target: targetNode, weight:1, type:link.type}
+              var thisLink = {source: childNode, target: targetNode, children: link.children ,weight:1, type:link.type}
               newLinks.push(thisLink)
             })
           }
@@ -354,7 +391,7 @@ function setup(callOrigin) {
         //neither node is expanded
         //draw connections between two classes
         else if (sourceNode.expanded !=true & targetNode.expanded !=true){
-          var thisLink = {source: sourceNode, target: targetNode, weight:link.weight, type:link.type}
+          var thisLink = {source: sourceNode, target: targetNode, children: link.children, weight:link.weight, type:link.type}
           newLinks.push(thisLink)
         }  
       })
@@ -363,7 +400,9 @@ function setup(callOrigin) {
     createNewLinks()
     createLinksNum(newLinks)
     newLinksFiltered = newLinks
-    
+    console.log("setup new links filtered is ",newLinksFiltered)
+    console.log("setup nodes is ",nodes)
+
     //==================================================
     //===================Filter links===================
     //==================================================
@@ -425,7 +464,6 @@ function setup(callOrigin) {
     //===========================================================
     function expandLinks(){
       //TO DO: If classes, don't display links to itself
-    
       var arrayTypes=[]
       newLinksFiltered.forEach(function(link){
           var thisLink = Object.assign({}, link) //deep copy
@@ -440,7 +478,7 @@ function setup(callOrigin) {
 
     expandLinks()
     createLinksNum(newLinksFiltered)
-  
+
     svg.selectAll(".link").remove()
   
     function noClassLinks(link) {
@@ -537,8 +575,327 @@ function setup(callOrigin) {
     //     newLinks.push(thisLink)
     //   }  
     // })
+
     //======================================
-    //============Zoom on graph=======
+    //============Split class===============
+    //======================================
+    //populate lists
+    function splitClass(this_node){
+      console.log("inside splitClass")
+      document.getElementById('tableColumn').innerHTML = ""
+
+      //get current node
+      // var nodeElem= d3.selectAll(".node.clicked")
+      // console.log("this node is ",nodeElem)
+      // console.log("this node data is ",nodeElem.data())
+      // console.log("this node name data is ",nodeElem.data()[0]['name'])
+      console.log("this node is ",this_node)
+
+      //var this_node
+      // console.log("node is ",nodes)
+      nodes.forEach(function(d) {
+        // if (String(d.name) == String(nodeElem.data()[0]['name'])){
+          if (String(d.name) == this_node.name){
+          // this_node = d
+          console.log("this node is ",this_node)
+
+          //populate split class
+          var tableColumn = document.getElementById('tableColumn')
+          var elementDiv = document.createElement("div")
+          elementDiv.setAttribute("class","divClass")
+          elementDiv.setAttribute("style","width:250px;overflow:hidden")
+          tableColumn.appendChild(elementDiv)
+          // d3.selectAll('.divClass').style("width","50px")
+
+          //class label
+          var p = document.createElement("p");
+          p.setAttribute("contenteditable","true")
+          p.setAttribute("style","font-weight:bold;max-width:250px;overflow:hidden;text-overflow: ellipsis; white-space: wrap;          ")
+          p.appendChild(document.createTextNode(this_node.name));
+          elementDiv.appendChild(p)
+
+          //list div
+          var div = document.createElement("div");
+          div.setAttribute("id","list_"+this_node.name)
+          div.setAttribute("class","list-group")
+          div.setAttribute("style","width:200px")
+
+          let favoriteList3 = Sortable.create(div, {
+            animation: 150,
+            group: 'shared',
+            ghostClass: 'sortable-ghost',
+          });
+
+          d.children.forEach(function(childNode){
+            //create methods under this class
+            var emptyLi= document.createElement("li")
+            emptyLi.appendChild(document.createTextNode(childNode.name));
+            emptyLi.setAttribute("style","color:"+colorPartition(childNode.partition))
+            div.appendChild(emptyLi)
+            elementDiv.appendChild(div)
+          })
+        }
+      })
+
+      d3.selectAll('#addClassBtn').on('click',function(){
+        console.log("clicked")
+        console.log("nodes is ",nodes)
+
+        d3.selectAll('#splitClassBtn').style('display',"block")
+
+        var tableColumn = document.getElementById('tableColumn')
+        var elementDiv = document.createElement("div")
+        elementDiv.setAttribute("class","divClass")
+        elementDiv.setAttribute("style","width:200px")
+        tableColumn.appendChild(elementDiv)
+
+        //class label
+        var p = document.createElement("p");
+        p.setAttribute("contenteditable","true")
+        p.setAttribute("style","font-weight:bold")
+        p.appendChild(document.createTextNode("untitledClass"));
+  
+        //list div
+        var div = document.createElement("div");
+        div.setAttribute("id","favoriteList3")
+        div.setAttribute("class","list-group")
+    
+        elementDiv.appendChild(p)
+        elementDiv.appendChild(div)
+  
+        let favoriteList3 = Sortable.create(div, {
+          animation: 150,
+          group: 'shared',
+          ghostClass: 'sortable-ghost',
+        });
+      })
+    }
+
+
+    d3.selectAll('#splitClassBtn').on("click",function(d){
+      // console.log("this_node is ",this_node)
+      var nodeElements= d3.selectAll(".node.clicked")
+      var nodeName= nodeElements.data()[0]['name']
+      //get clicked node
+      var nodeElem
+      nodes.forEach(function(node){
+        if (node.name == nodeName){
+          nodeElem = node
+        }
+      })
+      console.log("this node is ",nodeElem)
+
+      //==========================
+      //=====Remove old node======
+      //==========================
+      const index = nodes.indexOf(nodeElem)
+      nodes.splice(index, 1) //remove old node
+      //split the classes into two
+      //get new classes and corresponding methods
+      var classes = document.getElementById('tableColumn').children
+      var originalClass= document.getElementById('tableColumn').getAttribute("id")
+      for (const c of classes) {
+        //==========================
+        //=====Add new node======
+        //==========================
+        var classP = c.children[0]
+        var listMethodsDiv = c.children[1]
+        var listMethods=[]
+        for (const method of listMethodsDiv.children) {
+          listMethods.push(method.innerHTML)
+        }
+        // var nodeClone = this_node
+        var nodeClone = Object.assign({}, nodeElem) //deep copy old class
+        nodeClone.name = classP.innerHTML //new name
+        console.log("class is ",nodeClone.name)
+        var nodeCloneChildren=[]
+        var nodeChildrenNames=[]
+        var methodPartitions=[]
+        nodeClone.children.forEach(function(childNode){
+          if (listMethods.includes(childNode.name)){ 
+            nodeCloneChildren.push(childNode) //new children
+            nodeChildrenNames.push(childNode.name) //new children
+            methodPartitions.push(childNode.partition)
+          }
+        })
+        nodeClone.children = nodeCloneChildren
+        console.log("nodeClone is ",nodeClone)
+        //find most frequent method partition in array
+        var mf = 1;
+        var m = 0;
+        var item;
+        var arr1= methodPartitions
+
+        if (arr1.length > 1){
+          for (var i=0; i<arr1.length; i++){
+            for (var j=i; j<arr1.length; j++) {
+              if (arr1[i] == arr1[j]) m++;
+              if (mf<=m){
+                mf=m; 
+                item = arr1[i];
+              }
+            }
+            m=0;
+          }
+          nodeClone.partition = item //reset partition for class
+        }
+        else{
+          nodeClone.partition = methodPartitions[0] //reset partition for class
+        }
+        nodes.push(nodeClone) //push new node
+        //==========================================
+        //=====Split links between new classes======
+        //==========================================
+        //loop through method links
+        //if method link source or target is a method of current new class
+        //replace parent link source/target name by new name
+        console.log("nodeChildren names is ",nodeChildrenNames)
+        console.log("linkData is ",linkData)
+        linkData.forEach(function(link){
+          if (link.source == nodeElem.name || link.target == nodeElem.name){
+            console.log("in if")
+            //var methodLinks= link.children
+            //split up method links into number of class links
+            var methodLinks=[]
+            link.children.forEach(function(methodLink){
+              var childLinkSourceList=methodLink.source.split(".")
+              var childListLength=childLinkSourceList.length
+              var childLinkSourceName = childLinkSourceList[childListLength-1]
+              var childLinkTargetList=methodLink.target.split(".")
+              var childListLengthTarget=childLinkTargetList.length
+              var childLinkTargetName = childLinkTargetList[childListLengthTarget-1]
+              console.log("child source name is ",childLinkSourceName)
+              console.log("child target name is ",childLinkTargetName)
+              if (nodeChildrenNames.includes(childLinkTargetName) ||  nodeChildrenNames.includes(childLinkSourceName)){
+                methodLinks.push(methodLink)
+              }
+            })
+            console.log("method links is ",methodLinks)
+            //if parent link doesn't already exist
+            var foundLink=0
+            linkData.forEach(function(link){
+              if (link.source == nodeName || link.target == nodeClone){ //if link exists
+                var linkChildren= link.children.concat(methodLinks)
+                foundLink=1
+                link.children=linkChildren
+                console.log("parent link found, it is ",link)
+              }
+            })
+            if (foundLink == 0){
+              //create parent link
+              var parentLink = Object.assign({}, link) //deep copy old class
+              if (parentLink.source == nodeElem.name){
+                parentLink.source= nodeClone.name
+              } 
+              else if (parentLink.target == nodeElem.name){
+                parentLink.target= nodeClone.name
+              }
+              parentLink.children= methodLinks
+              if (methodLinks.length !=0){
+                linkData.push(parentLink)
+                console.log("parent link is ",parentLink)
+              }
+
+            }
+          }
+        })
+      }
+    console.log("node elem name is ",nodeElem.name)
+    //remove old links from link data
+    var linkDataCopy = Object.assign([], linkData)//deep copy old class
+    console.log("linkDataCopy is ",linkDataCopy)
+    linkData.forEach(function(link){
+      if (link.source == nodeElem.name || link.target == nodeElem.name){
+        console.log("in if here")
+        var thisLinkIndex = linkData.indexOf(link)
+        console.log("thisLinkIndex here ",thisLinkIndex)
+        console.log("link data length is ",linkDataCopy.length)
+        //linkDataCopy.slice(thisLinkIndex)
+        linkDataCopy = linkDataCopy.filter(function (linkCopy) {
+          return linkCopy !== link;
+        });
+        console.log("link data length is now ",linkDataCopy.length)
+      }
+    })
+    linkData=linkDataCopy
+    console.log("linkData is ",linkData)
+
+    links=[] //empty links
+          //create original links
+    linkData.forEach(function(link) {
+      var sourceName= link.source
+      var targetName= link.target
+      var nodeSource
+      var nodeTarget
+      var linkChildren=[]
+
+      //create parent links
+      nodes.forEach(function(node) {
+        if (node.partition > numPartitions){
+          numPartitions= node.partition
+        }
+        if (node.name == link.source){
+          nodeSource = node
+        }
+        if (node.name == link.target){
+          nodeTarget = node
+        }
+      });
+      if (nodeTarget ==undefined){
+        console.log("link is ",link)
+        console.log("nodeTarget is ",nodeTarget)
+      }
+
+      //create children links
+      link.children.forEach(function(childLink) {
+        var targetChildNode
+        (nodeTarget.children || []).forEach(function(childNode) {
+          if (childLink.target == childNode.name){
+            targetChildNode = childNode
+          }
+        })
+        var sourceChildNode
+        (nodeSource.children || []).forEach(function(childNode) {
+          if (childLink.source == childNode.name){
+            sourceChildNode = childNode
+          }
+        })
+        linkChildren.push({source:sourceChildNode, target: targetChildNode})
+        })
+        links.push({ source: nodeSource, target: nodeTarget, children: linkChildren, weight: link.weight,type:link.type });
+      });
+
+      links = createLinksNum(links)
+
+      //reset graph
+      d3.selectAll(".node").remove()
+      d3.selectAll(".link").remove()
+      d3.selectAll(".tooltip").style("display","none")
+
+      setup()
+      console.log("nodes here is ",nodes)
+      console.log("links is ",links)
+      console.log("new links filtered here is ",newLinksFiltered)
+
+      makePartitions()
+
+
+
+      // force.force("link",d3.forceLink(newLinks).id(function(d) { 
+      //   return d.name; 
+      // }).distance(5).strength(0))
+      //   .force("link").links(newLinks).strength(0);
+
+      // force.restart();    
+      // SOLUTION: reset alpha, for the simulation to actually run again
+      // if ( force.alpha() < 0.05 ) {
+      //     force.alpha(0.05);
+      // }
+      force.restart();
+    })
+
+    //======================================
+    //============Zoom on graph=============
     //======================================
     svg.call(d3.zoom().on("zoom", function () {
       svg.attr("transform", d3.event.transform)
@@ -680,10 +1037,14 @@ function setup(callOrigin) {
 
         .style("stroke", "#000")
         .on("mouseover",function(d){
-            Tooltip.style("opacity", 1)
-        
-            Tooltip.style("display","block")
-        
+            // Tooltip.style("opacity", 1)
+            // Tooltip.style("display","block")
+
+            Tooltip.style("opacity", 0)
+            Tooltip.style("display","none") 
+            d3.selectAll('.tooltip').style("opacity",0)
+            d3.selectAll('.tooltip').style("display","none")
+
               svg.selectAll(".link")
                 .filter(function(l) { 
                   return l.source.name === d.name|| l.target.name=== d.name; 
@@ -710,9 +1071,9 @@ function setup(callOrigin) {
                 })    
             //node that is selected
             svg.selectAll(".node")
-            .filter(function(n) { return n.name === d.name})
-            .classed("highlight", true)
-            .classed("downlight", false)
+              .filter(function(n) { return n.name === d.name})
+              .classed("highlight", true)
+              .classed("downlight", false)
         })
         .on("mousemove",function(node){
           var mouse = d3.mouse(svg.node()).map(function(d) { return parseInt(d); });
@@ -748,7 +1109,6 @@ function setup(callOrigin) {
           Tooltip.style("display","none")
         })
         .on('contextmenu', (node) => { //right click 
-          //d3.event.preventDefault();
           if (node.type != "SQLTable"){ //only allow right click on code nodes
             if (node.isMethod != true){ //if node is a class, expand 
               force.stop();
@@ -848,13 +1208,12 @@ function setup(callOrigin) {
 
       if (nodeChildren){ //class
         openNav("class",this_node)
+        splitClass(this_node)
       }
       else{ //method
         openNav("method",this_node)
       }
     }
-
-
 
    node.call(drag)
 
@@ -901,6 +1260,8 @@ function setup(callOrigin) {
     }
 
     function dragended(this_node) {
+      //d3.event.sourceEvent.stopPropagation()
+
       this_node.x = d3.event.x;
       this_node.y = d3.event.y;
       //flag to differentiate between drag and click event
@@ -1090,26 +1451,6 @@ function setup(callOrigin) {
                 return updatedPartition.includes(item.groupId)
               })
               console.log("groupId is ",groupIds)
-              // var partitionCount = {}
-              // node.each(function(d) {
-              //   if (!partitionCount[d.partition]){
-              //     partitionCount[d.partition]= 1
-              //   }
-              //   else{
-              //     partitionCount[d.partition]= partitionCount[d.partition]+1
-              //   }
-              // })
-              // console.log("partitionCount is ",partitionCount)
-              // console.log("oldPartition is ",oldPartition)
-
-              // // if (newPartitionName != oldPartition){ //if node is not just being moved inside its own partition
-              //   //if old partition is empty, remove it from groupIds
-              //   if (partitionCount[oldPartition] == 0){
-              //     groupIds = groupIds.filter(function(item) {
-              //       return item.groupId != oldPartition
-              //     })
-              //   }
-              // }
               makePartitions()
             }
           }
@@ -1269,14 +1610,14 @@ svg.selectAll('.rect_placeholder')
     }
 
     function showSuggestions(list){
-    let listData;
-    if(!list.length){
-        userValue = inputBox.value;
-        listData = '<li>'+ userValue +'</li>';
-    }else{
-        listData = list.join('');
-    }
-    suggBox.innerHTML = listData;
+      let listData;
+      if(!list.length){
+          userValue = inputBox.value;
+          listData = '<li>'+ userValue +'</li>';
+      }else{
+          listData = list.join('');
+      }
+      suggBox.innerHTML = listData;
     }
 
     // if user press any key and release
@@ -1746,15 +2087,23 @@ function polygonGenerator(groupId) {
       console.log("partition is ",d)
       document.getElementById("numClasses").innerText = d['count']
 
-      document.getElementById("partitionNameEdit").placeholder = d['groupId'] //change partition name placeholder
+      // document.getElementById("partitionNameEdit").placeholder = d['groupId'] //change partition name placeholder
+      document.getElementById("partitionNameEdit").innerText = d['groupId'] //change partition name placeholder
+      var oldPartitionName= d['groupId']
+
+      // document.getElementById("partitionNameEdit").appendChild(document.createTextNode(d['groupId']));
 
       //==================================================
       //========Edit Partition Name in side menu==========
       //==================================================
       d3.selectAll("#partitionNameEdit").on("keypress", function() {
+        console.log("key press")
         if(d3.event.keyCode === 13){
-          var newPartitionName= d3.select(this).property("value")
-          var oldPartitionName= d3.select(this).property("placeholder")
+          d3.event.preventDefault() //prevent enter key from creating a new line
+          var newPartitionName= document.getElementById("partitionNameEdit").innerText
+          console.log("new partition name is ",newPartitionName)
+          console.log("oldPartitionName name is ",oldPartitionName)
+
           //==========================================================
           //====Change partition name in method and classes data======
           //==========================================================
@@ -1768,9 +2117,6 @@ function polygonGenerator(groupId) {
               }
             })
           })
-                    //makePartitions()
-          //ticked()
-
           //change groupId partition name
           groupIds.forEach(function(partition){
             if (partition.groupId == oldPartitionName){
@@ -1781,14 +2127,19 @@ function polygonGenerator(groupId) {
           ticked()
           d3.select(this).property("value","")
           d3.select(this).property("placeholder",newPartitionName)
-
-          // d3.selectAll(".partitionLabel")
-          //   .filter(function(d){
-          //     console.log("d is ",d)
-          //     return d==newPartitionName
-          //   })
-          //   .text(newPartitionName)
-
+        }
+      })
+      //populate list of classes in that partition
+      var tableColumn = document.getElementById('classTableColumn')
+      tableColumn.innerHTML = ""  //empty list
+      var elementDiv = document.createElement("div")
+      elementDiv.setAttribute("style","width:250px;overflow:hidden")
+      tableColumn.appendChild(elementDiv)
+      nodes.forEach(function(node) {
+        if (String(node.partition) == String(oldPartitionName)){
+          var elementLi = document.createElement("li")
+          elementLi.innerHTML = node.name
+          elementDiv.appendChild(elementLi)
         }
       })
 
@@ -1797,10 +2148,15 @@ function polygonGenerator(groupId) {
       d3.selectAll(".overviewMenu").style("display","none")
       d3.selectAll(".partitionMenu").style("display","none")
       d3.selectAll(".classMenu").style("display","block")
+      d3.selectAll("#splitClassBtn").style("display","none") //don't display this one
+
       d3.selectAll(".methodMenu").style("display","none")
       d3.select('#chartSVG').remove() //remove bar chart showing contained methods
 
       document.getElementById("className").innerText = d.name
+      document.getElementById("classPartition").innerText = d.partition
+      document.getElementById("partitionSquare").setAttribute("style","vertical-align: middle; margin-top: 18px; color:"+colorPartition(d.partition))
+
       document.getElementById("classUncertainty").innerText = "text"
       document.getElementById("numMethod").innerText = d.children.length
 
@@ -1885,7 +2241,6 @@ function polygonGenerator(groupId) {
         .attr('width', d => xScale(d.value))
         // .style('fill', (d, i) => colors[i])
         .style('fill', function(d){
-          console.log("d is ",d)
           // return "#8888"
           return colorPartition(d.label)
         }) 
@@ -1899,7 +2254,7 @@ function polygonGenerator(groupId) {
         .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
         .attr('y', (h / 2) + 5)
         .text(d => d.value)
-        .style('fill', "white")
+        .style('fill', "black")
 
 
       // add some labels for percentages
@@ -1911,7 +2266,7 @@ function polygonGenerator(groupId) {
         .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2))
         .attr('y', (h / 2) - (halfBarHeight * 1.1))
         .text(d => f(d.percent) + ' %')
-        .style('fill', "white")
+        .style('fill', "black")
 
 
       // add the labels

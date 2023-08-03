@@ -7,18 +7,18 @@
             "children": [
                 {
                     "name": "access$100",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "onOpen",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 1,
+            "partition": "partition1",
             "uncertainity": 0.5
         },
         {
@@ -28,18 +28,18 @@
             "children": [
                 {
                     "name": "run",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "<init>",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 1,
+            "partition": "partition1",
             "uncertainity": 0.5
         },
         {
@@ -49,30 +49,30 @@
             "children": [
                 {
                     "name": "setCount",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getMin",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getMax",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getTotalTime",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 0
         },
         {
@@ -82,18 +82,18 @@
             "children": [
                 {
                     "name": "addTiming",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getInstance",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 0.5
         },
         {
@@ -103,12 +103,12 @@
             "children": [
                 {
                     "name": "init",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 0
         },
         {
@@ -148,132 +148,132 @@
             "children": [
                 {
                     "name": "getAllQuotes",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOrders",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getMarketSummary",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "updateAccountProfile",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "login",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getHoldings",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "<clinit>",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "updateQuotePriceVolume",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "createTrade",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getAccountData",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getClosedOrders",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "sell",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getMarketSummaryInternal",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "createQuote",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "orderCompleted",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getQuote",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getAccountProfileData",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "logout",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "register",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getHolding",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "buy",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 0.2619047619047619
         },
         {
@@ -283,42 +283,42 @@
             "children": [
                 {
                     "name": "error",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.0816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doActionTrace",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.08979591836734695,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doTrace",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "trace",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.2163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getTrace",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getActionTrace",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.05306122448979592,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 0.3
         },
         {
@@ -328,18 +328,18 @@
             "children": [
                 {
                     "name": "updateConfig",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.028571428571428574,
                     "type": "MethodNode"
                 },
                 {
                     "name": "buildDatabaseTables",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0.5
         },
         {
@@ -349,60 +349,60 @@
             "children": [
                 {
                     "name": "cancelOrder",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "publishQuotePriceChange",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
                 {
                     "name": "postConstruct",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "completeOrder",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "resetTrade",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "createOrder",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.028571428571428574,
                     "type": "MethodNode"
                 },
                 {
                     "name": "queueOrder",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "pingTwoPhase",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "investmentReturn",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 1.777777777777778
         },
         {
@@ -412,96 +412,96 @@
             "children": [
                 {
                     "name": "commit",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getAccountProfileDataFromResultSet",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOrderData",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "updateQuotePriceVolumeInt",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "recreateDBTables",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getInGlobalTxn",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "createHolding",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.0816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getAccountDataFromResultSet",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.028571428571428574,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getHoldingDataFromResultSet",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "removeHolding",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getHoldingData",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "rollBack",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getConn",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "checkDBProductName",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "releaseConn",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 1.8285714285714287
         },
         {
@@ -511,54 +511,54 @@
             "children": [
                 {
                     "name": "getPrice",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getLow",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.02448979591836735,
                     "type": "MethodNode"
                 },
                 {
                     "name": "toHTML",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.02448979591836735,
                     "type": "MethodNode"
                 },
                 {
                     "name": "toString",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getChange",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getVolume",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOpen",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getHigh",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 0,
+            "partition": "partition0",
             "uncertainity": 0
         },
         {
@@ -568,108 +568,108 @@
             "children": [
                 {
                     "name": "rndBigDecimal",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "rndFloat",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
                 {
                     "name": "incrementSellDeficit",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getLongRun",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "useRemoteEJBInterface",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
                 {
                     "name": "rndUserID",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getRandomPriceChangeFactor",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getUpdateQuotePrices",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getPage",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getScenarioAction",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "rndInt",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getDisplayOrderAlerts",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOrderFee",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getPublishQuotePriceChange",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "incrementScenarioCount",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "rndBoolean",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "random",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 1.9926470588235294
         },
         {
@@ -679,12 +679,12 @@
             "children": [
                 {
                     "name": "validate",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -694,18 +694,18 @@
             "children": [
                 {
                     "name": "getNextID",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "allocNewBlock",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -715,12 +715,12 @@
             "children": [
                 {
                     "name": "parseDDLToBuffer",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -730,18 +730,18 @@
             "children": [
                 {
                     "name": "onDataAvailable",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "closeConnection",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -751,12 +751,12 @@
             "children": [
                 {
                     "name": "onMessage",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -766,18 +766,18 @@
             "children": [
                 {
                     "name": "setup",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "updateMarketSummary",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -787,12 +787,12 @@
             "children": [
                 {
                     "name": "performTask",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 4,
+            "partition": "partition4",
             "uncertainity": 0
         },
         {
@@ -802,12 +802,12 @@
             "children": [
                 {
                     "name": "decode",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -817,12 +817,12 @@
             "children": [
                 {
                     "name": "doFilter",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -832,30 +832,30 @@
             "children": [
                 {
                     "name": "onError",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "onClose",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "onJMSMessage",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "sendMarketSummary",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -865,18 +865,18 @@
             "children": [
                 {
                     "name": "doAccountData",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "home",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 0,
+            "partition": "partition0",
             "uncertainity": 0.5
         },
         {
@@ -886,24 +886,24 @@
             "children": [
                 {
                     "name": "getOrder",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getAllOrder",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "setOrderData",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 0.3333333333333333
         },
         {
@@ -913,12 +913,12 @@
             "children": [
                 {
                     "name": "getPortfolio",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -928,36 +928,36 @@
             "children": [
                 {
                     "name": "setPrice",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "setMarketValue",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "setGain",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "setBasis",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "setPurchasePrice",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -967,36 +967,36 @@
             "children": [
                 {
                     "name": "doAccountUpdate",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doLogout",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doSell",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doWelcome",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doMarketSummary",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0.3
         },
         {
@@ -1006,24 +1006,24 @@
             "children": [
                 {
                     "name": "service",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doConfigDisplay",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doResetTrade",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 0
         },
         {
@@ -1033,24 +1033,24 @@
             "children": [
                 {
                     "name": "getRandomInstance",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOpenDate",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getCompletionDate",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 4,
+            "partition": "partition4",
             "uncertainity": 0.3333333333333333
         },
         {
@@ -1060,12 +1060,12 @@
             "children": [
                 {
                     "name": "getQuantity",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 4,
+            "partition": "partition4",
             "uncertainity": 0
         },
         {
@@ -1075,18 +1075,18 @@
             "children": [
                 {
                     "name": "getPurchaseDate",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "setQuote",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 0,
+            "partition": "partition0",
             "uncertainity": 4.5
         },
         {
@@ -1096,30 +1096,30 @@
             "children": [
                 {
                     "name": "getGainPercent",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOpenTSIA",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getTSIA",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getSummaryDate",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 4,
+            "partition": "partition4",
             "uncertainity": 0
         },
         {
@@ -1129,30 +1129,30 @@
             "children": [
                 {
                     "name": "access$000",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "access$006",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "access$200",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "access$008",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 4,
+            "partition": "partition4",
             "uncertainity": 2.25
         },
         {
@@ -1162,36 +1162,36 @@
             "children": [
                 {
                     "name": "hasPrevious",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "nextIndex",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "next",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "hasNext",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "previous",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 4,
+            "partition": "partition4",
             "uncertainity": 1.8
         },
         {
@@ -1201,12 +1201,12 @@
             "children": [
                 {
                     "name": "getTrade",
-                    "partition": 3,
+                    "partition": "partition3",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 3,
+            "partition": "partition3",
             "uncertainity": 0
         },
         {
@@ -1216,12 +1216,12 @@
             "children": [
                 {
                     "name": "produceTradeAction",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 4,
+            "partition": "partition4",
             "uncertainity": 0
         },
         {
@@ -1231,12 +1231,12 @@
             "children": [
                 {
                     "name": "isEmpty",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
@@ -1246,36 +1246,42 @@
             "children": [
                 {
                     "name": "getOpenBalance",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getCreationDate",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getLastLogin",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getProfile",
-                    "partition": 1,
+                    "partition": "partition1",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
+                    "name": "<init>",
+                    "partition": "partition1",
+                    "centrality": 0.004081632653061225,
+                    "type": "MethodNode"
+                },
+                {
                     "name": "getBalance",
-                    "partition": 0,
+                    "partition": "partition0",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 1,
+            "partition": "partition1",
             "uncertainity": 0.2
         },
         {
@@ -1300,12 +1306,12 @@
             "children": [
                 {
                     "name": "updateProfile",
-                    "partition": 4,
+                    "partition": "partition4",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 4,
+            "partition": "partition4",
             "uncertainity": 0
         },
         {
@@ -1315,12 +1321,12 @@
             "children": [
                 {
                     "name": "doDecoding",
-                    "partition": 2,
+                    "partition": "partition2",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 2,
+            "partition": "partition2",
             "uncertainity": 0
         },
         {
