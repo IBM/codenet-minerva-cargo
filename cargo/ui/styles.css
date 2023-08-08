@@ -165,11 +165,15 @@ border-radius: inherit;
   display: block;
 }
 .sidenav p {
-  padding: 8px 8px 8px 32px;
+  padding: 8px 8px 8px 8px;
   text-decoration: none;
   font-size: 18px;
   color: white;
   display: block;
+}
+text {
+  font-size: 14px;
+  text-align:bottom
 }
 .sidenav p .smallLabels {
   padding: 8px 8px 8px 32px;
@@ -245,6 +249,7 @@ p {
   text-overflow: ellipsis;
   max-width: 300px;
   font-size: 14px;
+  margin:5px
 
 }
 
@@ -286,10 +291,10 @@ width: 100%;
 }
 
 .container-left {
-background-color: lightgrey;
+background-color: #ECECEC;
 height: 200vh;
 padding: 0rem 0rem;
-border: 1px solid transparent;
+border: none;
 /* width: 0rem; */
 width: 20rem;
 transition: width 300ms;
@@ -336,7 +341,7 @@ padding: 0.5rem 0.5rem;
 
 .button {
 background-color: white; /* Green */
-border: 2px solid #555555;
+border: 1px solid black;
 color: black;
 padding: 8px 16px;
 text-align: center;
@@ -346,6 +351,33 @@ font-size: 14px;
 margin: 4px 2px;
 transition-duration: 0.4s;
 cursor: pointer;
+}
+
+.acceptBtn {
+  background-color: white; /* Green */
+  border: 1px solid green;
+  color: green;
+  padding: 6px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.ignoreBtn {
+  background-color: white; /* Green */
+  border: 1px solid red;
+  color: red;
+  padding: 6px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
 }
 .button:hover {
 background-color: #555555;
@@ -438,7 +470,7 @@ margin-right: 100px;
 
 .wrapper{
   /* max-width: 450px; */
-  margin-left: 225px;
+  margin-left: 300px;
   margin-top: auto;
   margin-bottom: auto;
 
@@ -520,10 +552,12 @@ margin-right: 100px;
 li {
   list-style-type: none;
   padding: 8px 16px 5px 5px;
-  border: 1px solid black;
+  border: 1px solid ;
+  border-radius: 5px;
   /* border-bottom:none; */
-
+  background-color: white;
   margin-top: 8px;
+  display: flex;
 }
 
 li {
@@ -538,8 +572,8 @@ div{
 /* CSS */
 button {
   appearance: none;
-  background-color: #FAFBFC;
-  border: 1px solid rgba(27, 31, 35, 0.15);
+  background-color: white;
+  border: 1px solid #afacac;
   border-radius: 6px;
   box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
   box-sizing: border-box;
@@ -634,3 +668,69 @@ button:-webkit-details-marker {
 .dropdown .partitionOption:hover {background-color: #ddd;}
 
 .show {display: block;} */
+
+
+/* =================================*/
+/* ====Suggestions Toggle===========*/
+/* =================================*/
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+  margin-top:5px
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+

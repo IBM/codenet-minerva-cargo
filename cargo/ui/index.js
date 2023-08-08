@@ -9,7 +9,6 @@
 
 // // Complete SortableJS (with all plugins)
 //import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
-
 var nodes
 var linkData
 
@@ -242,20 +241,23 @@ function marker(linkColors2) {
     return "url(" + linkColors2 + ")";
 };
 //==================================================
-//===================Table View=====================
-//==================================================
-
-
-
-//==================================================
-//=================Create New Classes===============
-//==================================================
-
-//==================================================
 //=================Repartition=======================
 //==================================================
 d3.selectAll("#repartitionBtn").on("click",function(){
   console.log("moved nodes is ",movedNodes)
+
+  fetch('http://127.0.0.1:5000/app', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body: JSON.stringify({ key: 'value' }) // Your payload here
+    body: JSON.stringify(movedNodes) // Your payload here
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('An error occurred:', error));
+
   // async function getRepartitioned() {
   //   const response = await fetch("http://example.com/movies.json");
   //   const partitions = await response.json();
@@ -629,7 +631,21 @@ function setup(callOrigin) {
           d.children.forEach(function(childNode){
             //create methods under this class
             var emptyLi= document.createElement("li")
-            emptyLi.appendChild(document.createTextNode(childNode.name));
+
+            var barIcon = document.createElement("SPAN")
+            barIcon.className="fa-solid fa-bars"
+            barIcon.setAttribute("style","vertical-align: middle; margin-top: 2px;")
+            // <span class="fa-solid fa-bars"></span>
+            emptyLi.appendChild(barIcon)
+
+            var methodNameText=  document.createElement("p")
+            methodNameText.setAttribute("style","margin: 0px; margin-left:5px;")
+            var newMethodName = String(childNode.name).replace(/</g, "&lt").replace(/>/g, "&gt")
+            methodNameText.innerHTML = newMethodName
+
+            // emptyLi.appendChild(document.createTextNode(childNode.name));
+            emptyLi.appendChild(methodNameText);
+
             emptyLi.setAttribute("style","color:"+colorPartition(childNode.partition))
             div.appendChild(emptyLi)
             elementDiv.appendChild(div)
@@ -673,6 +689,7 @@ function setup(callOrigin) {
 
 
     d3.selectAll('#splitClassBtn').on("click",function(d){
+      d3.selectAll(".tooltip").remove()
       // console.log("this_node is ",this_node)
       var nodeElements= d3.selectAll(".node.clicked")
       var nodeName= nodeElements.data()[0]['name']
@@ -702,16 +719,20 @@ function setup(callOrigin) {
         var listMethodsDiv = c.children[1]
         var listMethods=[]
         for (const method of listMethodsDiv.children) {
-          listMethods.push(method.innerHTML)
+          // listMethods.push(method.innerHTML)
+          console.log("children is ",method.children[1].innerHTML)
+          listMethods.push(method.children[1].innerHTML)
         }
         // var nodeClone = this_node
         var nodeClone = Object.assign({}, nodeElem) //deep copy old class
         nodeClone.name = classP.innerHTML //new name
         console.log("class is ",nodeClone.name)
+        console.log("listMethods is ",listMethods)
+        console.log("nodeElem is ",nodeElem)
         var nodeCloneChildren=[]
         var nodeChildrenNames=[]
         var methodPartitions=[]
-        nodeClone.children.forEach(function(childNode){
+        nodeElem.children.forEach(function(childNode){
           if (listMethods.includes(childNode.name)){ 
             nodeCloneChildren.push(childNode) //new children
             nodeChildrenNames.push(childNode.name) //new children
@@ -742,6 +763,26 @@ function setup(callOrigin) {
         else{
           nodeClone.partition = methodPartitions[0] //reset partition for class
         }
+        //change x and y of nodeClone
+        //find node from other partition
+        var newX
+        var newY
+        nodes.forEach(function(n){
+          if (n.name == "com.ibm.websphere.samples.daytrader.web.jsf.AccountDataJSF"){
+              console.log("found n ",n)
+              newX = n.x
+              newY = n.y
+              if (nodeClone.name == "Balance"){
+                console.log("newX is ",newX)
+                console.log("newY is ",newY)
+                nodeClone.fx = newX + 30;
+                nodeClone.fy = newY + 30;
+                nodeClone.x = newX 
+                nodeClone.y = newY
+              }
+          }
+        })
+      
         nodes.push(nodeClone) //push new node
         //==========================================
         //=====Split links between new classes======
@@ -878,8 +919,6 @@ function setup(callOrigin) {
       console.log("new links filtered here is ",newLinksFiltered)
 
       makePartitions()
-
-
 
       // force.force("link",d3.forceLink(newLinks).id(function(d) { 
       //   return d.name; 
@@ -1034,16 +1073,51 @@ function setup(callOrigin) {
             return colorPartition(d.partition)
             // return "#888888"
         })
-
         .style("stroke", "#000")
-        .on("mouseover",function(d){
-            // Tooltip.style("opacity", 1)
-            // Tooltip.style("display","block")
+        .style("opacity",function(d){
+          if (d.type=="ClassNode"){
+            var methodPartitionList=[]
+            d.children.forEach(function(child){
+              methodPartitionList.push(child.partition)
+            })
+            console.log("methodPartitionList is ",methodPartitionList)
 
-            Tooltip.style("opacity", 0)
-            Tooltip.style("display","none") 
-            d3.selectAll('.tooltip').style("opacity",0)
-            d3.selectAll('.tooltip').style("display","none")
+            var classPartition = d.partition
+
+            let counter = {};
+            methodPartitionList.flat().forEach(function(element){
+              if (counter[element]) {
+                counter[element] += 1;
+              } else {
+                  counter[element] = 1;
+              }
+            })
+            // for (element of methodPartitionList.flat()) {
+            //     if (counter[element]) {
+            //         counter[element] += 1;
+            //     } else {
+            //         counter[element] = 1;
+            //     }
+            // };
+            console.log("counter is ",counter);
+            console.log("counter for this partition is ",counter[d.partition])
+            var classUncertainty = counter[d.partition]/(methodPartitionList.length)
+            console.log("classUncertainty is ",classUncertainty);
+            return classUncertainty
+          }
+          else{
+            return 1
+          }
+            
+        })
+        .on("mouseover",function(d){
+            Tooltip.style("opacity", 1)
+            Tooltip.style("display","block")
+
+            // Tooltip.style("opacity", 0)
+            // Tooltip.style("display","none") 
+            d3.selectAll('.tooltip').style("opacity",1)
+            d3.selectAll('.tooltip').style("display","block")
 
               svg.selectAll(".link")
                 .filter(function(l) { 
@@ -1259,6 +1333,55 @@ function setup(callOrigin) {
       svg.selectAll('.partitionLabel').remove()
     }
 
+    //move suggested node to new partition
+    d3.selectAll("#acceptBtn").on("click",function(){
+      d3.selectAll("#suggestionsDiv").style("display","none")
+      //find com.ibm.websphere.samples.daytrader.entities.HoldingDataBean
+      node.each(function(d) {
+        if (d.name == "com.ibm.websphere.samples.daytrader.entities.HoldingDataBean"){ //change node partition
+          d.partition="Account" //destination partition
+          if (d.children) {//if class,
+            //change all children's partitions to this partition
+            d.children.forEach(function(childNode){
+              childNode.partition = "Account"
+            })
+          }
+        //find node from other partition
+        var newX
+        var newY
+        nodes.forEach(function(n){
+          if (n.name == "com.ibm.websphere.samples.daytrader.entities.AccountDataBean"){
+              console.log("found n ",n)
+              newX = n.x
+              newY = n.y
+              nodes.forEach(function(n){
+                if (n.name == "com.ibm.websphere.samples.daytrader.entities.HoldingDataBean"){
+                  console.log("newX is ",newX)
+                  console.log("newY is ",newY)
+                  // d.x = newX;
+                  // d.y = newY;
+                  // d.vx = newX;
+                  // d.vy = newY;
+                }
+              })
+          }
+        })
+        d.fx = newX + 30;
+        d.fy = newY + 30;
+        d.x = newX 
+        d.y = newY
+        console.log("d is ",d)
+        makePartitions() //recreate partitions
+        //ticked()
+        // d.x = newX;
+        // d.y = newY;
+        // makePartitions() //recreate partitions
+
+        }
+      })
+
+    })
+
     function dragended(this_node) {
       //d3.event.sourceEvent.stopPropagation()
 
@@ -1266,6 +1389,9 @@ function setup(callOrigin) {
       this_node.y = d3.event.y;
       //flag to differentiate between drag and click event
       if (isDragged == 1) {
+        if (this_node.type=="ClassNode"){
+          d3.selectAll("#suggestionsDiv").style("display","block")
+        }
         node.each(function(d) {
           if (this_node == d) {  //found dragged node
             var foundPartition = 0
@@ -1369,7 +1495,9 @@ function setup(callOrigin) {
                   //   }
                   // }
                 } 
+              console.log("other suggested partition is moved")
               makePartitions() //recreate partitions
+              //redraw graph
             }
           })
             //==================================================================
@@ -1455,11 +1583,15 @@ function setup(callOrigin) {
             }
           }
         })
-        movedNodes.forEach(function(movedNode){
-          if (movedNode.name != this_node.name){
-            movedNodes.push(this_node)
-          }
-        })
+        // movedNodes.forEach(function(movedNode){
+        //   console.log("movedNodes is here")
+        //   if (movedNode.name != this_node.name){
+        //     console.log("movedNode in if")
+        //     movedNodes.push(this_node)
+        //   }
+        // })
+        movedNodes.push(this_node)
+        console.log("movedNode here is ",movedNodes)
         isDragged = 0
       }
       else{ //click
@@ -2138,7 +2270,16 @@ function polygonGenerator(groupId) {
       nodes.forEach(function(node) {
         if (String(node.partition) == String(oldPartitionName)){
           var elementLi = document.createElement("li")
-          elementLi.innerHTML = node.name
+          // var barIcon = document.createElement("SPAN")
+          // barIcon.className="fa-solid fa-bars"
+          // barIcon.setAttribute("style","vertical-align: middle; margin-top: 2px;")
+          // // <span class="fa-solid fa-bars"></span>
+          // elementLi.appendChild(barIcon)
+          var classNameText=  document.createElement("p")
+          classNameText.setAttribute("style","margin: 0px; margin-left:5px;")
+          classNameText.innerHTML=node.name
+          elementLi.appendChild(classNameText)
+          //elementLi.innerHTML = node.name
           elementDiv.appendChild(elementLi)
         }
       })
@@ -2155,7 +2296,7 @@ function polygonGenerator(groupId) {
 
       document.getElementById("className").innerText = d.name
       document.getElementById("classPartition").innerText = d.partition
-      document.getElementById("partitionSquare").setAttribute("style","vertical-align: middle; margin-top: 18px; color:"+colorPartition(d.partition))
+      document.getElementById("partitionSquare").setAttribute("style","vertical-align: middle; margin-top: 14px; color:"+colorPartition(d.partition))
 
       document.getElementById("classUncertainty").innerText = "text"
       document.getElementById("numMethod").innerText = d.children.length
@@ -2357,7 +2498,6 @@ function expand(node) {
             }
           })
         }
-
         childNode.isMethod = true
         nodes.push(childNode);  // add the node, and its link to the "parent"
         //fix_nodes(node)
