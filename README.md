@@ -3,7 +3,8 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-green.svg)](https://www.python.org/)
 [![PyPI version](https://badge.fury.io/py/minerva-cargo.svg)](https://badge.fury.io/py/minerva-cargo)
-[![arXiv](https://img.shields.io/badge/arXiv-2207.11784-b31b1b.svg?style=flat-square)](https://arxiv.org/abs/2207.11784)
+[![arXiv](https://img.shields.io/badge/arXiv-2207.11784-b31b1b.svg?style=flat)](https://arxiv.org/abs/2207.11784)
+
 Cargo is part of the Minerva project working on refactoring monoliths to microservices. It leverages [Data Gravity Insights](https://github.com/konveyor/tackle-data-gravity-insights) from the Konveyor.io project and provides recommendations for partitioning code taking into account code relationships, data relationships, and database transaction scope.
 
 ## CARGO: AI-Guided Dependency Analysis for Migrating Monolithic Applications to Microservices Architecture
