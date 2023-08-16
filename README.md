@@ -5,15 +5,7 @@
 [![PyPI version](https://badge.fury.io/py/minerva-cargo.svg)](https://badge.fury.io/py/minerva-cargo)
 [![arXiv](https://img.shields.io/badge/arXiv-2207.11784-b31b1b.svg?style=flat)](https://arxiv.org/abs/2207.11784)
 
-Cargo is part of the Minerva project working on refactoring monoliths to microservices. It leverages [Data Gravity Insights](https://github.com/konveyor/tackle-data-gravity-insights) from the Konveyor.io project and provides recommendations for partitioning code taking into account code relationships, data relationships, and database transaction scope.
-
-## CARGO: AI-Guided Dependency Analysis for Migrating Monolithic Applications to Microservices Architecture
-
-#### Paper: [ArXiV Preprint](https://arxiv.org/pdf/2207.11784.pdf)
-
-#### Abstract
-
-CARGO (short for Context-sensitive lAbel pRopaGatiOn) is a novel un-/semi-supervised partition refinement technique that uses a comprehensive system dependence graph built using context and flow-sensitive static analysis of a monolithic application to refine and thereby enrich the partitioning quality of the current state-of-the-art algorithms.
+CARGO is part of the Minerva project working on refactoring monoliths to microservices. CARGO (short for Context-sensitive lAbel pRopaGatiOn) is a novel un-/semi-supervised partition refinement technique that uses a comprehensive system dependence graph built using context and flow-sensitive static analysis of a monolithic application to refine and thereby enrich the partitioning quality of the current state-of-the-art algorithms.
 
 ##### Figure 1. Overview of CARGO
 
