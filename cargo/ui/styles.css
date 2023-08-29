@@ -55,30 +55,44 @@
 }
 .link {
   fill: none;
-  /* stroke: #888888; */
+  stroke: #808080;
+  /* stroke:blue; */
   stroke-width: 1px;
-  stroke-opacity: 0.5;
+  opacity: 1.0
+
+
+  /* stroke-opacity: 0.5; */
 }
 
 .link.highlight {
-  /* stroke: black; */
+  stroke: black;
   /* stroke-opacity: 1.0; */
   opacity: 1.0;
 
 }
 .link.downlight {
+  stroke: #F5F5F5;
+  opacity: 1.0;
+
   /* stroke-opacity: 0.075; */
-  opacity: 0.075;
+  /* opacity: 0.075; */
 
 }
+.arrowHead {
+  fill:#808080;
+  /* stroke-opacity: 0.1;
+  fill-opacity: 0.1; */
+}
 .arrowHead.highlight {
-/* stroke: black; */
-stroke-opacity: 1.0;
-fill-opacity: 1.0;
+  /* stroke: black; */
+  fill: black;
+  /* stroke-opacity: 1.0;
+  fill-opacity: 1.0; */
 }
 .arrowHead.downlight {
-stroke-opacity: 0.1;
-fill-opacity: 0.1;
+  fill: #F5F5F5;
+  /* stroke-opacity: 0.1;
+  fill-opacity: 0.1; */
 }
 
 .tooltip {
@@ -93,10 +107,10 @@ font-family: sans-serif, Arial;
 font-size: 12px;
 /* font-weight: regular; */
 }
-.links line {
+/* .links line {
 stroke: #999;
 stroke-opacity: 0.6;
-}
+} */
 
 .nodes circle {
 stroke: #fff;
@@ -734,3 +748,28 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+/* INSTRUCTION PAGE */
+
+.instructionsSideNav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.instructionsSideNav a {
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+}
+
+.instructionsSideNav a:hover {
+  color: #f1f1f1;
+}

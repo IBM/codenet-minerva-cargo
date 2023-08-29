@@ -69,7 +69,7 @@ var force = d3.forceSimulation(nodes)
                 .force("y", d3.forceY(d=>{
                   var deltaY = Math.random() *100//returns random number between 0 and 1
                   if (d.type =="SQLTable"){
-                    return (height/10)+deltaY
+                    return (height/4)+deltaY
                   }
                   else{
                     return (height)+deltaY
@@ -112,7 +112,7 @@ function createLinksNum(links){
                 
                 
 function loadData(){
-  d3.json("data/partitions.json").then((d) => {
+  d3.json("data/partitions2.json").then((d) => {
     nodes = d.nodes
 
     groupIds = d3.set(nodes.map(n => { return n.partition; }))
@@ -215,18 +215,22 @@ loadData()
 // set the color scale
 var linkColors = d3.scaleOrdinal()
     .domain(["heap_dependency", "data_dependency", "read", "write"])
-    .range(["#888888","#888888","#888888","#565656"]);
+    .range(["#808080","#808080","#808080","#808080"]);
 
 var linkColors2 = d3.scaleOrdinal(d3.schemeCategory10)
 
 var defs = svg.append("svg:defs");
 
-function marker(linkColors2) {
+function marker(d) {
     defs.append("svg:marker")
-        .attr("id", linkColors2.replace("#", ""))
+        // .attr("id", linkColors2.replace("#", ""))
+        .attr("id", d.source.name + "-"+d.target.name)
+        .attr("class", "arrowHeadContainer")
         // .attr("viewBox", "0 -5 10 10")
         .attr("viewBox", "0 0 10 10")
-        .attr("refX", 7)// This sets how far back it sits, kinda
+        // .attr("refX", 7)// This sets how far back it sits, kinda
+        // .attr("refY", 5)
+        .attr("refX", 0)// This sets how far back it sits, kinda
         .attr("refY", 5)
         .attr("markerWidth", 10)
         .attr("markerHeight", 10)
@@ -234,11 +238,14 @@ function marker(linkColors2) {
         .attr("markerUnits", "userSpaceOnUse")
         .append("svg:path")
         .attr("class", "arrowHead")
+        .attr("id", d.source.name + "-"+d.target.name)
         // .attr("d", "M0,-5L10,0L0,5")
         .attr("d", "M 0 0 L 10 5 L 0 10 z")
-        .attr("fill", linkColors2)
-        .style("fill-opacity", "0.7");
-    return "url(" + linkColors2 + ")";
+        // .attr("fill", linkColors2)
+        .style("fill-opacity", "1.0");
+    return "url(" + "#" + d.source.name + "-"+d.target.name+ ")";
+    // return "url(#thisId)"
+
 };
 //==================================================
 //=================Repartition=======================
@@ -312,6 +319,8 @@ function setup(callOrigin) {
 
         svg.selectAll(".link").remove()
 
+        console.log("newLinksFiltered is ",newLinksFiltered)
+
         svg.selectAll(".link")
             .data(newLinksFiltered)
             .enter().append("path")
@@ -322,15 +331,17 @@ function setup(callOrigin) {
               return "linkId_"+i
             })
             .classed('link', true)
-            .style("stroke","#565656")
-            .style("stroke-opacity","0.7")
+            // .style("stroke","#808080")
+            // // .style("stroke-opacity","0.7")
+            // .style("stroke-opacity","1.0")
             .style("stroke-width",1)
             .each(function(d) {
               var thisColor = linkColors("write")
               d3.select(this)
-                  .style("stroke", thisColor)
-                  .attr("marker-end", marker(thisColor))
-            });
+                  // .style("stroke", thisColor)
+                  .attr("marker-end", marker(d))
+            })
+
         ticked()
       });
     });
@@ -443,17 +454,14 @@ function setup(callOrigin) {
           return "linkId_"+i
         })
         .classed('link', true)
-        .style("stroke","#565656")
-        .style("stroke-opacity","0.7")
+        // .style("stroke","#565656")
+        // .style("stroke-opacity","0.7")
         .style("stroke-width",1)
         .each(function(d) {
           // var thisColor = linkColors(Object.getPrototypeOf(d).transaction_type)
           var thisColor = linkColors("write")
           d3.select(this)
-              // .style("stroke", "#888888")
-              // .attr("marker-end", "#888888")
-              .style("stroke", thisColor)
-              .attr("marker-end", marker(thisColor))
+              .attr("marker-end", marker(d))
         });
       
 
@@ -502,16 +510,12 @@ function setup(callOrigin) {
         return "linkId_"+i
       })
       .classed('link', true)
-      .style("stroke","#565656")
-      .style("stroke-opacity","0.7")
       .style("stroke-width",1)
       .each(function(d) {
-        // var thisColor = linkColors(Object.getPrototypeOf(d).transaction_type)
         var thisColor = linkColors("write")
         d3.select(this)
-            .style("stroke", thisColor)
-            .attr("marker-end", marker(thisColor))
-      });
+            .attr("marker-end", marker(d))
+      })
 
     svg.selectAll(".node")
         .attr("transform", function(d) { 
@@ -522,62 +526,13 @@ function setup(callOrigin) {
             return "translate(" + d.x + "," + d.y + ")"; 
         })
         .style("fill", function(d) { 
-          // return "#888888"
           return colorPartition(d.partition) 
         })
 
     svg.selectAll('.node').raise()
 
-    ticked()
-    // }
-    // else{
-      
-    // }
-    
-    // //draw links between current method nodes for nodes that are expanded
-    // //for links that aren't expanded, replace method name by class name
-    // links.forEach(function(link){
-    //   var targetNode= link.target
-    //   var sourceNode=link.source
-    //   //both nodes are expanded
-    //   //draw connections between methods of both classes
-    //   if (sourceNode.expanded ==true & targetNode.expanded ==true){
-    //     //draw expanded links (children of current link)
-    //     (link.children || []).forEach(function(childLink) {
-    //         var thisLink = {source: childLink.source, target: childLink.target}
-    //         newLinks.push(thisLink)
-    //     })
-    //   }  
-    //   //target node is expanded
-    //   else if (targetNode.expanded ==true){
-    //     //source node is not expanded
-    //     if (sourceNode.expanded != true){
-    //       //draw connection from class to methods
-    //       (targetNode.children || []).forEach(function(childNode) {
-    //         var thisLink = {source: sourceNode, target: childNode}
-    //         newLinks.push(thisLink)
-    //       })
-    //     }
-    //   }
-    //   //source node is expanded
-    //   else if (sourceNode.expanded ==true){
-    //     //target node is not expanded
-    //     if (targetNode.expanded != true){
-    //       //draw connection from methods to class
-    //       (sourceNode.children || []).forEach(function(childNode) {
-    //         var thisLink = {source: childNode, target: targetNode}
-    //         newLinks.push(thisLink)
-    //       })
-    //     }
-    //   }
-    //   //neither node is expanded
-    //   //draw connections between two classes
-    //   else if (sourceNode.expanded !=true & targetNode.expanded !=true){
-    //     var thisLink = {source: sourceNode, target: targetNode}
-    //     newLinks.push(thisLink)
-    //   }  
-    // })
-
+    //ticked()
+ 
     //======================================
     //============Split class===============
     //======================================
@@ -585,20 +540,10 @@ function setup(callOrigin) {
     function splitClass(this_node){
       console.log("inside splitClass")
       document.getElementById('tableColumn').innerHTML = ""
-
-      //get current node
-      // var nodeElem= d3.selectAll(".node.clicked")
-      // console.log("this node is ",nodeElem)
-      // console.log("this node data is ",nodeElem.data())
-      // console.log("this node name data is ",nodeElem.data()[0]['name'])
       console.log("this node is ",this_node)
 
-      //var this_node
-      // console.log("node is ",nodes)
       nodes.forEach(function(d) {
-        // if (String(d.name) == String(nodeElem.data()[0]['name'])){
           if (String(d.name) == this_node.name){
-          // this_node = d
           console.log("this node is ",this_node)
 
           //populate split class
@@ -607,7 +552,6 @@ function setup(callOrigin) {
           elementDiv.setAttribute("class","divClass")
           elementDiv.setAttribute("style","width:250px;overflow:hidden")
           tableColumn.appendChild(elementDiv)
-          // d3.selectAll('.divClass').style("width","50px")
 
           //class label
           var p = document.createElement("p");
@@ -635,7 +579,6 @@ function setup(callOrigin) {
             var barIcon = document.createElement("SPAN")
             barIcon.className="fa-solid fa-bars"
             barIcon.setAttribute("style","vertical-align: middle; margin-top: 2px;")
-            // <span class="fa-solid fa-bars"></span>
             emptyLi.appendChild(barIcon)
 
             var methodNameText=  document.createElement("p")
@@ -643,7 +586,6 @@ function setup(callOrigin) {
             var newMethodName = String(childNode.name).replace(/</g, "&lt").replace(/>/g, "&gt")
             methodNameText.innerHTML = newMethodName
 
-            // emptyLi.appendChild(document.createTextNode(childNode.name));
             emptyLi.appendChild(methodNameText);
 
             emptyLi.setAttribute("style","color:"+colorPartition(childNode.partition))
@@ -1008,8 +950,8 @@ function setup(callOrigin) {
           return "linkId_"+i
         })
         .classed('link', true)
-        .style("stroke","#565656")
-        .style("stroke-opacity","0.7")
+        // .style("stroke","#565656")
+        // .style("stroke-opacity","0.7")
         .style("stroke-width",1)
         .attr("marker-end", "none")
 
@@ -1059,19 +1001,9 @@ function setup(callOrigin) {
         })
         // SOLUTION: add the class attribute
         .attr("class", "node")
-          //.append("circle")
-        // .attr("r", d=>{
-        //   if (d.isMethod == true){
-        //     return 4
-        //   }
-        //   else{
-        //     return 10
-        //   }
-        // })
         .style("fill", function(d) {
             // return colors(d.parent && d.parent.name);
             return colorPartition(d.partition)
-            // return "#888888"
         })
         .style("stroke", "#000")
         .style("opacity",function(d){
@@ -1080,7 +1012,6 @@ function setup(callOrigin) {
             d.children.forEach(function(child){
               methodPartitionList.push(child.partition)
             })
-            console.log("methodPartitionList is ",methodPartitionList)
 
             var classPartition = d.partition
 
@@ -1092,17 +1023,8 @@ function setup(callOrigin) {
                   counter[element] = 1;
               }
             })
-            // for (element of methodPartitionList.flat()) {
-            //     if (counter[element]) {
-            //         counter[element] += 1;
-            //     } else {
-            //         counter[element] = 1;
-            //     }
-            // };
-            console.log("counter is ",counter);
-            console.log("counter for this partition is ",counter[d.partition])
             var classUncertainty = counter[d.partition]/(methodPartitionList.length)
-            console.log("classUncertainty is ",classUncertainty);
+            d.classUncertainty = classUncertainty
             return classUncertainty
           }
           else{
@@ -1110,7 +1032,12 @@ function setup(callOrigin) {
           }
             
         })
+        .on("click",function(d){
+          console.log("node clicked")
+          nodeClick(d)
+        })
         .on("mouseover",function(d){
+            console.log("mouseover")
             Tooltip.style("opacity", 1)
             Tooltip.style("display","block")
 
@@ -1119,63 +1046,82 @@ function setup(callOrigin) {
             d3.selectAll('.tooltip').style("opacity",1)
             d3.selectAll('.tooltip').style("display","block")
 
-              svg.selectAll(".link")
-                .filter(function(l) { 
-                  return l.source.name === d.name|| l.target.name=== d.name; 
-                })
-                .classed("highlight", true);
-        
-              svg.selectAll(".link")
-                .filter(function(l) { return l.source.name != d.name && l.target.name != d.name; })
-                .classed("downlight", true);
-        
-              svg.selectAll(".node")
-                .classed("downlight", true)
-                .classed("highlight", false)
-                .each(function(n) {
-                    for (let index = 0; index < newLinks.length; index++) {  //loop through links
-                        const element = newLinks[index];
-                        if ( (element.source.name === d.name && element.target.name=== n.name) ||  //source of selected node connects to target of other node
-                            (element.target.name === d.name && element.source.name === n.name) //target of selected node connects to source of other node
-                          ) {  //related nodes
-                            d3.select(this).classed("highlight", true);
-                            d3.select(this).classed("downlight", false);
-                        }
-                    }
-                })    
-            //node that is selected
-            svg.selectAll(".node")
-              .filter(function(n) { return n.name === d.name})
-              .classed("highlight", true)
-              .classed("downlight", false)
+      //         svg.selectAll(".arrowHead")
+      //           .classed("downlight", true)
+
+      //         //arrow id have format sourceName-targetName
+      //         //highlight arrows whose links have highlighted node as source
+      //         //AND highlight arrows whose links have highlighted node as target
+
+      //         svg.selectAll("[id$=-"+ d.name+"]")
+      //            .classed("highlight", true)
+      //            .classed("downlight", false)
+      //            .raise()
+
+      //         svg.selectAll('[id^='+d.name+']')
+      //            .classed("highlight", true)
+      //            .classed("downlight", false)
+      //            .raise()
+
+      //         svg.selectAll(".link")
+      //           .filter(function(l) { 
+      //             return l.source.name === d.name|| l.target.name=== d.name; 
+      //           })
+      //           .classed("highlight", true)
+      //           .raise()
+
+      //         svg.selectAll(".link")
+      //           .filter(function(l) { return l.source.name != d.name && l.target.name != d.name; })
+      //           .classed("downlight", true);
+
+      //         svg.selectAll(".node")
+      //           .classed("downlight", true)
+      //           .classed("highlight", false)
+      //           .each(function(n) {
+      //               for (let index = 0; index < newLinks.length; index++) {  //loop through links
+      //                   const element = newLinks[index];
+      //                   if ( (element.source.name === d.name && element.target.name=== n.name) ||  //source of selected node connects to target of other node
+      //                       (element.target.name === d.name && element.source.name === n.name) //target of selected node connects to source of other node
+      //                     ) {  //related nodes
+      //                       d3.select(this).classed("highlight", true);
+      //                       d3.select(this).classed("downlight", false);
+      //                   }
+      //               }
+      //           })    
+      //       //node that is selected
+      //       svg.selectAll(".node")
+      //         .filter(function(n) { return n.name === d.name})
+      //         .classed("highlight", true)
+      //         .classed("downlight", false)
         })
         .on("mousemove",function(node){
-          var mouse = d3.mouse(svg.node()).map(function(d) { return parseInt(d); });
+          console.log("mousemove")
+          var mouse = d3.mouse(svg.node()).map(function(d) { return parseInt(d); }); 
 
-            // Tooltip
-            //   .style("left",d3.event.pageX + 10 +"px")
-            //   .style("top", d3.event.pageY +10+"px")
-            //   .html("<br> Name: " + node.name + "<br> Entity Type: " + "<br> Business Entity: " + node.partition)
-            if (node.children){ //class
-              Tooltip
-              .style("left",d3.event.pageX + 10 +"px")
-              .style("top", d3.event.pageY + 10 +"px")
-              .html("<br> Class name: " + node.name + "<br> Partition: " + node.partition)
-            }
-            else{ //method
-              Tooltip
-              .style("left",mouse[0] + 10 +"px")
-              .style("top", mouse[1] +10+"px")
-              .html("<br> Method name: " + node.name + "<br> Class: " + node.parent.name + "<br> Partition: " + node.partition)
-            }
+          if (node.children){ //class
+            Tooltip
+            .style("left",d3.event.pageX + 10 +"px")
+            .style("top", d3.event.pageY + 10 +"px")
+            .html("<br> Class name: " + node.name + "<br> Partition: " + node.partition + "<br> Uncertainty: " + node.classUncertainty)
+          }
+          else{ //method
+            Tooltip
+            .style("left",d3.event.pageX + 10 +"px")
+            .style("top", d3.event.pageY +10+"px")
+            .html("<br> Method name: " + node.name + "<br> Class: " + node.parent.name + "<br> Partition: " + node.partition)
+          }
     
        })
         .on("mouseout",function(node){
-          svg.selectAll(".link")
-          .classed("highlight downlight", false);
+          console.log("mouseout")
+          // svg.selectAll(".arrowHead")
+          // .classed("highlight downlight", false)
 
-          svg.selectAll(".node")
-              .classed("highlight downlight", false)
+          // svg.selectAll(".link")
+          // .classed("highlight downlight", false);
+
+          // svg.selectAll(".node")
+          //     .classed("highlight downlight", false)
       
           //remove tooltip svg since it blocks node interactions
           d3.selectAll("#tipDiv").remove()
@@ -1358,10 +1304,6 @@ function setup(callOrigin) {
                 if (n.name == "com.ibm.websphere.samples.daytrader.entities.HoldingDataBean"){
                   console.log("newX is ",newX)
                   console.log("newY is ",newY)
-                  // d.x = newX;
-                  // d.y = newY;
-                  // d.vx = newX;
-                  // d.vy = newY;
                 }
               })
           }
@@ -1372,11 +1314,6 @@ function setup(callOrigin) {
         d.y = newY
         console.log("d is ",d)
         makePartitions() //recreate partitions
-        //ticked()
-        // d.x = newX;
-        // d.y = newY;
-        // makePartitions() //recreate partitions
-
         }
       })
 
@@ -1768,7 +1705,7 @@ svg.selectAll('.rect_placeholder')
             nodes.forEach(function(node){
               if (node.name == userData){
                 nodeClick(node)
-                ticked()
+               // ticked()
               }
             })
         }
@@ -1804,7 +1741,7 @@ svg.selectAll('.rect_placeholder')
                     if (node.name == selectData){
                       console.log("node found")
                       nodeClick(node)
-                      ticked()
+                     // ticked()
                     }
                   })
 
@@ -1861,28 +1798,45 @@ function ticked(){
       .attr("d", function(d) { 
         let dx = d.target.x - d.source.x,
             dy = d.target.y - d.source.y
-            return 'M' + d.source.x + ',' + d.source.y + link_arc(d) + d.target.x + ',' + d.target.y
+            return 'M' + (d.source.x) + ',' + (d.source.y) + link_arc(d) + (d.target.x) + ',' + (d.target.y)
+            // return 'M' + (d.source.x -25) + ',' + (d.source.y-25) + 'L' + (d.target.x-2) + ',' + (d.target.y-2)
+
       })
       .style("stroke-width",1)
 
   svg.selectAll(".link")
       .data(newLinksFiltered2)
-      .style("stroke-opacity",d=>{
-        return 0.7
-      })
+      // .style("stroke-opacity",d=>{
+      //   return 0.7
+      // })
       .style("stroke-width",1)
+      // .attr("transform", "translate(5,5)")
       .attr("d", function(d) { 
         var pl = this.getTotalLength() //get length of link
         var r=22/2
         var m = this.getPointAtLength(pl - r);
-        return 'M' + d.source.x + ',' + d.source.y + link_arc(d) + m.x + ',' + m.y
+        //find angle between source and target
+        let sx = d.source.x;
+        let sy = d.source.y;
+        let tx = d.target.x;
+        let ty = d.target.y;
+        var angle = Math.atan2(ty - sy, tx - sx);        // find angle of line b/w source and target
+        //move center along this angle
+        var sourcex1 = sx + Math.cos(angle) * 7;
+        var sourcey1 = sy + Math.sin(angle) * 7;
+
+        var targetx1 = tx - Math.cos(angle) * 20;
+        var targety1 = ty - Math.sin(angle) * 20;
+
+        return 'M' + sourcex1 + ',' + sourcey1 + link_arc(d) + targetx1 + ',' + targety1
       })
       .each(function(d) {
         var thisColor = linkColors("write")
         d3.select(this)
-            .style("stroke", thisColor)
-            .attr("marker-end", marker(thisColor))
-      });
+            // .style("stroke", thisColor)
+            .attr("marker-end", marker(d))
+      })
+
 
   svg.selectAll(".node")
     .attr("transform", function(d) { 
@@ -1913,7 +1867,6 @@ function ticked(){
       d.y = Math.max(10, Math.min(height - 10, d.y)); 
       return "translate(" + (d.x + 10)+"," + d.y + ")"; 
   })
-
 }
 
 function fix_nodes() {
@@ -1924,9 +1877,8 @@ function fix_nodes() {
   })
 
 }
-
 force.on("tick", function(e) {
-  ticked()
+    ticked()
   })
 
 force
@@ -2201,7 +2153,6 @@ function polygonGenerator(groupId) {
       //open and populate nav with partition info
       openNav("partition",d)
     })
-    //ticked()
   }//end of make
 
   //==================================================
@@ -2440,6 +2391,8 @@ function polygonGenerator(groupId) {
 
 
 function collapse(methodNode) {
+  d3.selectAll(".tooltip").remove()
+
   console.log(`Collapse ${methodNode.name}, expanded: ${methodNode.expanded}`);
 
   if ( methodNode.isMethod == true ) {
@@ -2465,6 +2418,7 @@ function collapse(methodNode) {
 }
 
 function expand(node) {
+  d3.selectAll(".tooltip").remove()
   function fix_nodes(node) {
     // simulation.stop()
     node.each(function(d) {

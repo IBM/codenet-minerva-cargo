@@ -19,7 +19,7 @@
                 }
             ],
             "partition": "Account",
-            "uncertainity": 0.5
+            "uncertainty": 0.5
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.prims.PingWebSocketJson_1",
@@ -40,7 +40,7 @@
                 }
             ],
             "partition": "Account",
-            "uncertainity": 0.5
+            "uncertainty": 0.5
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.util.TimerStat",
@@ -49,31 +49,31 @@
             "children": [
                 {
                     "name": "setCount",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getMin",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getMax",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getTotalTime",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 0
+            "partition": "Trade",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.util.MDBStats",
@@ -82,7 +82,7 @@
             "children": [
                 {
                     "name": "addTiming",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
@@ -93,8 +93,8 @@
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 0.5
+            "partition": "Trade",
+            "uncertainty": 0.5
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.prims.PingUpgradeServlet_Handler",
@@ -103,13 +103,13 @@
             "children": [
                 {
                     "name": "init",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 0
+            "partition": "Trade",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.prims.PingJDBCWrite",
@@ -118,13 +118,13 @@
             "children": [
                 {
                     "name": "doGet",
-                    "partition": 6,
+                    "partition": "Ping",
                     "centrality": 0,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 6,
-            "uncertainity": 0
+            "partition": "Ping",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.prims.PingJDBCRead",
@@ -133,13 +133,13 @@
             "children": [
                 {
                     "name": "doPost",
-                    "partition": 6,
+                    "partition": "Ping",
                     "centrality": 0,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 6,
-            "uncertainity": 0
+            "partition": "Ping",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.TradeAction",
@@ -148,91 +148,91 @@
             "children": [
                 {
                     "name": "getAllQuotes",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOrders",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getMarketSummary",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "updateAccountProfile",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "login",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getHoldings",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "<clinit>",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "updateQuotePriceVolume",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "createTrade",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getAccountData",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getClosedOrders",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "sell",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getMarketSummaryInternal",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "createQuote",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "orderCompleted",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
@@ -244,19 +244,19 @@
                 },
                 {
                     "name": "getAccountProfileData",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "logout",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "register",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
@@ -273,8 +273,8 @@
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 0.2619047619047619
+            "partition": "Trade",
+            "uncertainty": 0.2619047619047619
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.util.Log",
@@ -283,19 +283,19 @@
             "children": [
                 {
                     "name": "error",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.0816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doActionTrace",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.08979591836734695,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doTrace",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
@@ -318,8 +318,8 @@
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 0.3
+            "partition": "Trade",
+            "uncertainty": 0.3
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.TradeConfigJSF",
@@ -334,13 +334,13 @@
                 },
                 {
                     "name": "buildDatabaseTables",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0.5
+            "uncertainty": 0.5
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.ejb3.TradeSLSBBean",
@@ -391,7 +391,7 @@
                 },
                 {
                     "name": "pingTwoPhase",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
@@ -403,7 +403,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 1.777777777777778
+            "uncertainty": 1.777777777777778
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.direct.TradeDirect",
@@ -412,7 +412,7 @@
             "children": [
                 {
                     "name": "commit",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
@@ -478,7 +478,7 @@
                 },
                 {
                     "name": "rollBack",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
@@ -502,7 +502,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 1.8285714285714287
+            "uncertainty": 1.8285714285714287
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.entities.QuoteDataBean",
@@ -559,7 +559,7 @@
                 }
             ],
             "partition": "Quote",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.util.TradeConfig",
@@ -568,7 +568,7 @@
             "children": [
                 {
                     "name": "rndBigDecimal",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
@@ -592,7 +592,7 @@
                 },
                 {
                     "name": "useRemoteEJBInterface",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.020408163265306124,
                     "type": "MethodNode"
                 },
@@ -604,61 +604,61 @@
                 },
                 {
                     "name": "getRandomPriceChangeFactor",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getUpdateQuotePrices",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getPage",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getScenarioAction",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "rndInt",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getDisplayOrderAlerts",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOrderFee",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getPublishQuotePriceChange",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "incrementScenarioCount",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "rndBoolean",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
@@ -669,8 +669,8 @@
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 1.9926470588235294
+            "partition": "Trade",
+            "uncertainty": 1.9926470588235294
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.LoginValidator",
@@ -685,7 +685,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.direct.KeySequenceDirect",
@@ -706,7 +706,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.TradeBuildDB",
@@ -721,7 +721,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.prims.PingUpgradeServlet_Listener",
@@ -742,7 +742,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.ejb3.DTStreamer3MDB",
@@ -757,7 +757,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.ejb3.MarketSummarySingleton",
@@ -778,7 +778,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.TradeScenarioServlet",
@@ -787,13 +787,13 @@
             "children": [
                 {
                     "name": "performTask",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition4",
-            "uncertainity": 0
+            "partition": "Market",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.websocket.ActionDecoder",
@@ -808,7 +808,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.OrdersAlertFilter",
@@ -823,7 +823,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.websocket.MarketSummaryWebSocket",
@@ -856,7 +856,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.AccountDataJSF",
@@ -877,7 +877,7 @@
                 }
             ],
             "partition": "Quote",
-            "uncertainity": 0.5
+            "uncertainty": 0.5
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.OrderDataJSF",
@@ -886,25 +886,25 @@
             "children": [
                 {
                     "name": "getOrder",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getAllOrder",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "setOrderData",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 0.3333333333333333
+            "partition": "Trade",
+            "uncertainty": 0.3333333333333333
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.PortfolioJSF",
@@ -919,7 +919,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.HoldingData",
@@ -958,7 +958,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.TradeServletAction",
@@ -967,13 +967,13 @@
             "children": [
                 {
                     "name": "doAccountUpdate",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doLogout",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
@@ -997,7 +997,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0.3
+            "uncertainty": 0.3
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.TradeConfigServlet",
@@ -1006,25 +1006,25 @@
             "children": [
                 {
                     "name": "service",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doConfigDisplay",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "doResetTrade",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 0
+            "partition": "Trade",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.entities.OrderDataBean",
@@ -1033,25 +1033,25 @@
             "children": [
                 {
                     "name": "getRandomInstance",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOpenDate",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getCompletionDate",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition4",
-            "uncertainity": 0.3333333333333333
+            "partition": "Market",
+            "uncertainty": 0.3333333333333333
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.OrderData",
@@ -1060,13 +1060,13 @@
             "children": [
                 {
                     "name": "getQuantity",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition4",
-            "uncertainity": 0
+            "partition": "Market",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.entities.HoldingDataBean",
@@ -1081,13 +1081,13 @@
                 },
                 {
                     "name": "setQuote",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
             "partition": "Quote",
-            "uncertainity": 4.5
+            "uncertainty": 4.5
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.beans.MarketSummaryDataBean",
@@ -1096,31 +1096,31 @@
             "children": [
                 {
                     "name": "getGainPercent",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getOpenTSIA",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.012244897959183675,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getTSIA",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
                 {
                     "name": "getSummaryDate",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition4",
-            "uncertainity": 0
+            "partition": "Market",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.util.KeyBlock",
@@ -1129,7 +1129,7 @@
             "children": [
                 {
                     "name": "access$000",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.0163265306122449,
                     "type": "MethodNode"
                 },
@@ -1141,19 +1141,19 @@
                 },
                 {
                     "name": "access$200",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "access$008",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition4",
-            "uncertainity": 2.25
+            "partition": "Market",
+            "uncertainty": 2.25
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.util.KeyBlock_KeyBlockIterator",
@@ -1162,7 +1162,7 @@
             "children": [
                 {
                     "name": "hasPrevious",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
@@ -1174,25 +1174,25 @@
                 },
                 {
                     "name": "next",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "hasNext",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 },
                 {
                     "name": "previous",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition4",
-            "uncertainity": 1.8
+            "partition": "Market",
+            "uncertainty": 1.8
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.ejb3.DTBroker3MDB",
@@ -1201,13 +1201,13 @@
             "children": [
                 {
                     "name": "getTrade",
-                    "partition": "partition3",
+                    "partition": "Trade",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition3",
-            "uncertainity": 0
+            "partition": "Trade",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.TradeActionProducer",
@@ -1216,13 +1216,13 @@
             "children": [
                 {
                     "name": "produceTradeAction",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.004081632653061225,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition4",
-            "uncertainity": 0
+            "partition": "Market",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.websocket.RecentStockChangeList",
@@ -1237,7 +1237,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.entities.AccountDataBean",
@@ -1282,7 +1282,7 @@
                 }
             ],
             "partition": "Account",
-            "uncertainity": 0.2
+            "uncertainty": 0.2
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.websocket.JsonEncoder",
@@ -1291,13 +1291,13 @@
             "children": [
                 {
                     "name": "encode",
-                    "partition": 6,
+                    "partition": "Ping",
                     "centrality": 0,
                     "type": "MethodNode"
                 }
             ],
-            "partition": 6,
-            "uncertainity": 0
+            "partition": "Ping",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.jsf.TradeAppJSF",
@@ -1306,13 +1306,13 @@
             "children": [
                 {
                     "name": "updateProfile",
-                    "partition": "partition4",
+                    "partition": "Market",
                     "centrality": 0.00816326530612245,
                     "type": "MethodNode"
                 }
             ],
-            "partition": "partition4",
-            "uncertainity": 0
+            "partition": "Market",
+            "uncertainty": 0
         },
         {
             "name": "com.ibm.websphere.samples.daytrader.web.websocket.ActionMessage",
@@ -1327,7 +1327,7 @@
                 }
             ],
             "partition": "partition2",
-            "uncertainity": 0
+            "uncertainty": 0
         },
         {
             "name": "QUOTEEJB",
