@@ -1,0 +1,775 @@
+.partitionRect{
+  stroke-width: 1.0px;
+  /* stroke: black */
+}
+.partitionRect.partitionHovered {
+  stroke-width: 3.0px;
+}
+.partitionRect.partitionNotHovered {
+  stroke-width: 1.0px;
+}
+.partitionRect.partitionClicked {
+  stroke-width: 3.0px;
+}
+.partitionRect.partitionNotClicked {
+  stroke-width: 1.0px;
+}
+
+.node {
+  /* stroke: #ffffff;
+  stroke-width: 1px; */
+  fill-opacity: 1.0;
+  stroke-opacity: 1.0;
+}
+
+.node.highlight {
+  fill-opacity:1.0;
+  stroke-opacity: 1.0;
+}
+.node.downlight {
+  fill-opacity: 0.2;
+  stroke-opacity: 0.2
+}
+.node.clicked {
+  fill-opacity:1.0;
+  stroke-opacity: 1.0;
+  stroke-width: 3.0;
+  stroke: black
+  
+}
+.node.notClicked {
+  fill-opacity: 0.2;
+  stroke-opacity: 0.2;
+  stroke-width: 1.0;
+  stroke: black
+}
+.link.clicked {
+  /* stroke: black; */
+  /* stroke-opacity: 1.0; */
+  opacity: 1.0;
+
+}
+.link.notClicked {
+  /* stroke-opacity: 0.1; */
+  opacity: 0.075;
+}
+.link {
+  fill: none;
+  stroke: #808080;
+  /* stroke:blue; */
+  stroke-width: 1px;
+  opacity: 1.0
+
+
+  /* stroke-opacity: 0.5; */
+}
+
+.link.highlight {
+  stroke: black;
+  /* stroke-opacity: 1.0; */
+  opacity: 1.0;
+
+}
+.link.downlight {
+  stroke: #F5F5F5;
+  opacity: 1.0;
+
+  /* stroke-opacity: 0.075; */
+  /* opacity: 0.075; */
+
+}
+.arrowHead {
+  fill:#808080;
+  /* stroke-opacity: 0.1;
+  fill-opacity: 0.1; */
+}
+.arrowHead.highlight {
+  /* stroke: black; */
+  fill: black;
+  /* stroke-opacity: 1.0;
+  fill-opacity: 1.0; */
+}
+.arrowHead.downlight {
+  fill: #F5F5F5;
+  /* stroke-opacity: 0.1;
+  fill-opacity: 0.1; */
+}
+
+.tooltip {
+  display: inline;
+  position: fixed;
+  opacity:1.0
+}
+
+/* for outline version */
+body {
+font-family: sans-serif, Arial;  
+font-size: 12px;
+/* font-weight: regular; */
+}
+/* .links line {
+stroke: #999;
+stroke-opacity: 0.6;
+} */
+
+.nodes circle {
+stroke: #fff;
+stroke-width: 1.5px;
+}
+
+path {
+fill-opacity: .1;
+stroke-opacity: 1;
+}
+
+
+/* for context menu */
+
+
+
+#context-menu {
+position: fixed;
+z-index: 10000;
+width: 150px;
+/* background: #1b1a1a; */
+border-radius: 5px;
+display:none
+}
+#context-menu.visible{
+  display:block
+}
+#context-menu .item {
+padding: 8px 10px;
+font-size: 15px;
+color: #eee;
+cursor: pointer;
+border-radius: inherit;
+}
+#context-menu .item :hover{
+  background: #343434
+}
+
+/* for side navigation menu */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+.sidenav h2 {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+}
+.sidenav p {
+  padding: 8px 8px 8px 8px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+}
+text {
+  font-size: 14px;
+  text-align:bottom
+}
+.sidenav p .smallLabels {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 12px;
+  display: block;
+}
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 28px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+/* for side navigation menu flex */
+.mainContainer {
+  display: flex;
+  width: 100%;
+}
+.containerRight {
+  /* height: 50vh; */
+  flex-grow: 1;
+  padding: 0.5rem 0.5rem;
+}
+
+.container-right {
+  overflow: hidden;
+}
+
+/* TEST NAVIGATION MENU */
+/* essential to add this as there's a default 8px margin */
+
+body {
+margin: 0;
+}
+
+p {
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+  font-size: 14px;
+  margin:5px
+
+}
+
+/* this is also essential to avoid a world of width-based pain */
+
+* {
+box-sizing: border-box;
+}
+
+
+/* Just making things pretty here */
+
+nav {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: grey;
+  color: white;
+}
+
+/*the menu button is basically a hidden check box, we use label to style it as a button */
+.menubutton>input {
+display: none;
+}
+
+/*these toggles the display of the menu button, it works because the label after the input element */
+.menubutton>input:checked+label .not-active {
+display: none;
+}
+
+.menubutton>input:not(:checked)+label .active {
+display: none;
+}
+
+.container {
+display: flex;
+width: 100%;
+}
+
+.container-left {
+background-color: #ECECEC;
+height: 200vh;
+padding: 0rem 0rem;
+border: none;
+/* width: 0rem; */
+width: 20rem;
+transition: width 300ms;
+/* position: absolute;
+z-index: 2; */
+}
+
+.container-top {
+  background-color:#FAFAFA;
+  /* height: 100px; */
+  display: flex;
+  width: 100%;
+
+}
+.filterSection {
+  background-color:#FAFAFA;
+  /* height: 100px; */
+  padding: 20px 20px;
+  height: 0rem;
+  display:none;
+
+}
+/* this is the bit that styles the width of the sidebar when the checkbox is checked. */
+body:has(.menubutton > input:checked) .filterSection {
+  height: 15rem;
+  display: block
+
+}
+body:has(.menubutton > input:not(:checked)) .filterSection{
+  display: none
+}
+
+body:has(.menubutton > input:checked) .container-top {
+  display: flex
+}
+/* just style the right box for visibility */
+
+.container-right {
+border: 1px solid lightgray;
+height: 100vh;
+flex-grow: 1;
+padding: 0.5rem 0.5rem;
+}
+
+.button {
+background-color: white; /* Green */
+border: 1px solid black;
+color: black;
+padding: 8px 16px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 14px;
+margin: 4px 2px;
+transition-duration: 0.4s;
+cursor: pointer;
+}
+
+.acceptBtn {
+  background-color: white; /* Green */
+  border: 1px solid green;
+  color: green;
+  padding: 6px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.ignoreBtn {
+  background-color: white; /* Green */
+  border: 1px solid red;
+  color: red;
+  padding: 6px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.button:hover {
+background-color: #555555;
+color: white;
+}
+/* ========================= */
+/* ========RANGE SLIDER===== */
+/* ========================= */
+
+.range-slider {
+height: 5px;
+position: relative;
+background-color: #e1e9f6;
+border-radius: 2px;
+}
+.range-selected {
+height: 100%;
+/* left: 30%;
+right: 30%; */
+left: 2%;
+right: 100%;
+position: absolute;
+border-radius: 5px;
+background-color: #1b53c0;
+}
+.range-input {
+position: relative;
+}
+.range-input input {
+position: absolute;
+width: 100%;
+height: 5px;
+top: -7px;
+background: none;
+pointer-events: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+}
+.range-input input::-webkit-slider-thumb {
+height: 20px;
+width: 20px;
+border-radius: 50%;
+border: 3px solid #1b53c0;
+background-color: #fff;
+pointer-events: auto;
+-webkit-appearance: none;
+}
+.range-input input::-moz-range-thumb {
+height: 15px;
+width: 15px;
+border-radius: 50%;
+border: 3px solid #1b53c0;
+background-color: #fff;
+pointer-events: auto;
+-moz-appearance: none;
+}
+.range-price {
+margin: 0px 0;
+width: 100%;
+display: flex;
+justify-content: left;
+align-items: left;
+}
+.range-price label {
+margin-right: 5px;
+}
+.range-price input {
+width: 55px;
+padding: 5px;
+}
+.range-price input:first-of-type {
+margin-right: 100px;
+}
+/* ========================= */
+/* ========SEARCH BAR======= */
+/* ========================= */
+
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap')
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+} */
+
+::selection{
+  color: #fff;
+  background: blue;
+}
+
+.wrapper{
+  /* max-width: 450px; */
+  margin-left: 300px;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  /* align-items: left; */
+
+}
+
+.wrapper .search-input{
+  background: #fff;
+  width: 100%;
+  width:600px;
+  border-radius: 5px;
+  position: relative;
+  /* box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12); */
+}
+
+.search-input input{
+  height: 35px;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0 0px 0 10px;
+  font-size: 14px;
+  box-shadow: 0px 1px 5px rgba(0,0,0,0.1);
+}
+
+.search-input.active input{
+  border-radius: 5px 5px 0 0;
+}
+
+.search-input .autocom-box{
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.search-input.active .autocom-box{
+  padding: 10px 8px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.autocom-box li{
+  list-style: none;
+  padding: 8px 12px;
+  display: none;
+  width: 100%;
+  cursor: default;
+  border-radius: 3px;
+  color:black;
+  border-color:lightgray
+
+}
+
+.search-input.active .autocom-box li{
+  display: block;
+}
+.autocom-box li:hover{
+  background: #efefef;
+}
+
+.search-input .icon{
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 30px;
+  width: 55px;
+  text-align: center;
+  line-height: 35px;
+  font-size: 14px;
+  color: blue;
+  cursor: pointer;
+}
+/* SORTABLE LIST TO SPLIT CLASS */
+
+li {
+  list-style-type: none;
+  padding: 8px 16px 5px 5px;
+  border: 1px solid ;
+  border-radius: 5px;
+  /* border-bottom:none; */
+  background-color: white;
+  margin-top: 8px;
+  display: flex;
+}
+
+li {
+  touch-action: none;
+}
+
+div{
+  touch-action: none
+}
+
+
+/* CSS */
+button {
+  appearance: none;
+  background-color: white;
+  border: 1px solid #afacac;
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #24292E;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  list-style: none;
+  padding: 6px 16px;
+  position: relative;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+button:hover {
+  background-color: #F3F4F6;
+  text-decoration: none;
+  transition-duration: 0.1s;
+}
+
+button:disabled {
+  background-color: #FAFBFC;
+  border-color: rgba(27, 31, 35, 0.15);
+  color: #959DA5;
+  cursor: default;
+}
+
+button:active {
+  background-color: #EDEFF2;
+  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
+  transition: none 0s;
+}
+
+button:focus {
+  outline: 1px transparent;
+}
+
+button:before {
+  display: none;
+}
+
+button:-webkit-details-marker {
+  display: none;
+}
+
+/* table view drop down button to change partitions */
+
+/* .dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .partitionOption {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border:none
+}
+
+.dropdown .partitionOption:hover {background-color: #ddd;}
+
+.show {display: block;} */
+
+
+/* =================================*/
+/* ====Suggestions Toggle===========*/
+/* =================================*/
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+  margin-top:5px
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* INSTRUCTION PAGE */
+
+.instructionsSideNav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.instructionsSideNav a {
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+}
+
+.instructionsSideNav a:hover {
+  color: #f1f1f1;
+}
