@@ -90,8 +90,11 @@ class Cargo:
         with open(path_to_sdg_json, "r") as sdg_json:
             self.json_graph = json.load(sdg_json)
 
-        with open(transactions_json, "r") as txn_json:
-            self.transactions_json = json.load(txn_json)
+        if transactions_json is None:
+            self.transactions_json = transactions_json
+        else:
+            with open(transactions_json, "r") as txn_json:
+                self.transactions_json = json.load(txn_json)
 
         self.json_graph["links"] = self.json_graph.pop("edges")
         self.nodes_dict = defaultdict()
