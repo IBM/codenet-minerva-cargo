@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang = "en">
+
+   <head>
+      <!-- <script type="module" src = "index.js" ></script> -->
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script> -->
+      <link rel="stylesheet" href="styles.css">
+
+      <script type="module" src = "index.js" ></script>
+      <script src = "https://d3js.org/d3.v5.min.js"></script>
+      <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
+      <!-- <script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi0RCj8aLdKFX-cvYkW6kDveuaUlMnpes&libraries=places&callback=initMap">
+      </script> -->
+      <!-- <script type="text/javascript" src="https://unpkg.com/default-passive-events"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+      <!-- <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script> -->
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+
+   <body style="margin-left: 300px; margin-right: 200px; margin-top: 0px; padding: 50px; text-align:left;">
+    <!-- <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script> -->
+
+    <!-- <a href="#tasks">Click Here to Smoothly Scroll Down</a> -->
+
+    <div class="instructionsSideNav" style="padding-top: 40px;">
+      <a href="#instructions">Instructions</a>
+      <a href="#overview" style="font-size:14px">1.0 Overview: Partitions, Classes and Methods</a>
+      <a href="#filters" style="font-size:14px">1.1 Filters</a>
+      <a href="#sideMenu" style="font-size:14px">1.2 Side Menu</a>
+      <a href="#tasks">Tasks</a>
+    </div>
+
+    <div class="main" style="margin-left: 50px;">
+      <h1 id="instructions" style="background-color: lightgray">Instructions</h1>
+      <text>Thank you for participating in this study. We implemented a prototype with some UI features that we think would be useful to microservice recommendation tools. Please note that at this stage, the prototype does not perform all the tasks that a comprehensive microservice tool would. To start, read the following sections carefully to understand the different features provided by our interface. 
+      </text>
+  
+      <h2 id="overview" >1.0. Overview: Partitions, Classes and Methods</h2>
+      <text>This image shows partitions for <text style="font-style: italic;">DayTrader, </text> which were computed from methods. In this display, rectangles represent partitions and nodes represent classes. </text>
+      <br><br>
+      <text> Class partitions were computed based the partitions of their methods i.e. they were assigned the most prevalent partition of their methods. Node opacity represents class partition uncertainty, or in other words, the variability in the method assignments.    </text>
+      <br><br>
+      <text> If all the methods in a class are assigned the same partition, the class uncertainty will be 1. But if 50% of the methods are assigned a partition and the other 50% are assigned another paritition, the class uncertainty will be 50% </text>
+      <br><br>
+      <h3>1.0.1. Expanding and Collapsing Nodes</h2>
+      <text> To visualize the methods of a specific class, right click on the corresponding nodes. Smaller circles representing methods will appear. To collapse the methods back into their class, right click on a method. </text>
+      <br><br>
+      <img src="figures/expandClass.png" alt="expandClass" width="600">
+      <br><br>
+      <h3>1.0.2. Moving a class from one node to another</h2>
+      <text> Drag and drop a node to a new partition</text>
+  
+      <h2 id="filters" >1.1. Filters</h2>
+      <text>To open the filter tab, click on the filter icon. You can filter the display by edge weight (number of calls between two classes) and edge type (nature of the call)
+      On the top of the page, you can search for a class by class name to see more information about it in the side menu.</text>
+      <br><br>
+      <img src="figures/filter.png" alt="Filter" width="600">
+
+      <h2 id="sideMenu" >1.2. Side menu</h2>
+      <text>Click on a partition, method and class to view information in the side menu</text>
+      <br><br>
+      <img src="figures/sideMenu.png" alt="sideMenu" width="600">
+
+         <h3>1.2.1. Splitting a class</h2>
+          <text>You can decide to split a class if its methods are split between two partitions. Click on the "Add class" button, rename both classes and drag and drop the methods to their corresponding class. When you are satisfied with your assignment, click on the "Split Class" button. 
+            Your changes will appear on the interface.
+          </text>
+          <br><br>
+          <img src="figures/splitClass.png" alt="splitClass" width="600">
+    
+      <br>
+      <br>
+      <h1 id="tasks" style="background-color: lightgray;">Tasks</h1>
+      <text>In this task, you will be presented with partitions for <text style="font-style: italic;">DayTrader </text>. Please try as much as possible to think out loud while you are conducting the task. Your thought process and feedback is very valuable to us. Click on the button below to open the interface in a new window and start conducting the following tasks.
+      </text>
+      <br><br><br>
+      <button onClick="window.open('http://localhost:8008/index_graph.html');">
+        Launch Interface
+      </button>
+      <br><br><br>
+      <div style="text-align:left;">
+        <text>(1) View the definition of the <text style="font-style: italic;">Market</text> partition</text>
+        <br><br>
+        <text>(2) Identify the classes that read and write to database tables</text>
+        <br><br>
+        <text>(3) Identify classes that have a high volume of calls to other classes</text>
+        <br><br>
+        <text>(4) Find the <text style="font-style: italic;">MarketSummaryDataBean</text> class</text>
+        <br><br>
+        <text>(5) Identify a class who is likely to belong to another partition</text>
+        <br><br>
+        <text>(6) Move that class to the other partition</text>
+        <br><br>
+        <text>(7) Accept the suggestion to move the other node</text>
+        <br><br>
+        <text>(8) Expand a node to see its methods</text>
+        <br><br>
+        <text>(9) Collapse the methods back into their class</text>
+        <br><br>
+        <text>(10) Select a class and split it into two classes based on partition assignment</text>
+        <br>
+  
+      </div>
+    </div>
+    
+
+   </body>
+</html>
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
